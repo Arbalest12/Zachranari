@@ -4,15 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Pas mladého záchranára / Ifjú megmentő útlevél</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
     :root {
       --bg: #0b1329;
-      --card-bg: rgba(23, 37, 84, 0.75);
-      --card-border: rgba(96, 165, 250, 0.2);
+      --card-bg: rgba(23, 37, 84, 0.85);
+      --card-border: rgba(96, 165, 250, 0.25);
       --fire-red: #ef4444;
       --med-green: #10b981;
       --pol-blue: #3b82f6;
@@ -20,9 +16,8 @@
       --text: #f8fafc;
       --text-muted: #94a3b8;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
       background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1329 100%);
       color: var(--text);
       min-height: 100vh;
@@ -31,12 +26,11 @@
     header {
       padding: 16px;
       text-align: center;
-      background: rgba(11, 19, 41, 0.92);
-      backdrop-filter: blur(10px);
+      background: rgba(11, 19, 41, 0.95);
       position: sticky;
       top: 0;
       z-index: 50;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -48,24 +42,23 @@
       background: #0f172a;
       padding: 4px;
       border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
     .lang-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      font-size: 0.8rem;
-      font-weight: 800;
+      font-size: 0.85rem;
+      font-weight: bold;
       padding: 6px 14px;
       border-radius: 14px;
       cursor: pointer;
-      transition: all 0.2s ease;
     }
     .lang-btn.active {
       background: var(--gold);
       color: #0b1329;
     }
-    h1 { font-size: 1.3rem; font-weight: 900; letter-spacing: -0.02em; }
+    h1 { font-size: 1.3rem; font-weight: 900; }
     .badge-sub {
       font-size: 0.75rem;
       font-weight: 700;
@@ -77,13 +70,12 @@
 
     /* TAJNIČKA */
     .word-tracker {
-      background: rgba(15, 23, 42, 0.85);
+      background: rgba(15, 23, 42, 0.9);
       border: 1px solid var(--card-border);
       border-radius: 20px;
       padding: 16px;
       margin-bottom: 20px;
       text-align: center;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
     }
     .word-tracker h2 {
       font-size: 0.85rem;
@@ -109,18 +101,11 @@
       font-size: 1.6rem;
       font-weight: 900;
       color: var(--gold);
-      transition: all 0.3s ease;
     }
     .slot.unlocked {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      background: #0f172a;
       border: 2px solid var(--gold);
-      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
-      animation: popIn 0.35s ease;
-    }
-    @keyframes popIn {
-      0% { transform: scale(0.7); }
-      70% { transform: scale(1.15); }
-      100% { transform: scale(1); }
+      color: #fbbf24;
     }
 
     /* KARTY */
@@ -137,15 +122,14 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      backdrop-filter: blur(8px);
     }
     .card.fire { border-left: 5px solid var(--fire-red); }
     .card.med { border-left: 5px solid var(--med-green); }
     .card.pol { border-left: 5px solid var(--pol-blue); }
 
     .card.unlocked-card {
-      background: rgba(16, 185, 129, 0.12);
-      border-color: rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.5);
     }
 
     .card-head {
@@ -158,14 +142,13 @@
       font-weight: 800;
       padding: 4px 8px;
       border-radius: 8px;
-      background: rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.1);
       color: var(--text-muted);
     }
     .hero-tag {
       font-size: 0.75rem;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
     .hero-tag.fire { color: #f87171; }
     .hero-tag.med { color: #34d399; }
@@ -189,44 +172,33 @@
       padding: 10px 14px;
       border-radius: 12px;
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: bold;
       cursor: pointer;
-      width: fit-content;
-      transition: background 0.2s;
     }
     .unlock-btn:hover { background: #2563eb; }
-    .unlock-btn:active { transform: scale(0.98); }
 
     .fact-btn {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.5);
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid var(--gold);
       color: var(--gold);
       padding: 8px 12px;
       border-radius: 10px;
       font-size: 0.8rem;
-      font-weight: 800;
+      font-weight: bold;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
     }
-    .fact-btn:hover { background: rgba(245, 158, 11, 0.25); }
 
     .unlocked-tag {
-      display: flex;
-      align-items: center;
-      gap: 6px;
       color: #34d399;
       font-weight: 800;
       font-size: 0.9rem;
     }
 
-    /* MODÁLY */
+    /* MODALE */
     .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(6px);
       display: none;
       align-items: center;
       justify-content: center;
@@ -239,16 +211,15 @@
       border: 1px solid var(--card-border);
       border-radius: 20px;
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       padding: 24px;
       text-align: center;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
     }
     .modal input {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       font-size: 1.6rem;
-      font-weight: 900;
+      font-weight: bold;
       text-transform: uppercase;
       text-align: center;
       border-radius: 12px;
@@ -258,7 +229,6 @@
       margin: 16px 0;
       outline: none;
     }
-    .modal input:focus { border-color: var(--gold); }
     .modal-actions { display: flex; gap: 10px; }
     .btn-secondary {
       flex: 1;
@@ -267,7 +237,7 @@
       border: none;
       padding: 12px;
       border-radius: 12px;
-      font-weight: 700;
+      font-weight: bold;
       cursor: pointer;
     }
     .btn-primary {
@@ -277,57 +247,31 @@
       border: none;
       padding: 12px;
       border-radius: 12px;
-      font-weight: 800;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    /* POPUP SO ZAUJÍMAVOSŤOU */
     .fact-icon { font-size: 3rem; margin-bottom: 8px; }
-    .fact-title { font-size: 1.2rem; font-weight: 900; color: var(--gold); margin-bottom: 12px; }
+    .fact-title { font-size: 1.15rem; font-weight: bold; color: var(--gold); margin-bottom: 12px; }
     .fact-text {
       background: #0f172a;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 16px;
-      font-size: 0.95rem;
+      border-radius: 12px;
+      padding: 14px;
+      font-size: 0.9rem;
       line-height: 1.5;
       color: #e2e8f0;
       text-align: left;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
     }
 
-    /* DIPLOM */
     #victory-screen {
       display: none;
       margin-bottom: 24px;
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      background: #1e293b;
       border: 2px solid var(--gold);
       border-radius: 20px;
       padding: 24px;
       text-align: center;
-      box-shadow: 0 0 30px rgba(245, 158, 11, 0.25);
-    }
-    .cert-icon { font-size: 3rem; margin-bottom: 8px; }
-    .cert-title { font-size: 1.3rem; font-weight: 900; color: var(--gold); }
-    .cert-input {
-      background: #0f172a;
-      border: 1px solid #475569;
-      color: white;
-      padding: 10px;
-      border-radius: 10px;
-      font-size: 1rem;
-      width: 80%;
-      margin: 12px 0;
-      text-align: center;
-    }
-    .print-btn {
-      background: var(--gold);
-      color: #0b1329;
-      font-weight: 800;
-      border: none;
-      padding: 12px 20px;
-      border-radius: 12px;
-      cursor: pointer;
     }
   </style>
 </head>
@@ -335,16 +279,14 @@
 
   <header>
     <div class="lang-switcher">
-      <button type="button" class="lang-btn active" id="btn-sk" onclick="window.setLang('sk')">🇸🇰 Slovenčina</button>
-      <button type="button" class="lang-btn" id="btn-hu" onclick="window.setLang('hu')">🇭🇺 Magyar</button>
+      <button type="button" class="lang-btn active" id="btn-sk" onclick="changeLang('sk')">🇸🇰 Slovenčina</button>
+      <button type="button" class="lang-btn" id="btn-hu" onclick="changeLang('hu')">🇭🇺 Magyar</button>
     </div>
     <h1 id="txt-title">PAS MLADÉHO ZÁCHRANÁRA</h1>
     <div class="badge-sub" id="txt-subtitle">Pátracia akcia v obci</div>
   </header>
 
   <div class="container">
-
-    <!-- TAJNIČKA -->
     <div class="word-tracker">
       <h2 id="txt-tracker-title">Získaj písmená tajničky (6 krabičiek)</h2>
       <div class="slots">
@@ -357,189 +299,132 @@
       </div>
     </div>
 
-    <!-- DIPLOM PO DOKONČENÍ -->
     <div id="victory-screen">
-      <div class="cert-icon">🎖️</div>
-      <div class="cert-title" id="txt-cert-title">VŠETKY KÓDY NÁJDENÉ!</div>
-      <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;" id="txt-cert-desc">
-        Úspešne si odhalil tajničku <strong>HRDINA</strong> a zvládol celú trasu!
+      <div style="font-size: 3rem;">🎖️</div>
+      <h3 style="font-size: 1.3rem; color: var(--gold); margin-top: 8px;" id="txt-cert-title">VŠETKY KÓDY NÁJDENÉ!</h3>
+      <p style="margin: 10px 0; color: var(--text-muted); font-size: 0.9rem;" id="txt-cert-desc">
+        Úspešne si odhalil tajničku a zvládol celú trasu!
       </p>
-      <input type="text" id="hero-name" class="cert-input" placeholder="Zadaj svoje meno">
+      <input type="text" id="hero-name" placeholder="Zadaj svoje meno" style="padding: 10px; border-radius: 10px; width: 80%; background: #0f172a; border: 1px solid #475569; color: white; text-align: center; margin-bottom: 12px;">
       <br>
-      <button type="button" class="print-btn" id="txt-cert-btn" onclick="window.print()">Vytlačiť / Uložiť diplom</button>
+      <button type="button" class="btn-primary" onclick="window.print()" id="txt-cert-btn">Vytlačiť diplom</button>
     </div>
 
-    <!-- ZOZNAM KARIET -->
     <div class="grid" id="stations-grid"></div>
-
   </div>
 
-  <!-- MODÁL NA ZADANIE KÓDU -->
+  <!-- MODAL: KOD -->
   <div class="modal-overlay" id="modal">
     <div class="modal">
-      <h3 style="font-size: 1.1rem; font-weight: 800;" id="txt-modal-title">Zadaj kód z krabičky</h3>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;" id="modal-station-title">Stanovište</p>
-      <input type="text" id="code-input" maxlength="2" placeholder="PÍSMENO" autocomplete="off">
+      <h3 style="font-size: 1.1rem; font-weight: bold;" id="txt-modal-title">Zadaj kód z krabičky</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;" id="modal-station-title"></p>
+      <input type="text" id="code-input" maxlength="2" placeholder="PÍSMENO / BETŰ" autocomplete="off">
       <div class="modal-actions">
-        <button type="button" class="btn-secondary" id="txt-modal-cancel" onclick="window.closeModal()">Zrušiť</button>
-        <button type="button" class="btn-primary" id="txt-modal-confirm" onclick="window.submitCode()">Potvrdiť</button>
+        <button type="button" class="btn-secondary" id="txt-modal-cancel" onclick="closeInputModal()">Zrušiť</button>
+        <button type="button" class="btn-primary" id="txt-modal-confirm" onclick="verifyCode()">Potvrdiť</button>
       </div>
     </div>
   </div>
 
-  <!-- POP-UP SO ZAUJÍMAVOSŤOU -->
+  <!-- MODAL: ZAUJÍMAVOSŤ -->
   <div class="modal-overlay" id="fact-modal">
     <div class="modal">
-      <div class="fact-icon" id="fact-hero-icon">🔥</div>
-      <div class="fact-title" id="fact-hero-title">Záchranárska rada</div>
-      <div class="fact-text" id="fact-content">...</div>
-      <button type="button" class="btn-primary" style="width: 100%;" id="fact-btn-close" onclick="window.closeFactModal()">Rozumiem / Zavrieť</button>
+      <div class="fact-icon" id="fact-icon">🔥</div>
+      <div class="fact-title" id="fact-title"></div>
+      <div class="fact-text" id="fact-desc"></div>
+      <button type="button" class="btn-primary" style="width: 100%;" id="fact-close-btn" onclick="closeFactModal()">Zavrieť</button>
     </div>
   </div>
 
   <script>
-    const I18N = {
+    var I18N = {
       sk: {
         title: "PAS MLADÉHO ZÁCHRANÁRA",
         subtitle: "Pátracia akcia v obci",
-        trackerTitle: "Získaj písmená tajničky (6 krabičiek)",
+        trackerTitle: "Získaj tajničku: H - R - D - I - N - A",
         station: "Stanovište",
         unlockedTag: "✓ Písmeno",
         btnUnlock: "Zadať kód z krabičky",
         btnReadFact: "💡 Zaujímavosť",
         modalTitle: "Zadaj kód z krabičky",
-        modalPlaceholder: "PÍSMENO",
         modalCancel: "Zrušiť",
         modalConfirm: "Potvrdiť",
         wrongCode: "Nesprávny kód. Pozri sa lepšie na krabičku!",
         certTitle: "VŠETKY KÓDY NÁJDENÉ!",
-        certDesc: "Úspešne si odhalil tajničku <strong>HRDINA</strong> a zvládol celú trasu!",
+        certDesc: "Úspešne si odhalil tajničku <strong>HRDINA</strong> a zvládol celú záchranársku trasu!",
         certPlaceholder: "Zadaj svoje meno",
-        certBtn: "Vytlačiť / Uložiť diplom",
-        factClose: "Rozumiem / Skvelé!",
+        certBtn: "Vytlačiť diplom",
+        factClose: "Rozumiem",
         heroes: { fire: "Hasič Redi", med: "Záchranárka Eli", pol: "Policajt Rocky" },
         stations: [
-          { 
-            title: "Hasičské stanovište #1", 
-            hint: "Hľadaj pri hasičskej zbrojnici alebo v parku.",
-            factTitle: "Redi radí: Číslo 150 a oheň",
-            factText: "Vedel si, že hasičské auto vezie so sebou až niekoľko tisíc litrov vody? Pamätaj si hasičské číslo 150 – nulka na konci vyzerá ako stočená hadica s vodou!" 
-          },
-          { 
-            title: "Hasičské stanovište #2", 
-            hint: "Hľadaj pri zdroji vody alebo oddychovej zóne.",
-            factTitle: "Redi radí: Zákaz ohňa v prírode",
-            factText: "Suchá tráva a lístie dokážu za veterného počasia vzbĺknuť behom sekundy. Skutočný záchranár v prírode nikdy nerozkladá oheň mimo vyznačených ohnísk a vždy ho pred odchodom zaleje vodou." 
-          },
-          { 
-            title: "Záchranárske stanovište #1", 
-            hint: "Hľadaj pri zdravotnom stredisku alebo lekárni.",
-            factTitle: "Eli radí: Číslo 155 a odreté koleno",
-            factText: "Číslo 155 voláme, ak je niekto v bezvedomí alebo ťažko zranený. Päťka na konci pripomína invalidný vozík. Pri malom odretom kolene však najlepšie poslúži čistá voda, dezinfekcia a náplasť s úsmevom!" 
-          },
-          { 
-            title: "Záchranárske stanovište #2", 
-            hint: "Hľadaj pri športovom areáli alebo detskom ihrisku.",
-            factTitle: "Eli radí: Pitný režim a prilba",
-            factText: "Keď športuješ alebo jazdíš na bicykli, prilba chráni tvoj najcennejší poklad – tvoju hlavu. Nezabúdaj na prechádzkach piť čistú vodu, aby tvoje telo malo dosť síl na celé pátranie." 
-          },
-          { 
-            title: "Policajné stanovište #1", 
-            hint: "Hľadaj pri bezpečnom priechode pre chodcov.",
-            factTitle: "Rocky radí: Vidieť a byť videný",
-            factText: "Reflexný prvok alebo páska na taške ti v tme môže zachrániť život! Vodič ťa s reflexným prvkom uvidí z 3-krát väčšej vzdialenosti než v tmavom oblečení. Cez cestu vždy prechádzaj len po zebre a po rozhliadnutí sa!" 
-          },
-          { 
-            title: "Policajné stanovište #2", 
-            hint: "Hľadaj pri obecnom úrade alebo kultúrnom dome.",
-            factTitle: "Rocky radí: Číslo 158 a linka 112",
-            factText: "Číslo polície 158 končí osmičkou, ktorá pripomína policajné putá. V celej Európe však funguje aj univerzálne tiesňové číslo 112, ktoré ťa spojí s hasičmi, lekármi aj políciou naraz!" 
-          }
+          { title: "Hasičské stanovište #1", hint: "Hľadaj pri hasičskej zbrojnici alebo v parku.", factTitle: "Redi radí: Číslo 150 a oheň", factText: "Vedel si, že hasičské auto vezie tisíce litrov vody? Číslo 150 si zapamätáš ľahko – nula na konci pripomína stočenú hadicu!" },
+          { title: "Hasičské stanovište #2", hint: "Hľadaj pri zdroji vody alebo oddychovej zóne.", factTitle: "Redi radí: Bezpečný oheň", factText: "Suchá tráva a lístie vzbĺknu za sekundu. Skutočný záchranár v prírode nezakladá oheň mimo vyznačených ohnísk a vždy ho zaleje vodou." },
+          { title: "Záchranárske stanovište #1", hint: "Hľadaj pri zdravotnom stredisku alebo lekárni.", factTitle: "Eli radí: Číslo 155 a prvá pomoc", factText: "Číslo 155 voláme, ak je niekto ťažko zranený. Päťka na konci pripomína invalidný vozík. Pri odretom kolene však najviac pomôže čistá voda a náplasť." },
+          { title: "Záchranárske stanovište #2", hint: "Hľadaj pri športovom areáli alebo detskom ihrisku.", factTitle: "Eli radí: Bezpečnosť pri športe", factText: "Pri bicyklovaní chráni prilba tvoj najcennejší poklad – hlavu. Nezabúdaj piť čistú vodu, aby ti nechýbala energia!" },
+          { title: "Policajné stanovište #1", hint: "Hľadaj pri bezpečnom priechode pre chodcov.", factTitle: "Rocky radí: Vidieť a byť videný", factText: "Reflexný prvok na taške ti v tme zachráni život! Vodič ťa zbadá z oveľa väčšej vzdialenosti. Cez cestu prechádzaj vždy po zebre." },
+          { title: "Policajné stanovište #2", hint: "Hľadaj pri obecnom úrade alebo kultúrnom dome.", factTitle: "Rocky radí: Číslo 158 a linka 112", factText: "Číslo 158 končí osmičkou, ktorá pripomína putá. V celej Európe funguje aj univerzálne číslo 112 pre všetky zložky naraz." }
         ]
       },
       hu: {
         title: "IFJÚ MEGMENTŐ ÚTLEVÉL",
         subtitle: "Községi nyomozós kaland",
-        trackerTitle: "Gyűjtsd össze a rejtvény betűit (6 doboz)",
+        trackerTitle: "Gyűjtsd össze a szót: B - Á - T - O - R - !",
         station: "Állomás",
         unlockedTag: "✓ Betű",
         btnUnlock: "Kód megadása a dobozról",
         btnReadFact: "💡 Érdekesség",
         modalTitle: "Add meg a kódot a dobozról",
-        modalPlaceholder: "BETŰ",
         modalCancel: "Mégse",
         modalConfirm: "Jóváhagy",
         wrongCode: "Helytelen kód. Nézd meg jobban a dobozt!",
         certTitle: "MINDEN KÓD MEGTALÁLVA!",
-        certDesc: "Sikeresen megfejtetted a <strong>HRDINA</strong> szót és teljesítetted az útvonalat!",
+        certDesc: "Sikeresen megfejtetted a <strong>BÁTOR!</strong> szót és teljesítetted az útvonalat!",
         certPlaceholder: "Írd be a neved",
-        certBtn: "Oklevél letöltése / nyomtatása",
-        factClose: "Megértettem / Remek!",
+        certBtn: "Oklevél kinyomtatása",
+        factClose: "Megértettem",
         heroes: { fire: "Redi, a tűzoltó", med: "Eli, a mentős", pol: "Rocky, a rendőr" },
         stations: [
-          { 
-            title: "Tűzoltó állomás #1", 
-            hint: "Keresd a tűzoltószertárnál vagy a parkban.",
-            factTitle: "Redi tanácsa: A 150-es szám és a tűz",
-            factText: "Tudtad, hogy a tűzoltóautó több ezer liter vizet szállít magával? Jegyezd meg a 150-es segélyhívót – a nulla a végén úgy néz ki, mint egy feltekert tűzoltótömlő!" 
-          },
-          { 
-            title: "Tűzoltó állomás #2", 
-            hint: "Keresd a vízparton vagy a pihenőövezetben.",
-            factTitle: "Redi tanácsa: Tűzgyújtási tilalom a természetben",
-            factText: "A száraz fű szeles időben pillanatok alatt lángra kaphat. Egy igazi megmentő a természetben soha nem gyújt tüzet a kijelölt helyeken kívül, és távozás előtt mindig lelocsolja vízzel!" 
-          },
-          { 
-            title: "Mentős állomás #1", 
-            hint: "Keresd az orvosi rendelő vagy a gyógyszertár közelében.",
-            factTitle: "Eli tanácsa: A 155-ös szám és a sérülések",
-            factText: "A 155-öt akkor hívjuk, ha valaki eszméletlen vagy súlyosan megsérült. Egy horzsolt térdnél viszont a tiszta víz, a fertőtlenítő és egy vidám sebtapasz a legjobb segítség!" 
-          },
-          { 
-            title: "Mentős állomás #2", 
-            hint: "Keresd a sportpályánál vagy a játszótérnél.",
-            factTitle: "Eli tanácsa: Folyadékpótlás és bukósisak",
-            factText: "Amikor biciklizel vagy rollerezel, a sisak a legféltettebb kincsedet – a fejedet védi. A sétákon sose felejts el tiszta vizet inni, hogy legyen elég erőd a kereséshez!" 
-          },
-          { 
-            title: "Rendőrségi állomás #1", 
-            hint: "Keresd a biztonságos gyalogátkelőnél.",
-            factTitle: "Rocky tanácsa: Látni és látszani",
-            factText: "Egy fényvisszaverő matrica a táskádon a sötétben életet menthet! A sofőr háromszor messzebbről észrevesz, mint sötét ruhában. Az úttesten mindig a zebrán és alapos körülnézés után kelj át!" 
-          },
-          { 
-            title: "Rendőrségi állomás #2", 
-            hint: "Keresd a községi hivatalnál vagy a kultúrháznál.",
-            factTitle: "Rocky tanácsa: A 158-as és a 112-es segélyhívó",
-            factText: "A rendőrség 158-as száma nyolcassal végződik, ami a bilincsre emlékeztet. Egész Európában működik a 112-es közös segélyhívó is, amely egyszerre éri el a tűzoltókat, orvosokat és rendőröket!" 
-          }
+          { title: "Tűzoltó állomás #1", hint: "Keresd a tűzoltószertárnál vagy a parkban.", factTitle: "Redi tanácsa: A 150-es szám és a tűz", factText: "Tudtad, hogy a tűzoltóautó több ezer liter vizet szállít magával? A 150-es szám végén lévő nulla egy feltekert tömlőre emlékeztet!" },
+          { title: "Tűzoltó állomás #2", hint: "Keresd a vízparton vagy a pihenőövezetben.", factTitle: "Redi tanácsa: Tűzgyújtási tilalom", factText: "A száraz fű pillanatok alatt lángra kap. Egy igazi megmentő soha nem gyújt tüzet a kijelölt helyeken kívül!" },
+          { title: "Mentős állomás #1", hint: "Keresd az orvosi rendelő vagy a gyógyszertár közelében.", factTitle: "Eli tanácsa: A 155-ös szám", factText: "A 155-öt akkor hívjuk, ha valaki súlyosan megsérült. Egy horzsolt térdnél viszont a tiszta víz és a sebtapasz a legjobb segítség." },
+          { title: "Mentős állomás #2", hint: "Keresd a sportpályánál vagy a játszótérnél.", factTitle: "Eli tanácsa: Bukósisak és víz", factText: "Amikor biciklizel, a sisak a legféltettebb kincsedet – a fejedet védi. Mindig igyál elég vizet a mozgás közben!" },
+          { title: "Rendőrségi állomás #1", hint: "Keresd a biztonságos gyalogátkelőnél.", factTitle: "Rocky tanácsa: Látni és látszani", factText: "Egy fényvisszaverő a táskádon a sötétben életet menthet! A sofőr jóval messzebbről észrevesz az úton." },
+          { title: "Rendőrségi állomás #2", hint: "Keresd a községi hivatalnál vagy a kultúrháznál.", factTitle: "Rocky tanácsa: A 158-as és a 112-es szám", factText: "A rendőrség 158-as száma a bilincsre emlékeztet. A 112-es közös segélyhívó pedig egész Európában elérhető." }
         ]
       }
     };
 
-    const STATIONS = [
-      { id: 1, letter: 'H', index: 0, role: 'fire' },
-      { id: 2, letter: 'R', index: 1, role: 'fire' },
-      { id: 3, letter: 'D', index: 2, role: 'med' },
-      { id: 4, letter: 'I', index: 3, role: 'med' },
-      { id: 5, letter: 'N', index: 4, role: 'pol' },
-      { id: 6, letter: 'A', index: 5, role: 'pol' }
+    // Písmená pre SK aj HU a povolené vstupy pre každú krabičku
+    var STATIONS = [
+      { id: 1, skLetter: 'H', huLetter: 'B', validKeys: ['H', 'B'], index: 0, role: 'fire' },
+      { id: 2, skLetter: 'R', huLetter: 'Á', validKeys: ['R', 'Á', 'A'], index: 1, role: 'fire' },
+      { id: 3, skLetter: 'D', huLetter: 'T', validKeys: ['D', 'T'], index: 2, role: 'med' },
+      { id: 4, skLetter: 'I', huLetter: 'O', validKeys: ['I', 'O', 'Ó'], index: 3, role: 'med' },
+      { id: 5, skLetter: 'N', huLetter: 'R', validKeys: ['N', 'R'], index: 4, role: 'pol' },
+      { id: 6, skLetter: 'A', huLetter: '!', validKeys: ['A', '!'], index: 5, role: 'pol' }
     ];
 
-    let currentLang = localStorage.getItem('pas_lang') || 'sk';
-    let unlocked = JSON.parse(localStorage.getItem('unlocked_stations') || '[]');
-    let currentModalStation = null;
+    var currentLang = 'sk';
+    var unlocked = [];
+    var activeStation = null;
 
-    window.setLang = function(lang) {
+    try {
+      var savedLang = localStorage.getItem('pas_lang');
+      if (savedLang) currentLang = savedLang;
+      var savedUnlocked = localStorage.getItem('unlocked_stations');
+      if (savedUnlocked) unlocked = JSON.parse(savedUnlocked);
+    } catch(e) {}
+
+    function changeLang(lang) {
       currentLang = lang;
-      localStorage.setItem('pas_lang', lang);
+      try { localStorage.setItem('pas_lang', lang); } catch(e) {}
       document.getElementById('btn-sk').className = 'lang-btn' + (lang === 'sk' ? ' active' : '');
       document.getElementById('btn-hu').className = 'lang-btn' + (lang === 'hu' ? ' active' : '');
-      render();
-    };
+      renderAll();
+    }
 
-    function render() {
-      const t = I18N[currentLang] || I18N.sk;
+    function renderAll() {
+      var t = I18N[currentLang] || I18N.sk;
 
       document.getElementById('txt-title').textContent = t.title;
       document.getElementById('txt-subtitle').textContent = t.subtitle;
@@ -549,157 +434,146 @@
       document.getElementById('hero-name').placeholder = t.certPlaceholder;
       document.getElementById('txt-cert-btn').textContent = t.certBtn;
       document.getElementById('txt-modal-title').textContent = t.modalTitle;
-      document.getElementById('code-input').placeholder = t.modalPlaceholder;
       document.getElementById('txt-modal-cancel').textContent = t.modalCancel;
       document.getElementById('txt-modal-confirm').textContent = t.modalConfirm;
-      document.getElementById('fact-btn-close').textContent = t.factClose;
+      document.getElementById('fact-close-btn').textContent = t.factClose;
 
-      // Sloty tajničky
-      STATIONS.forEach(s => {
-        const slotEl = document.getElementById(`slot-${s.index}`);
-        if (slotEl) {
-          if (unlocked.includes(s.id)) {
-            slotEl.textContent = s.letter;
-            slotEl.className = 'slot unlocked';
+      // Hasło / Tajnička podľa jazyka
+      for (var i = 0; i < STATIONS.length; i++) {
+        var s = STATIONS[i];
+        var letterToShow = (currentLang === 'hu') ? s.huLetter : s.skLetter;
+        var slot = document.getElementById('slot-' + s.index);
+        if (slot) {
+          if (unlocked.indexOf(s.id) !== -1) {
+            slot.textContent = letterToShow;
+            slot.className = 'slot unlocked';
           } else {
-            slotEl.textContent = '?';
-            slotEl.className = 'slot';
+            slot.textContent = '?';
+            slot.className = 'slot';
           }
         }
-      });
+      }
 
-      // Zoznam kariet
-      const grid = document.getElementById('stations-grid');
+      // Karty stanovišť
+      var grid = document.getElementById('stations-grid');
       grid.innerHTML = '';
 
-      STATIONS.forEach((s, idx) => {
-        const isDone = unlocked.includes(s.id);
-        const heroName = t.heroes[s.role];
-        const stationData = t.stations[idx];
+      for (var j = 0; j < STATIONS.length; j++) {
+        var st = STATIONS[j];
+        var isDone = unlocked.indexOf(st.id) !== -1;
+        var stData = t.stations[j];
+        var heroName = t.heroes[st.role];
+        var currentLetter = (currentLang === 'hu') ? st.huLetter : st.skLetter;
 
-        const card = document.createElement('div');
-        card.className = `card ${s.role} ${isDone ? 'unlocked-card' : ''}`;
+        var card = document.createElement('div');
+        card.className = 'card ' + st.role + (isDone ? ' unlocked-card' : '');
 
-        card.innerHTML = `
-          <div class="card-head">
-            <span class="station-number">${t.station} #${s.id}</span>
-            <span class="hero-tag ${s.role}">${heroName}</span>
-          </div>
-          <div class="card-title">${stationData.title}</div>
-          <div class="card-desc">${stationData.hint}</div>
-          <div class="card-bottom">
-            ${isDone 
-              ? `<div class="unlocked-tag">${t.unlockedTag} <strong>${s.letter}</strong></div>
-                 <button type="button" class="fact-btn" onclick="window.showFact(${s.id})">${t.btnReadFact}</button>`
-              : `<button type="button" class="unlock-btn" onclick="window.openModal(${s.id})">${t.btnUnlock}</button>`
-            }
-          </div>
-        `;
+        var btnHtml = isDone 
+          ? '<div class="unlocked-tag">' + t.unlockedTag + ' <strong>' + currentLetter + '</strong></div>' +
+            '<button type="button" class="fact-btn" onclick="openFactModal(' + st.id + ')">' + t.btnReadFact + '</button>'
+          : '<button type="button" class="unlock-btn" onclick="openInputModal(' + st.id + ')">' + t.btnUnlock + '</button>';
+
+        card.innerHTML = 
+          '<div class="card-head">' +
+            '<span class="station-number">' + t.station + ' #' + st.id + '</span>' +
+            '<span class="hero-tag ' + st.role + '">' + heroName + '</span>' +
+          '</div>' +
+          '<div class="card-title">' + stData.title + '</div>' +
+          '<div class="card-desc">' + stData.hint + '</div>' +
+          '<div class="card-bottom">' + btnHtml + '</div>';
+
         grid.appendChild(card);
-      });
+      }
 
-      // Kontrola víťazstva
-      const victory = document.getElementById('victory-screen');
+      var victory = document.getElementById('victory-screen');
       if (unlocked.length === STATIONS.length) {
         victory.style.display = 'block';
-        if (!window.celebrated && typeof confetti === 'function') {
-          confetti({ particleCount: 90, spread: 70, origin: { y: 0.6 } });
-          window.celebrated = true;
-        }
       } else {
         victory.style.display = 'none';
       }
     }
 
-    window.openModal = function(id) {
-      currentModalStation = STATIONS.find(s => s.id === id);
-      const t = I18N[currentLang] || I18N.sk;
-      const heroName = t.heroes[currentModalStation.role];
-      document.getElementById('modal-station-title').textContent = `${heroName} - ${t.station} #${currentModalStation.id}`;
+    function openInputModal(id) {
+      for (var i = 0; i < STATIONS.length; i++) {
+        if (STATIONS[i].id === id) { activeStation = STATIONS[i]; break; }
+      }
+      var t = I18N[currentLang] || I18N.sk;
+      var hero = t.heroes[activeStation.role];
+      document.getElementById('modal-station-title').textContent = hero + ' - ' + t.station + ' #' + activeStation.id;
       document.getElementById('code-input').value = '';
       document.getElementById('modal').className = 'modal-overlay active';
       document.getElementById('code-input').focus();
-    };
+    }
 
-    window.closeModal = function() {
+    function closeInputModal() {
       document.getElementById('modal').className = 'modal-overlay';
-      currentModalStation = null;
-    };
+      activeStation = null;
+    }
 
-    window.showFact = function(id) {
-      const idx = STATIONS.findIndex(s => s.id === id);
+    function openFactModal(id) {
+      var idx = -1;
+      for (var i = 0; i < STATIONS.length; i++) {
+        if (STATIONS[i].id === id) { idx = i; break; }
+      }
       if (idx === -1) return;
 
-      const s = STATIONS[idx];
-      const t = I18N[currentLang] || I18N.sk;
-      const data = t.stations[idx];
+      var st = STATIONS[idx];
+      var t = I18N[currentLang] || I18N.sk;
+      var stData = t.stations[idx];
 
-      const iconMap = { fire: '🔥', med: '🚑', pol: '🚓' };
-      document.getElementById('fact-hero-icon').textContent = iconMap[s.role] || '🎖️';
-      document.getElementById('fact-hero-title').textContent = data.factTitle;
-      document.getElementById('fact-content').textContent = data.factText;
+      var icons = { fire: '🔥', med: '🚑', pol: '🚓' };
+      document.getElementById('fact-icon').textContent = icons[st.role] || '🎖️';
+      document.getElementById('fact-title').textContent = stData.factTitle;
+      document.getElementById('fact-desc').textContent = stData.factText;
 
       document.getElementById('fact-modal').className = 'modal-overlay active';
-    };
+    }
 
-    window.closeFactModal = function() {
+    function closeFactModal() {
       document.getElementById('fact-modal').className = 'modal-overlay';
-    };
+    }
 
-    window.submitCode = function() {
-      if (!currentModalStation) return;
-      const input = document.getElementById('code-input').value.trim().toUpperCase();
-
-      if (input === currentModalStation.letter) {
-        const stationId = currentModalStation.id;
-        unlockStation(stationId);
-        window.closeModal();
-        // Hneď po zadaní ukáže okno so zaujímavosťou
-        window.showFact(stationId);
+    function verifyCode() {
+      if (!activeStation) return;
+      var val = document.getElementById('code-input').value.replace(/\s+/g, '').toUpperCase();
+      
+      // Overenie, či zadané písmeno patrí k tomuto stanovišťu (SK aj HU)
+      if (activeStation.validKeys.indexOf(val) !== -1) {
+        var sid = activeStation.id;
+        unlock(sid);
+        closeInputModal();
+        openFactModal(sid);
       } else {
         alert(I18N[currentLang].wrongCode);
       }
-    };
+    }
 
-    function unlockStation(id) {
-      if (!unlocked.includes(id)) {
+    function unlock(id) {
+      if (unlocked.indexOf(id) === -1) {
         unlocked.push(id);
-        localStorage.setItem('unlocked_stations', JSON.stringify(unlocked));
-        render();
-        if (typeof confetti === 'function') {
-          confetti({ particleCount: 35, spread: 50, origin: { y: 0.8 } });
+        try { localStorage.setItem('unlocked_stations', JSON.stringify(unlocked)); } catch(e) {}
+        renderAll();
+      }
+    }
+
+    function checkUrlParams() {
+      var query = window.location.search.substring(1);
+      if (!query) return;
+      var vars = query.split('&');
+      for (var i = 0; i < vars.length; i++) {
+        var pair = vars[i].split('=');
+        if (pair[0] === 'stamp') {
+          var sid = parseInt(pair[1], 10);
+          if (sid >= 1 && sid <= 6) {
+            unlock(sid);
+            openFactModal(sid);
+          }
         }
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      const params = new URLSearchParams(window.location.search);
-      const stampParam = params.get('stamp');
-      const codeParam = params.get('kod');
-
-      let justUnlockedId = null;
-
-      if (stampParam) {
-        const found = STATIONS.find(s => s.id == stampParam);
-        if (found && !unlocked.includes(found.id)) {
-          unlockStation(found.id);
-          justUnlockedId = found.id;
-        }
-      } else if (codeParam) {
-        const found = STATIONS.find(s => s.letter.toLowerCase() == codeParam.toLowerCase());
-        if (found && !unlocked.includes(found.id)) {
-          unlockStation(found.id);
-          justUnlockedId = found.id;
-        }
-      }
-
-      window.setLang(currentLang);
-
-      // Ak sa odomklo cez QR kód z URL parametra, rovno vyskočí zaujímavosť
-      if (justUnlockedId) {
-        window.showFact(justUnlockedId);
-      }
-    });
+    renderAll();
+    checkUrlParams();
   </script>
 </body>
 </html>
