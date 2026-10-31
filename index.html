@@ -211,7 +211,7 @@
       font-size: 0.9rem;
     }
 
-    /* VÍŤAZNÝ BOX NA WEBE */
+    /* VÍŤAZNÝ BOX */
     #victory-screen {
       display: none;
       margin-bottom: 24px;
@@ -220,11 +220,6 @@
       border-radius: 20px;
       padding: 24px;
       text-align: center;
-    }
-
-    /* TLAČOVÝ DIPLOM (SKRYTÝ NA WEBE) */
-    #printable-diploma {
-      display: none;
     }
 
     /* MODALE */
@@ -296,109 +291,6 @@
       text-align: left;
       margin-bottom: 16px;
     }
-
-    /* ŠTÝLY PRE TLAČ DIPLOMU (A4) */
-    @media print {
-      body {
-        background: #ffffff !important;
-        color: #111827 !important;
-        padding: 0;
-      }
-      header, .word-tracker, .grid, #victory-screen, .modal-overlay {
-        display: none !important;
-      }
-      #printable-diploma {
-        display: block !important;
-        width: 100%;
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 24px;
-        border: 8px double #b45309;
-        border-radius: 16px;
-        text-align: center;
-        background: #fff;
-        box-sizing: border-box;
-      }
-      .diploma-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 16px;
-        margin-bottom: 12px;
-      }
-      .diploma-logo {
-        width: 80px;
-        height: 80px;
-        object-fit: contain;
-      }
-      .diploma-title {
-        font-size: 2rem;
-        font-weight: 900;
-        color: #b45309;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-      .diploma-subtitle {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: #1f2937;
-        margin-bottom: 16px;
-      }
-      .diploma-name-line {
-        font-size: 1.8rem;
-        font-weight: 900;
-        color: #1e3a8a;
-        border-bottom: 2px dashed #9ca3af;
-        display: inline-block;
-        min-width: 350px;
-        padding: 4px 16px;
-        margin: 12px 0 6px;
-      }
-      .diploma-word-box {
-        margin: 18px auto;
-        display: inline-flex;
-        gap: 10px;
-        padding: 8px 16px;
-        background: #f8fafc;
-        border: 2px solid #b45309;
-        border-radius: 12px;
-      }
-      .diploma-letter {
-        font-size: 1.6rem;
-        font-weight: 900;
-        color: #b45309;
-      }
-      .diploma-heroes {
-        display: flex;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 30px;
-        margin-top: 20px;
-      }
-      .diploma-hero {
-        text-align: center;
-      }
-      .diploma-hero img {
-        width: 90px;
-        height: 110px;
-        object-fit: contain;
-      }
-      .diploma-hero span {
-        display: block;
-        font-size: 0.8rem;
-        font-weight: 700;
-        color: #374151;
-        margin-top: 4px;
-      }
-      .diploma-footer {
-        margin-top: 20px;
-        font-size: 0.85rem;
-        color: #4b5563;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 40px;
-      }
-    }
   </style>
 </head>
 <body>
@@ -425,65 +317,20 @@
       </div>
     </div>
 
-    <!-- VÍŤAZNÁ KARTA NA STRÁNKE -->
+    <!-- DIPLOM BOX -->
     <div id="victory-screen">
       <div style="font-size: 3rem;">🎖️</div>
       <h3 style="font-size: 1.3rem; color: var(--gold); margin-top: 8px;" id="txt-cert-title">VŠETKY KÓDY NÁJDENÉ!</h3>
       <p style="margin: 10px 0; color: var(--text-muted); font-size: 0.9rem;" id="txt-cert-desc">
         Úspešne si odhalil tajničku a zvládol celú trasu!
       </p>
-      <input type="text" id="hero-name" placeholder="Zadaj svoje meno" oninput="syncDiplomaName()" style="padding: 10px; border-radius: 10px; width: 85%; background: #0f172a; border: 1px solid #475569; color: white; text-align: center; margin-bottom: 12px; font-size: 1rem;">
+      <input type="text" id="hero-name" placeholder="Zadaj svoje meno" style="padding: 10px; border-radius: 10px; width: 85%; background: #0f172a; border: 1px solid #475569; color: white; text-align: center; margin-bottom: 12px; font-size: 1rem;">
       <br>
-      <button type="button" class="btn-primary" onclick="printDiploma()" id="txt-cert-btn">🎖️ Vytlačiť / Uložiť diplom</button>
+      <button type="button" class="btn-primary" onclick="generateDiploma()" id="txt-cert-btn">🎖️ Zobraziť a vytlačiť diplom</button>
     </div>
 
-    <!-- KARTY STANOVÍŠŤ -->
+    <!-- KARTY -->
     <div class="grid" id="stations-grid"></div>
-  </div>
-
-  <!-- OFICIÁLNY TLAČENÝ DIPLOM -->
-  <div id="printable-diploma">
-    <div class="diploma-header">
-      <img src="DHZ.png" alt="DHZ Logo" class="diploma-logo" onerror="this.style.display='none'">
-      <div>
-        <div class="diploma-title" id="dip-title">DIPLOM MLADÉHO ZÁCHRANÁRA</div>
-        <div style="font-size: 0.85rem; font-weight: 800; color: #4b5563; text-transform: uppercase;">Dobrovoľný hasičský zbor Dvory nad Žitavou</div>
-      </div>
-      <img src="DHZ.png" alt="DHZ Logo" class="diploma-logo" onerror="this.style.display='none'">
-    </div>
-
-    <div class="diploma-subtitle" id="dip-sub">Týmto sa udeľuje čestný titul MLADÝ ZÁCHRANÁR</div>
-    
-    <div class="diploma-name-line" id="dip-name">Mladý Hrdina</div>
-    <div style="font-size: 0.85rem; color: #6b7280;" id="dip-name-sub">(meno úspešného pátrača)</div>
-
-    <p style="margin: 14px 40px 0; font-size: 0.95rem; line-height: 1.4; color: #374151;" id="dip-desc">
-      za úspešné zvládnutie záchranárskej pátracej trasy v obci, nájdenie všetkých 6 tajných stanovíšť a správne vylúštenie tajničky:
-    </p>
-
-    <div class="diploma-word-box" id="dip-word">
-      <!-- Písmená tajničky -->
-    </div>
-
-    <div class="diploma-heroes">
-      <div class="diploma-hero">
-        <img src="Redi.png" alt="Hasič Redi">
-        <span id="dip-h1">Hasič Redi</span>
-      </div>
-      <div class="diploma-hero">
-        <img src="ELI.png" alt="Záchranárka Eli">
-        <span id="dip-h2">Záchranárka Eli</span>
-      </div>
-      <div class="diploma-hero">
-        <img src="Rocky.png" alt="Policajt Rocky">
-        <span id="dip-h3">Policajt Rocky</span>
-      </div>
-    </div>
-
-    <div class="diploma-footer">
-      <div><strong>Dátum:</strong> <span id="dip-date"></span></div>
-      <div><strong>Miesto:</strong> Dvory nad Žitavou</div>
-    </div>
   </div>
 
   <!-- MODAL: KÓD -->
@@ -526,14 +373,9 @@
         certTitle: "VŠETKY KÓDY NÁJDENÉ!",
         certDesc: "Úspešne si odhalil tajničku <strong>HRDINA</strong> a zvládol celú záchranársku trasu!",
         certPlaceholder: "Zadaj svoje meno",
-        certBtn: "🎖️ Vytlačiť / Uložiť diplom",
+        certBtn: "🎖️ Zobraziť a vytlačiť diplom",
         factClose: "Rozumiem",
         heroes: { fire: "Hasič Redi", med: "Záchranárka Eli", pol: "Policajt Rocky" },
-        dipTitle: "DIPLOM MLADÉHO ZÁCHRANÁRA",
-        dipSub: "Týmto sa udeľuje čestný titul MLADÝ ZÁCHRANÁR",
-        dipNameSub: "(meno úspešného pátrača)",
-        dipDesc: "za úspešné zvládnutie záchranárskej pátracej trasy v obci, nájdenie všetkých 6 tajných stanovíšť a správne vylúštenie tajničky:",
-        wordArray: ['H', 'R', 'D', 'I', 'N', 'A'],
         stations: [
           { title: "Hasičské stanovište #1", hint: "Hľadaj pri hasičskej zbrojnici alebo v parku.", factTitle: "Redi radí: Číslo 150 a oheň", factText: "Vedel si, že hasičské auto vezie tisíce litrov vody? Číslo 150 si zapamätáš ľahko – nula na konci pripomína stočenú hadicu!" },
           { title: "Hasičské stanovište #2", hint: "Hľadaj na tichom mieste kalvárie, kde oddychujú pútnici.", factTitle: "Redi radí: Svätý Florián – patrón hasičov", factText: "Vieš, kto je ochrancom všetkých hasičov? Je to svätý Florián! Často ho zobrazujú ako rímskeho vojaka s prilbou a zástavou, ktorý leje vodu z vedra na horiaci dom. Práve on chráni obce a ľudí pred ničivým ohňom a nešťastím." },
@@ -558,23 +400,7 @@
         certTitle: "MINDEN KÓD MEGTALÁLVA!",
         certDesc: "Sikeresen megfejtetted a <strong>BÁTOR!</strong> szót és teljesítetted az útvonalat!",
         certPlaceholder: "Írd be a neved",
-        certBtn: "🎖️ Oklevél kinyomtatása",
+        certBtn: "🎖️ Oklevél megnyitása és nyomtatása",
         factClose: "Megértettem",
         heroes: { fire: "Redi, a tűzoltó", med: "Eli, a mentős", pol: "Rocky, a rendőr" },
-        dipTitle: "IFJÚ MEGMENTŐ OKLEVÉL",
-        dipSub: "Ezennel ünnepélyesen IFJÚ MEGMENTŐVÉ avatjuk",
-        dipNameSub: "(a sikeres nyomozó neve)",
-        dipDesc: "aki sikeresen teljesítette a községi nyomozós mentőútvonalat, megtalálta mind a 6 titkos állomást, és hibátlanul kirakta a rejtvényt:",
-        wordArray: ['B', 'Á', 'T', 'O', 'R', '!'],
-        stations: [
-          { title: "Tűzoltó állomás #1", hint: "Keresd a tűzoltószertárnál vagy a parkban.", factTitle: "Redi tanácsa: A 150-es szám és a tűz", factText: "Tudtad, hogy a tűzoltóautó több ezer liter vizet szállít magával? A 150-es szám végén lévő nulla egy feltekert tömlőre emlékeztet!" },
-          { title: "Tűzoltó állomás #2", hint: "Keresd a Kálvária csendes, békés részén.", factTitle: "Redi tanácsa: Szent Flórián, a tűzoltók védőszentje", factText: "Tudod, ki vigyáz a tűzoltókra és véd a tűzvésztől? Szent Flórián! Leggyakrabban római katonaként ábrázolják sisakban és zászlóval, amint egy dézsa vízzel épp tüzet olt. Ő a falu és a tűzoltók hűséges védelmezője." },
-          { title: "Mentős állomás #1", hint: "Keresd az orvosi rendelő vagy a gyógyszertár közelében.", factTitle: "Eli tanácsa: A 155-ös szám", factText: "A 155-öt akkor hívjuk, ha valaki súlyosan megsérült. Egy horzsolt térdnél viszont a tiszta víz és a sebtapasz a legjobb segítség." },
-          { title: "Mentős állomás #2", hint: "Keresd a sportpályánál vagy a játszótérnél.", factTitle: "Eli tanácsa: Bukósisak és víz", factText: "Amikor biciklizel, a sisak a legféltettebb kincsedet – a fejedet védi. Mindig igyál elég vizet a mozgás közben!" },
-          { title: "Rendőrségi állomás #1", hint: "Keresd a biztonságos gyalogátkelőnél.", factTitle: "Rocky tanácsa: Látni és látszani", factText: "Egy fényvisszaverő a táskádon a sötétben életet menthet! A sofőr jóval messzebbről észrevesz az úton." },
-          { title: "Rendőrségi állomás #2", hint: "Keresd a községi hivatalnál vagy a kultúrháznál.", factTitle: "Rocky tanácsa: A 158-as és a 112-es szám", factText: "A rendőrség 158-as száma a bilincsre emlékeztet. A 112-es közös segélyhívó pedig egész Európában elérhető." }
-        ]
-      }
-    };
-
-    var
+        stations:
