@@ -1,1 +1,454 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Virtuálny pas mladého záchranára</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: #0b1329;
+      --card-bg: rgba(23, 37, 84, 0.7);
+      --card-border: rgba(96, 165, 250, 0.2);
+      --fire-red: #ef4444;
+      --med-green: #10b981;
+      --pol-blue: #3b82f6;
+      --gold: #f59e0b;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1329 100%);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 60px;
+    }
+    header {
+      padding: 24px 16px 16px;
+      text-align: center;
+      background: rgba(11, 19, 41, 0.85);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+    .badge-sub {
+      display: inline-block;
+      margin-top: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+    }
+    .container { max-width: 560px; margin: 0 auto; padding: 16px; }
 
+    /* SECRET WORD SLOTS */
+    .word-tracker {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 24px;
+      text-align: center;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+    .word-tracker h2 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+    .slots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+    .slot {
+      width: 44px;
+      height: 52px;
+      background: #1e293b;
+      border: 2px dashed #475569;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--gold);
+      transition: all 0.3s ease;
+    }
+    .slot.unlocked {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid var(--gold);
+      box-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.6); }
+      70% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+
+    /* GRID OF CARDS */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 16px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      backdrop-filter: blur(8px);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .card.fire { border-left: 5px solid var(--fire-red); }
+    .card.med { border-left: 5px solid var(--med-green); }
+    .card.pol { border-left: 5px solid var(--pol-blue); }
+
+    .card.unlocked-card {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: rgba(16, 185, 129, 0.4);
+    }
+
+    .card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .station-number {
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hero-tag.fire { color: #f87171; }
+    .hero-tag.med { color: #34d399; }
+    .hero-tag.pol { color: #60a5fa; }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .unlock-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+    .unlock-btn:active { transform: scale(0.98); }
+    .unlocked-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #34d399;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    /* MODAL */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 16px;
+    }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: #1e293b;
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 400px;
+      padding: 24px;
+      text-align: center;
+    }
+    .modal input {
+      width: 100%;
+      padding: 14px;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      text-align: center;
+      border-radius: 12px;
+      border: 2px solid #475569;
+      background: #0f172a;
+      color: white;
+      margin: 16px 0;
+      outline: none;
+    }
+    .modal input:focus { border-color: var(--gold); }
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-secondary {
+      flex: 1;
+      background: #334155;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-primary {
+      flex: 1;
+      background: var(--gold);
+      color: #0b1329;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    /* VICTORY DIPLOM */
+    #victory-screen {
+      display: none;
+      margin-top: 24px;
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      border: 2px solid var(--gold);
+      border-radius: 20px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(245, 158, 11, 0.25);
+    }
+    .cert-icon { font-size: 3rem; margin-bottom: 8px; }
+    .cert-title { font-size: 1.3rem; font-weight: 900; color: var(--gold); }
+    .cert-input {
+      background: #0f172a;
+      border: 1px solid #475569;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 1rem;
+      width: 80%;
+      margin: 12px 0;
+      text-align: center;
+    }
+    .print-btn {
+      background: var(--gold);
+      color: #0b1329;
+      font-weight: 800;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>PAS MLADÉHO ZÁCHRANÁRA</h1>
+    <div class="badge-sub">Pátracia akcia v obci</div>
+  </header>
+
+  <div class="container">
+
+    <!-- TAJNIČKA -->
+    <div class="word-tracker">
+      <h2>Získaj písmená tajničky (6 krabičiek)</h2>
+      <div class="slots">
+        <div class="slot" id="slot-0">?</div>
+        <div class="slot" id="slot-1">?</div>
+        <div class="slot" id="slot-2">?</div>
+        <div class="slot" id="slot-3">?</div>
+        <div class="slot" id="slot-4">?</div>
+        <div class="slot" id="slot-5">?</div>
+      </div>
+    </div>
+
+    <!-- DIPLOM PO DOKONČENÍ -->
+    <div id="victory-screen">
+      <div class="cert-icon">🎖️</div>
+      <div class="cert-title">VŠETKY KÓDY NÁJDENÉ!</div>
+      <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">
+        Úspešne si odhalil tajničku <strong>HRDINA</strong> a zvládol celú záchranársku trasu!
+      </p>
+      <input type="text" id="hero-name" class="cert-input" placeholder="Zadaj svoje meno">
+      <br>
+      <button class="print-btn" onclick="window.print()">Vytlačiť / Uložiť diplom</button>
+    </div>
+
+    <!-- ZOZNAM STANOVÍŠŤ -->
+    <div class="grid" id="stations-grid" style="margin-top: 20px;">
+      <!-- Generuje JS -->
+    </div>
+
+  </div>
+
+  <!-- MODAL NA ZADANIE KÓDU -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal">
+      <h3 style="font-size: 1.1rem; font-weight: 800;">Zadaj kód z krabičky</h3>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;" id="modal-station-title">Stanovište</p>
+      <input type="text" id="code-input" maxlength="2" placeholder="PÍSMENO" autocomplete="off">
+      <div class="modal-actions">
+        <button class="btn-secondary" onclick="closeModal()">Zrušiť</button>
+        <button class="btn-primary" onclick="submitCode()">Potvrdiť</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STATIONS = [
+      { id: 1, letter: 'H', index: 0, hero: 'Hasič Redi', role: 'fire', title: 'Hasičské stanovište #1', hint: 'Hľadaj pri hasičskej zbrojnici alebo parku.' },
+      { id: 2, letter: 'R', index: 1, hero: 'Hasič Redi', role: 'fire', title: 'Hasičské stanovište #2', hint: 'Hľadaj pri zdroji vody / oddychovej zóne.' },
+      { id: 3, letter: 'D', index: 2, hero: 'Záchranárka Eli', role: 'med', title: 'Záchranárske stanovište #1', hint: 'Hľadaj v blízkosti zdravotného strediska alebo lekárne.' },
+      { id: 4, letter: 'I', index: 3, hero: 'Záchranárka Eli', role: 'med', title: 'Záchranárske stanovište #2', hint: 'Hľadaj pri športovom areáli alebo detskom ihrisku.' },
+      { id: 5, letter: 'N', index: 4, hero: 'Policajt Rocky', role: 'pol', title: 'Policajné stanovište #1', hint: 'Hľadaj pri bezpečnom priechode pre chodcov.' },
+      { id: 6, letter: 'A', index: 5, hero: 'Policajt Rocky', role: 'pol', title: 'Policajné stanovište #2', hint: 'Hľadaj pri obecnom úrade alebo kultúrnom dome.' }
+    ];
+
+    let unlocked = JSON.parse(localStorage.getItem('unlocked_stations') || '[]');
+    let currentModalStation = null;
+
+    function init() {
+      // Skontroluj URL parametre (napr. ?stamp=1 alebo ?kod=H)
+      const params = new URLSearchParams(window.location.search);
+      const stampParam = params.get('stamp');
+      const codeParam = params.get('kod');
+
+      if (stampParam) {
+        const found = STATIONS.find(s => s.id == stampParam);
+        if (found && !unlocked.includes(found.id)) unlockStation(found.id);
+      } else if (codeParam) {
+        const found = STATIONS.find(s => s.letter.toLowerCase() == codeParam.toLowerCase());
+        if (found && !unlocked.includes(found.id)) unlockStation(found.id);
+      }
+
+      render();
+    }
+
+    function render() {
+      // Aktualizácia tajničky
+      STATIONS.forEach(s => {
+        const slotEl = document.getElementById(`slot-${s.index}`);
+        if (unlocked.includes(s.id)) {
+          slotEl.textContent = s.letter;
+          slotEl.classList.add('unlocked');
+        } else {
+          slotEl.textContent = '?';
+          slotEl.classList.remove('unlocked');
+        }
+      });
+
+      // Karty
+      const grid = document.getElementById('stations-grid');
+      grid.innerHTML = '';
+
+      STATIONS.forEach(s => {
+        const isDone = unlocked.includes(s.id);
+        const card = document.createElement('div');
+        card.className = `card ${s.role} ${isDone ? 'unlocked-card' : ''}`;
+
+        card.innerHTML = `
+          <div class="card-head">
+            <span class="station-number">Stanovište #${s.id}</span>
+            <span class="hero-tag ${s.role}">${s.hero}</span>
+          </div>
+          <div class="card-title">${s.title}</div>
+          <div class="card-desc">${s.hint}</div>
+          <div>
+            ${isDone 
+              ? `<div class="unlocked-tag">✓ Odomknuté písmeno <strong>${s.letter}</strong></div>`
+              : `<button class="unlock-btn" onclick="openModal(${s.id})">Zadať kód z krabičky</button>`
+            }
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+
+      // Kontrola dokončenia
+      if (unlocked.length === STATIONS.length) {
+        document.getElementById('victory-screen').style.display = 'block';
+        if (!window.celebrated) {
+          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+          window.celebrated = true;
+        }
+      }
+    }
+
+    function openModal(id) {
+      currentModalStation = STATIONS.find(s => s.id === id);
+      document.getElementById('modal-station-title').textContent = `${currentModalStation.hero} - #${currentModalStation.id}`;
+      document.getElementById('code-input').value = '';
+      document.getElementById('modal').classList.add('active');
+      document.getElementById('code-input').focus();
+    }
+
+    function closeModal() {
+      document.getElementById('modal').classList.remove('active');
+      currentModalStation = null;
+    }
+
+    function submitCode() {
+      if (!currentModalStation) return;
+      const input = document.getElementById('code-input').value.trim().toUpperCase();
+
+      if (input === currentModalStation.letter) {
+        unlockStation(currentModalStation.id);
+        closeModal();
+      } else {
+        alert('Nesprávny kód. Skús sa lepšie pozrieť na krabičku!');
+      }
+    }
+
+    function unlockStation(id) {
+      if (!unlocked.includes(id)) {
+        unlocked.push(id);
+        localStorage.setItem('unlocked_stations', JSON.stringify(unlocked));
+        render();
+        confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
