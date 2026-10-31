@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Virtuálny pas mladého záchranára</title>
+  <title>Virtuálny pas mladého záchranára / Ifjú megmentő virtuális útlevél</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -29,20 +29,46 @@
       padding-bottom: 60px;
     }
     header {
-      padding: 24px 16px 16px;
+      padding: 16px;
       text-align: center;
-      background: rgba(11, 19, 41, 0.85);
+      background: rgba(11, 19, 41, 0.9);
       backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
       z-index: 50;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
     }
-    h1 { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; }
+    .lang-switcher {
+      display: flex;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 4px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .lang-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .lang-btn.active {
+      background: var(--gold);
+      color: #0b1329;
+    }
+    h1 { font-size: 1.25rem; font-weight: 900; letter-spacing: -0.02em; }
     .badge-sub {
       display: inline-block;
-      margin-top: 4px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
@@ -56,7 +82,7 @@
       border: 1px solid var(--card-border);
       border-radius: 20px;
       padding: 16px;
-      margin-bottom: 24px;
+      margin-bottom: 20px;
       text-align: center;
       box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
     }
@@ -149,7 +175,7 @@
     .hero-tag.pol { color: #60a5fa; }
 
     .card-title {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 800;
     }
     .card-desc {
@@ -245,7 +271,7 @@
       cursor: pointer;
     }
 
-    /* VICTORY DIPLOM */
+    /* DIPLOM */
     #victory-screen {
       display: none;
       margin-top: 24px;
@@ -284,15 +310,19 @@
 <body>
 
   <header>
-    <h1>PAS MLADÉHO ZÁCHRANÁRA</h1>
-    <div class="badge-sub">Pátracia akcia v obci</div>
+    <div class="lang-switcher">
+      <button class="lang-btn active" id="btn-sk" onclick="setLang('sk')">🇸🇰 Slovenčina</button>
+      <button class="lang-btn" id="btn-hu" onclick="setLang('hu')">🇭🇺 Magyar</button>
+    </div>
+    <h1 id="txt-title">PAS MLADÉHO ZÁCHRANÁRA</h1>
+    <div class="badge-sub" id="txt-subtitle">Pátracia akcia v obci</div>
   </header>
 
   <div class="container">
 
     <!-- TAJNIČKA -->
     <div class="word-tracker">
-      <h2>Získaj písmená tajničky (6 krabičiek)</h2>
+      <h2 id="txt-tracker-title">Získaj písmená tajničky (6 krabičiek)</h2>
       <div class="slots">
         <div class="slot" id="slot-0">?</div>
         <div class="slot" id="slot-1">?</div>
@@ -306,13 +336,13 @@
     <!-- DIPLOM PO DOKONČENÍ -->
     <div id="victory-screen">
       <div class="cert-icon">🎖️</div>
-      <div class="cert-title">VŠETKY KÓDY NÁJDENÉ!</div>
-      <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">
+      <div class="cert-title" id="txt-cert-title">VŠETKY KÓDY NÁJDENÉ!</div>
+      <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;" id="txt-cert-desc">
         Úspešne si odhalil tajničku <strong>HRDINA</strong> a zvládol celú záchranársku trasu!
       </p>
       <input type="text" id="hero-name" class="cert-input" placeholder="Zadaj svoje meno">
       <br>
-      <button class="print-btn" onclick="window.print()">Vytlačiť / Uložiť diplom</button>
+      <button class="print-btn" id="txt-cert-btn" onclick="window.print()">Vytlačiť / Uložiť diplom</button>
     </div>
 
     <!-- ZOZNAM STANOVÍŠŤ -->
@@ -325,31 +355,102 @@
   <!-- MODAL NA ZADANIE KÓDU -->
   <div class="modal-overlay" id="modal">
     <div class="modal">
-      <h3 style="font-size: 1.1rem; font-weight: 800;">Zadaj kód z krabičky</h3>
+      <h3 style="font-size: 1.1rem; font-weight: 800;" id="txt-modal-title">Zadaj kód z krabičky</h3>
       <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 4px;" id="modal-station-title">Stanovište</p>
       <input type="text" id="code-input" maxlength="2" placeholder="PÍSMENO" autocomplete="off">
       <div class="modal-actions">
-        <button class="btn-secondary" onclick="closeModal()">Zrušiť</button>
-        <button class="btn-primary" onclick="submitCode()">Potvrdiť</button>
+        <button class="btn-secondary" id="txt-modal-cancel" onclick="closeModal()">Zrušiť</button>
+        <button class="btn-primary" id="txt-modal-confirm" onclick="submitCode()">Potvrdiť</button>
       </div>
     </div>
   </div>
 
   <script>
+    const I18N = {
+      sk: {
+        title: "PAS MLADÉHO ZÁCHRANÁRA",
+        subtitle: "Pátracia akcia v obci",
+        trackerTitle: "Získaj písmená tajničky (6 krabičiek)",
+        station: "Stanovište",
+        unlockedTag: "✓ Odomknuté písmeno",
+        btnUnlock: "Zadať kód z krabičky",
+        modalTitle: "Zadaj kód z krabičky",
+        modalPlaceholder: "PÍSMENO",
+        modalCancel: "Zrušiť",
+        modalConfirm: "Potvrdiť",
+        wrongCode: "Nesprávny kód. Pozri sa lepšie na krabičku!",
+        certTitle: "VŠETKY KÓDY NÁJDENÉ!",
+        certDesc: "Úspešne si odhalil tajničku <strong>HRDINA</strong> a zvládol celú záchranársku trasu!",
+        certPlaceholder: "Zadaj svoje meno",
+        certBtn: "Vytlačiť / Uložiť diplom",
+        heroes: {
+          fire: "Hasič Redi",
+          med: "Záchranárka Eli",
+          pol: "Policajt Rocky"
+        },
+        stations: [
+          { title: "Hasičské stanovište #1", hint: "Hľadaj pri hasičskej zbrojnici alebo v parku." },
+          { title: "Hasičské stanovište #2", hint: "Hľadaj pri zdroji vody alebo oddychovej zóne." },
+          { title: "Záchranárske stanovište #1", hint: "Hľadaj v blízkosti zdravotného strediska alebo lekárne." },
+          { title: "Záchranárske stanovište #2", hint: "Hľadaj pri športovom areáli alebo detskom ihrisku." },
+          { title: "Policajné stanovište #1", hint: "Hľadaj pri bezpečnom priechode pre chodcov." },
+          { title: "Policajné stanovište #2", hint: "Hľadaj pri obecnom úrade alebo kultúrnom dome." }
+        ]
+      },
+      hu: {
+        title: "IFJÚ MEGMENTŐ ÚTLEVÉL",
+        subtitle: "Községi nyomozós kaland",
+        trackerTitle: "Gyűjtsd össze a rejtvény betűit (6 doboz)",
+        station: "Állomás",
+        unlockedTag: "✓ Feloldott betű",
+        btnUnlock: "Kód megadása a dobozról",
+        modalTitle: "Add meg a kódot a dobozról",
+        modalPlaceholder: "BETŰ",
+        modalCancel: "Mégse",
+        modalConfirm: "Jóváhagy",
+        wrongCode: "Helytelen kód. Nézd meg jobban a dobozt!",
+        certTitle: "MINDEN KÓD MEGTALÁLVA!",
+        certDesc: "Sikeresen megfejtetted a <strong>HRDINA</strong> (Hős) szót és teljesítetted az útvonalat!",
+        certPlaceholder: "Írd be a neved",
+        certBtn: "Oklevél letöltése / nyomtatása",
+        heroes: {
+          fire: "Redi, a tűzoltó",
+          med: "Eli, a mentős",
+          pol: "Rocky, a rendőr"
+        },
+        stations: [
+          { title: "Tűzoltó állomás #1", hint: "Keresd a tűzoltószertárnál vagy a parkban." },
+          { title: "Tűzoltó állomás #2", hint: "Keresd a vízparton vagy a pihenőövezetben." },
+          { title: "Mentős állomás #1", hint: "Keresd az orvosi rendelő vagy a gyógyszertár közelében." },
+          { title: "Mentős állomás #2", hint: "Keresd a sportpályánál vagy a játszótérnél." },
+          { title: "Rendőrségi állomás #1", hint: "Keresd a biztonságos gyalogátkelőnél." },
+          { title: "Rendőrségi állomás #2", hint: "Keresd a községi hivatalnál vagy a kultúrháznál." }
+        ]
+      }
+    };
+
     const STATIONS = [
-      { id: 1, letter: 'H', index: 0, hero: 'Hasič Redi', role: 'fire', title: 'Hasičské stanovište #1', hint: 'Hľadaj pri hasičskej zbrojnici alebo parku.' },
-      { id: 2, letter: 'R', index: 1, hero: 'Hasič Redi', role: 'fire', title: 'Hasičské stanovište #2', hint: 'Hľadaj pri zdroji vody / oddychovej zóne.' },
-      { id: 3, letter: 'D', index: 2, hero: 'Záchranárka Eli', role: 'med', title: 'Záchranárske stanovište #1', hint: 'Hľadaj v blízkosti zdravotného strediska alebo lekárne.' },
-      { id: 4, letter: 'I', index: 3, hero: 'Záchranárka Eli', role: 'med', title: 'Záchranárske stanovište #2', hint: 'Hľadaj pri športovom areáli alebo detskom ihrisku.' },
-      { id: 5, letter: 'N', index: 4, hero: 'Policajt Rocky', role: 'pol', title: 'Policajné stanovište #1', hint: 'Hľadaj pri bezpečnom priechode pre chodcov.' },
-      { id: 6, letter: 'A', index: 5, hero: 'Policajt Rocky', role: 'pol', title: 'Policajné stanovište #2', hint: 'Hľadaj pri obecnom úrade alebo kultúrnom dome.' }
+      { id: 1, letter: 'H', index: 0, role: 'fire' },
+      { id: 2, letter: 'R', index: 1, role: 'fire' },
+      { id: 3, letter: 'D', index: 2, role: 'med' },
+      { id: 4, letter: 'I', index: 3, role: 'med' },
+      { id: 5, letter: 'N', index: 4, role: 'pol' },
+      { id: 6, letter: 'A', index: 5, role: 'pol' }
     ];
 
+    let currentLang = localStorage.getItem('pas_lang') || 'sk';
     let unlocked = JSON.parse(localStorage.getItem('unlocked_stations') || '[]');
     let currentModalStation = null;
 
+    function setLang(lang) {
+      currentLang = lang;
+      localStorage.setItem('pas_lang', lang);
+      document.getElementById('btn-sk').classList.toggle('active', lang === 'sk');
+      document.getElementById('btn-hu').classList.toggle('active', lang === 'hu');
+      render();
+    }
+
     function init() {
-      // Skontroluj URL parametre (napr. ?stamp=1 alebo ?kod=H)
       const params = new URLSearchParams(window.location.search);
       const stampParam = params.get('stamp');
       const codeParam = params.get('kod');
@@ -362,93 +463,10 @@
         if (found && !unlocked.includes(found.id)) unlockStation(found.id);
       }
 
-      render();
+      setLang(currentLang);
     }
 
     function render() {
-      // Aktualizácia tajničky
-      STATIONS.forEach(s => {
-        const slotEl = document.getElementById(`slot-${s.index}`);
-        if (unlocked.includes(s.id)) {
-          slotEl.textContent = s.letter;
-          slotEl.classList.add('unlocked');
-        } else {
-          slotEl.textContent = '?';
-          slotEl.classList.remove('unlocked');
-        }
-      });
+      const t = I18N[currentLang];
 
-      // Karty
-      const grid = document.getElementById('stations-grid');
-      grid.innerHTML = '';
-
-      STATIONS.forEach(s => {
-        const isDone = unlocked.includes(s.id);
-        const card = document.createElement('div');
-        card.className = `card ${s.role} ${isDone ? 'unlocked-card' : ''}`;
-
-        card.innerHTML = `
-          <div class="card-head">
-            <span class="station-number">Stanovište #${s.id}</span>
-            <span class="hero-tag ${s.role}">${s.hero}</span>
-          </div>
-          <div class="card-title">${s.title}</div>
-          <div class="card-desc">${s.hint}</div>
-          <div>
-            ${isDone 
-              ? `<div class="unlocked-tag">✓ Odomknuté písmeno <strong>${s.letter}</strong></div>`
-              : `<button class="unlock-btn" onclick="openModal(${s.id})">Zadať kód z krabičky</button>`
-            }
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-
-      // Kontrola dokončenia
-      if (unlocked.length === STATIONS.length) {
-        document.getElementById('victory-screen').style.display = 'block';
-        if (!window.celebrated) {
-          confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-          window.celebrated = true;
-        }
-      }
-    }
-
-    function openModal(id) {
-      currentModalStation = STATIONS.find(s => s.id === id);
-      document.getElementById('modal-station-title').textContent = `${currentModalStation.hero} - #${currentModalStation.id}`;
-      document.getElementById('code-input').value = '';
-      document.getElementById('modal').classList.add('active');
-      document.getElementById('code-input').focus();
-    }
-
-    function closeModal() {
-      document.getElementById('modal').classList.remove('active');
-      currentModalStation = null;
-    }
-
-    function submitCode() {
-      if (!currentModalStation) return;
-      const input = document.getElementById('code-input').value.trim().toUpperCase();
-
-      if (input === currentModalStation.letter) {
-        unlockStation(currentModalStation.id);
-        closeModal();
-      } else {
-        alert('Nesprávny kód. Skús sa lepšie pozrieť na krabičku!');
-      }
-    }
-
-    function unlockStation(id) {
-      if (!unlocked.includes(id)) {
-        unlocked.push(id);
-        localStorage.setItem('unlocked_stations', JSON.stringify(unlocked));
-        render();
-        confetti({ particleCount: 30, spread: 50, origin: { y: 0.8 } });
-      }
-    }
-
-    init();
-  </script>
-</body>
-</html>
+      // Hlavné statické texty
