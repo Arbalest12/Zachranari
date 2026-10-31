@@ -1,210 +1,680 @@
 <!DOCTYPE html>
 <html lang="sk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Pas mladého záchranára / Ifjú megmentő útlevél</title>
-  <style>
-    :root {
-      --bg: #0b1329;
-      --card-bg: rgba(23, 37, 84, 0.85);
-      --card-border: rgba(96, 165, 250, 0.25);
-      --fire-red: #ef4444;
-      --med-green: #10b981;
-      --pol-blue: #3b82f6;
-      --gold: #f59e0b;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-    body {
-      background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1329 100%);
-      color: var(--text);
-      min-height: 100vh;
-      padding-bottom: 60px;
-    }
-    header {
-      padding: 16px;
-      text-align: center;
-      background: rgba(11, 19, 41, 0.95);
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-    .lang-switcher {
-      display: flex;
-      gap: 6px;
-      background: #0f172a;
-      padding: 4px;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-    .lang-btn {
-      background: transparent;
-      border: none;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      font-weight: bold;
-      padding: 6px 14px;
-      border-radius: 14px;
-      cursor: pointer;
-    }
-    .lang-btn.active {
-      background: var(--gold);
-      color: #0b1329;
-    }
-    h1 { font-size: 1.3rem; font-weight: 900; }
-    .badge-sub {
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--gold);
-    }
-    .container { max-width: 560px; margin: 0 auto; padding: 16px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pas mladého záchranára / Ifjú megmentő útlevél</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0 0 60px 0;
+    font-family: Arial, sans-serif;
+    background-color: #0b1329;
+    color: #ffffff;
+  }
+  header {
+    background-color: #111c38;
+    padding: 16px;
+    text-align: center;
+    border-bottom: 1px solid #263868;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+  .lang-bar {
+    display: inline-flex;
+    background: #0b1329;
+    padding: 4px;
+    border-radius: 20px;
+    border: 1px solid #334e85;
+    margin-bottom: 10px;
+  }
+  .lang-btn {
+    background: transparent;
+    color: #94a3b8;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .lang-btn.active {
+    background: #f59e0b;
+    color: #0b1329;
+  }
+  h1 {
+    margin: 4px 0;
+    font-size: 22px;
+  }
+  .sub {
+    color: #f59e0b;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .container {
+    max-width: 540px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+  .tracker {
+    background: #152244;
+    border: 1px solid #2e4782;
+    border-radius: 16px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .tracker-title {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-bottom: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .slots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+  }
+  .slot {
+    width: 42px;
+    height: 50px;
+    background: #0b1329;
+    border: 2px dashed #475569;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #f59e0b;
+  }
+  .slot.done {
+    border: 2px solid #f59e0b;
+    background: #1e293b;
+  }
+  .card {
+    background: #152244;
+    border: 1px solid #2e4782;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .card.fire { border-left: 6px solid #ef4444; }
+  .card.med  { border-left: 6px solid #10b981; }
+  .card.pol  { border-left: 6px solid #3b82f6; }
+  .card.done-card {
+    background: #112a2e;
+    border-color: #10b981;
+  }
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #94a3b8;
+  }
+  .card-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .card-hint {
+    font-size: 14px;
+    color: #cbd5e1;
+    margin-bottom: 10px;
+  }
+  .img-wrap {
+    width: 100%;
+    height: 170px;
+    background: #0b1329;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 12px;
+  }
+  .img-wrap img {
+    max-height: 160px;
+    max-width: 90%;
+    object-fit: contain;
+  }
+  .btn-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .btn-unlock {
+    background: #3b82f6;
+    color: #ffffff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .btn-fact {
+    background: #f59e0b;
+    color: #0b1329;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px;
+  }
+  .unlocked-label {
+    color: #34d399;
+    font-weight: bold;
+    font-size: 15px;
+  }
+  .victory-box {
+    display: none;
+    background: #1e293b;
+    border: 2px solid #f59e0b;
+    border-radius: 16px;
+    padding: 20px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 16px;
+  }
+  .overlay.show {
+    display: flex;
+  }
+  .popup {
+    background: #152244;
+    border: 2px solid #3b82f6;
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  .popup input {
+    width: 80%;
+    padding: 12px;
+    font-size: 22px;
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin: 14px 0;
+    border-radius: 10px;
+    border: 2px solid #475569;
+    background: #0b1329;
+    color: #ffffff;
+  }
+  .diploma-box {
+    background: #ffffff;
+    color: #111827;
+    border: 6px double #b45309;
+    border-radius: 16px;
+    padding: 20px;
+    max-width: 520px;
+    width: 100%;
+    text-align: center;
+  }
+  .reset-wrap {
+    text-align: center;
+    margin-top: 30px;
+  }
+  .reset-btn {
+    background: transparent;
+    border: 1px solid #334e85;
+    color: #64748b;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  @media print {
+    body { background: #ffffff; color: #000000; padding: 0; }
+    header, .container, #code-modal, #fact-modal, .no-print { display: none !important; }
+    #dip-modal { position: static; display: block !important; background: none; padding: 0; }
+    .diploma-box { max-width: 100%; border: 6px double #b45309; box-shadow: none; margin: 0 auto; }
+  }
+</style>
+</head>
+<body>
 
-    /* TAJNIČKA */
-    .word-tracker {
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid var(--card-border);
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .word-tracker h2 {
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--text-muted);
-      margin-bottom: 12px;
-    }
-    .slots {
-      display: flex;
-      justify-content: center;
-      gap: 8px;
-    }
-    .slot {
-      width: 44px;
-      height: 52px;
-      background: #1e293b;
-      border: 2px dashed #475569;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.6rem;
-      font-weight: 900;
-      color: var(--gold);
-    }
-    .slot.unlocked {
-      background: #0f172a;
-      border: 2px solid var(--gold);
-      color: #fbbf24;
+<header>
+  <div class="lang-bar">
+    <button type="button" class="lang-btn active" id="btn-sk" onclick="switchLang('sk')">🇸🇰 Slovenčina</button>
+    <button type="button" class="lang-btn" id="btn-hu" onclick="switchLang('hu')">🇭🇺 Magyar</button>
+  </div>
+  <h1 id="main-title">PAS MLADÉHO ZÁCHRANÁRA</h1>
+  <div class="sub" id="main-sub">Pátracia akcia v obci</div>
+</header>
+
+<div class="container">
+
+  <div class="tracker">
+    <div class="tracker-title" id="tracker-lbl">Získaj tajničku: H - R - D - I - N - A</div>
+    <div class="slots">
+      <div class="slot" id="s0">?</div>
+      <div class="slot" id="s1">?</div>
+      <div class="slot" id="s2">?</div>
+      <div class="slot" id="s3">?</div>
+      <div class="slot" id="s4">?</div>
+      <div class="slot" id="s5">?</div>
+    </div>
+  </div>
+
+  <div class="victory-box" id="victory-box">
+    <div style="font-size: 40px;">🎖️</div>
+    <h2 style="color: #f59e0b; margin: 8px 0;" id="vic-title">VŠETKY KÓDY NÁJDENÉ!</h2>
+    <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 12px;" id="vic-desc">Úspešne si zvládol celú záchranársku trasu!</p>
+    <input type="text" id="kid-name" placeholder="Zadaj svoje meno" style="padding: 10px; width: 80%; border-radius: 8px; border: 1px solid #475569; margin-bottom: 12px; text-align: center; font-size: 16px;">
+    <br>
+    <button type="button" class="btn-fact" onclick="openDiploma()" id="vic-btn">🎖️ Zobraziť diplom</button>
+  </div>
+
+  <div id="cards-container">
+    <!-- Karta 1 -->
+    <div class="card fire" id="card-1">
+      <div class="card-top"><span id="st-lbl-1">Stanovište #1</span><span style="color:#f87171" id="hero-1">Hasič Redi</span></div>
+      <div class="card-title" id="title-1">Hasičské stanovište #1</div>
+      <div class="card-hint" id="hint-1">Hľadaj pri hasičskej zbrojnici alebo v parku.</div>
+      <div class="img-wrap"><img src="Redi.png" alt="Redi"></div>
+      <div class="btn-row" id="actions-1">
+        <button type="button" class="btn-unlock" onclick="askCode(1)">Zadať kód z krabičky</button>
+      </div>
+    </div>
+
+    <!-- Karta 2 -->
+    <div class="card fire" id="card-2">
+      <div class="card-top"><span id="st-lbl-2">Stanovište #2</span><span style="color:#f87171" id="hero-2">Hasič Redi</span></div>
+      <div class="card-title" id="title-2">Hasičské stanovište #2</div>
+      <div class="card-hint" id="hint-2">Hľadaj na tichom mieste kalvárie, kde oddychujú pútnici.</div>
+      <div class="img-wrap"><img src="Redi.png" alt="Redi"></div>
+      <div class="btn-row" id="actions-2">
+        <button type="button" class="btn-unlock" onclick="askCode(2)">Zadať kód z krabičky</button>
+      </div>
+    </div>
+
+    <!-- Karta 3 -->
+    <div class="card med" id="card-3">
+      <div class="card-top"><span id="st-lbl-3">Stanovište #3</span><span style="color:#34d399" id="hero-3">Záchranárka Eli</span></div>
+      <div class="card-title" id="title-3">Záchranárske stanovište #1</div>
+      <div class="card-hint" id="hint-3">Hľadaj pri zdravotnom stredisku alebo lekárni.</div>
+      <div class="img-wrap"><img src="ELI.png" alt="Eli"></div>
+      <div class="btn-row" id="actions-3">
+        <button type="button" class="btn-unlock" onclick="askCode(3)">Zadať kód z krabičky</button>
+      </div>
+    </div>
+
+    <!-- Karta 4 -->
+    <div class="card med" id="card-4">
+      <div class="card-top"><span id="st-lbl-4">Stanovište #4</span><span style="color:#34d399" id="hero-4">Záchranárka Eli</span></div>
+      <div class="card-title" id="title-4">Záchranárske stanovište #2</div>
+      <div class="card-hint" id="hint-4">Hľadaj pri športovom areáli alebo detskom ihrisku.</div>
+      <div class="img-wrap"><img src="ELI.png" alt="Eli"></div>
+      <div class="btn-row" id="actions-4">
+        <button type="button" class="btn-unlock" onclick="askCode(4)">Zadať kód z krabičky</button>
+      </div>
+    </div>
+
+    <!-- Karta 5 -->
+    <div class="card pol" id="card-5">
+      <div class="card-top"><span id="st-lbl-5">Stanovište #5</span><span style="color:#60a5fa" id="hero-5">Policajt Rocky</span></div>
+      <div class="card-title" id="title-5">Policajné stanovište #1</div>
+      <div class="card-hint" id="hint-5">Hľadaj pri bezpečnom priechode pre chodcov.</div>
+      <div class="img-wrap"><img src="Rocky.png" alt="Rocky"></div>
+      <div class="btn-row" id="actions-5">
+        <button type="button" class="btn-unlock" onclick="askCode(5)">Zadať kód z krabičky</button>
+      </div>
+    </div>
+
+    <!-- Karta 6 -->
+    <div class="card pol" id="card-6">
+      <div class="card-top"><span id="st-lbl-6">Stanovište #6</span><span style="color:#60a5fa" id="hero-6">Policajt Rocky</span></div>
+      <div class="card-title" id="title-6">Policajné stanovište #2</div>
+      <div class="card-hint" id="hint-6">Hľadaj pri obecnom úrade alebo kultúrnom dome.</div>
+      <div class="img-wrap"><img src="Rocky.png" alt="Rocky"></div>
+      <div class="btn-row" id="actions-6">
+        <button type="button" class="btn-unlock" onclick="askCode(6)">Zadať kód z krabičky</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="reset-wrap">
+    <button type="button" class="reset-btn" onclick="resetProgress()" id="btn-reset">Resetovať pas / Újrakezdés</button>
+  </div>
+
+</div>
+
+<!-- POPUP: ZADANIE KÓDU -->
+<div class="overlay" id="code-modal">
+  <div class="popup">
+    <h3 id="modal-hdr">Zadaj kód z krabičky</h3>
+    <input type="text" id="code-field" maxlength="2" placeholder="PÍSMENO">
+    <div style="display:flex; gap:10px; justify-content:center;">
+      <button type="button" class="btn-unlock" style="background:#475569;" onclick="closeCodeModal()" id="btn-cancel">Zrušiť</button>
+      <button type="button" class="btn-fact" onclick="checkCode()" id="btn-ok">Potvrdiť</button>
+    </div>
+  </div>
+</div>
+
+<!-- POPUP: ZAUJÍMAVOSŤ -->
+<div class="overlay" id="fact-modal">
+  <div class="popup">
+    <div style="font-size:42px; margin-bottom:8px;" id="fact-ico">🔥</div>
+    <h3 style="color:#f59e0b; margin-bottom:10px;" id="fact-hdr">Zaujímavosť</h3>
+    <p style="font-size:15px; line-height:1.5; color:#e2e8f0; text-align:left; background:#0b1329; padding:14px; border-radius:10px; margin-bottom:16px;" id="fact-body"></p>
+    <button type="button" class="btn-fact" style="width:100%; padding:12px;" onclick="closeFactModal()" id="btn-fact-close">Rozumiem</button>
+  </div>
+</div>
+
+<!-- POPUP: DIPLOM -->
+<div class="overlay" id="dip-modal">
+  <div class="diploma-box">
+    <img src="DHZ.png" alt="DHZ" style="width:75px; height:75px; object-fit:contain;">
+    <h2 style="color:#b45309; margin:6px 0 2px; font-size:20px;" id="d-hdr">DIPLOM MLADÉHO ZÁCHRANÁRA</h2>
+    <div style="font-size:11px; font-weight:bold; color:#4b5563;">DHZ DVORY NAD ŽITAVOU</div>
+    <p style="font-size:14px; font-weight:bold; margin-top:12px;" id="d-sub">Týmto sa udeľuje titul MLADÝ ZÁCHRANÁR</p>
+    <div style="font-size:24px; font-weight:bold; color:#1e3a8a; border-bottom:2px dashed #9ca3af; display:inline-block; padding:4px 20px; margin:8px 0;" id="d-kid">Mladý Hrdina</div>
+    <p style="font-size:13px; color:#374151; margin:6px 0;" id="d-text">za úspešné zvládnutie celej záchranárskej trasy a vylúštenie tajničky:</p>
+    <div style="font-size:22px; font-weight:bold; color:#b45309; background:#fef3c7; border:1px solid #b45309; border-radius:8px; display:inline-block; padding:4px 14px; margin:6px 0;" id="d-secret">H · R · D · I · N · A</div>
+    <div style="display:flex; justify-content:center; gap:18px; margin-top:12px;">
+      <img src="Redi.png" alt="Redi" style="width:60px; height:70px; object-fit:contain;">
+      <img src="ELI.png" alt="Eli" style="width:60px; height:70px; object-fit:contain;">
+      <img src="Rocky.png" alt="Rocky" style="width:60px; height:70px; object-fit:contain;">
+    </div>
+    <div class="no-print" style="display:flex; gap:10px; margin-top:16px;">
+      <button type="button" class="btn-unlock" style="flex:1; background:#475569;" onclick="closeDiploma()">Zavrieť</button>
+      <button type="button" class="btn-fact" style="flex:1;" onclick="window.print()">Vytlačiť</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var DATA = {
+  sk: {
+    mainTitle: "PAS MLADÉHO ZÁCHRANÁRA",
+    mainSub: "Pátracia akcia v obci",
+    trackerLbl: "Získaj tajničku: H - R - D - I - N - A",
+    stWord: "Stanovište",
+    btnUnlock: "Zadať kód z krabičky",
+    btnFact: "💡 Zaujímavosť",
+    unlockedTxt: "✓ Písmeno",
+    modalHdr: "Zadaj kód z krabičky",
+    btnCancel: "Zrušiť",
+    btnOk: "Potvrdiť",
+    btnClose: "Rozumiem",
+    wrongMsg: "Nesprávny kód. Skús to znova!",
+    vicTitle: "VŠETKY KÓDY NÁJDENÉ!",
+    vicDesc: "Úspešne si odhalil tajničku HRDINA a zvládol celú trasu!",
+    vicBtn: "🎖️ Zobraziť diplom",
+    dHdr: "DIPLOM MLADÉHO ZÁCHRANÁRA",
+    dSub: "Týmto sa udeľuje titul MLADÝ ZÁCHRANÁR",
+    dText: "za úspešné zvládnutie celej záchranárskej trasy a vylúštenie tajničky:",
+    dSecret: "H · R · D · I · N · A",
+    letters: ["H", "R", "D", "I", "N", "A"],
+    heroes: ["Hasič Redi", "Hasič Redi", "Záchranárka Eli", "Záchranárka Eli", "Policajt Rocky", "Policajt Rocky"],
+    titles: [
+      "Hasičské stanovište #1",
+      "Hasičské stanovište #2",
+      "Záchranárske stanovište #1",
+      "Záchranárske stanovište #2",
+      "Policajné stanovište #1",
+      "Policajné stanovište #2"
+    ],
+    hints: [
+      "Hľadaj pri hasičskej zbrojnici alebo v parku.",
+      "Hľadaj na tichom mieste kalvárie, kde oddychujú pútnici.",
+      "Hľadaj pri zdravotnom stredisku alebo lekárni.",
+      "Hľadaj pri športovom areáli alebo detskom ihrisku.",
+      "Hľadaj pri bezpečnom priechode pre chodcov.",
+      "Hľadaj pri obecnom úrade alebo kultúrnom dome."
+    ],
+    factTitles: [
+      "Redi radí: Číslo 150 a oheň",
+      "Redi radí: Svätý Florián – patrón hasičov",
+      "Eli radí: Číslo 155 a prvá pomoc",
+      "Eli radí: Bezpečnosť pri športe",
+      "Rocky radí: Vidieť a byť videný",
+      "Rocky radí: Číslo 158 a linka 112"
+    ],
+    factBodies: [
+      "Vedel si, že hasičské auto vezie tisíce litrov vody? Číslo 150 si zapamätáš ľahko – nula na konci pripomína stočenú hadicu!",
+      "Vieš, kto je ochrancom všetkých hasičov? Je to svätý Florián! Často ho zobrazujú ako rímskeho vojaka s prilbou a zástavou, ktorý leje vodu z vedra na horiaci dom. Práve on chráni obce a ľudí pred ničivým ohňom.",
+      "Číslo 155 voláme, ak je niekto ťažko zranený. Päťka na konci pripomína invalidný vozík. Pri odretom kolene však najviac pomôže čistá voda a náplasť.",
+      "Pri bicyklovaní chráni prilba tvoj najcennejší poklad – hlavu. Nezabúdaj piť čistú vodu, aby ti nechýbala energia!",
+      "Reflexný prvok na taške ti v tme zachráni život! Vodič ťa zbadá z oveľa väčšej vzdialenosti. Cez cestu prechádzaj vždy po zebre.",
+      "Číslo 158 končí osmičkou, ktorá pripomína putá. V celej Európe funguje aj univerzálne číslo 112 pre všetky zložky naraz."
+    ]
+  },
+  hu: {
+    mainTitle: "IFJÚ MEGMENTŐ ÚTLEVÉL",
+    mainSub: "Községi nyomozós kaland",
+    trackerLbl: "Gyűjtsd össze a szót: B - Á - T - O - R - !",
+    stWord: "Állomás",
+    btnUnlock: "Kód megadása a dobozról",
+    btnFact: "💡 Érdekesség",
+    unlockedTxt: "✓ Betű",
+    modalHdr: "Add meg a kódot a dobozról",
+    btnCancel: "Mégse",
+    btnOk: "Jóváhagy",
+    btnClose: "Megértettem",
+    wrongMsg: "Helytelen kód. Próbáld újra!",
+    vicTitle: "MINDEN KÓD MEGTALÁLVA!",
+    vicDesc: "Sikeresen megfejtetted a BÁTOR! szót és teljesítetted az útvonalat!",
+    vicBtn: "🎖️ Oklevél megnyitása",
+    dHdr: "IFJÚ MEGMENTŐ OKLEVÉL",
+    dSub: "Ezennel ünnepélyesen IFJÚ MEGMENTŐVÉ avatjuk",
+    dText: "aki sikeresen teljesítette a községi nyomozós mentőútvonalat, és kirakta a rejtvényt:",
+    dSecret: "B · Á · T · O · R · !",
+    letters: ["B", "Á", "T", "O", "R", "!"],
+    heroes: ["Redi, a tűzoltó", "Redi, a tűzoltó", "Eli, a mentős", "Eli, a mentős", "Rocky, a rendőr", "Rocky, a rendőr"],
+    titles: [
+      "Tűzoltó állomás #1",
+      "Tűzoltó állomás #2",
+      "Mentős állomás #1",
+      "Mentős állomás #2",
+      "Rendőrségi állomás #1",
+      "Rendőrségi állomás #2"
+    ],
+    hints: [
+      "Keresd a tűzoltószertárnál vagy a parkban.",
+      "Keresd a Kálvária csendes, békés részén.",
+      "Keresd az orvosi rendelő vagy a gyógyszertár közelében.",
+      "Keresd a sportpályánál vagy a játszótérnél.",
+      "Keresd a biztonságos gyalogátkelőnél.",
+      "Keresd a községi hivatalnál vagy a kultúrháznál."
+    ],
+    factTitles: [
+      "Redi tanácsa: A 150-es szám és a tűz",
+      "Redi tanácsa: Szent Flórián, a tűzoltók védőszentje",
+      "Eli tanácsa: A 155-ös szám",
+      "Eli tanácsa: Bukósisak és víz",
+      "Rocky tanácsa: Látni és látszani",
+      "Rocky tanácsa: A 158-as és a 112-es szám"
+    ],
+    factBodies: [
+      "Tudtad, hogy a tűzoltóautó több ezer liter vizet szállít magával? A 150-es szám végén lévő nulla egy feltekert tömlőre emlékeztet!",
+      "Tudod, ki vigyáz a tűzoltókra és véd a tűzvésztől? Szent Flórián! Leggyakrabban római katonaként ábrázolják sisakban és zászlóval, amint egy dézsa vízzel épp tüzet olt.",
+      "A 155-öt akkor hívjuk, ha valaki súlyosan megsérült. Egy horzsolt térdnél viszont a tiszta víz és a sebtapasz a legjobb segítség.",
+      "Amikor biciklizel, a sisak a legféltettebb kincsedet – a fejedet védi. Mindig igyál elég vizet a mozgás közben!",
+      "Egy fényvisszaverő a táskádon a sötétben életet menthet! A sofőr jóval messzebbről észrevesz az úton.",
+      "A rendőrség 158-as száma a bilincsre emlékeztet. A 112-es közös segélyhívó pedig egész Európában elérhető."
+    ]
+  }
+};
+
+var VALID_KEYS = [
+  ["H", "B"],
+  ["R", "Á", "A"],
+  ["D", "T"],
+  ["I", "O", "Ó"],
+  ["N", "R"],
+  ["A", "!"]
+];
+
+var lang = "sk";
+var unlocked = [];
+var currentSt = 1;
+
+try {
+  var sl = localStorage.getItem("pas_lang");
+  if (sl === "hu" || sl === "sk") lang = sl;
+  var su = localStorage.getItem("unlocked_stations");
+  if (su) unlocked = JSON.parse(su);
+} catch (e) {}
+
+function switchLang(l) {
+  lang = l;
+  try { localStorage.setItem("pas_lang", l); } catch (e) {}
+  document.getElementById("btn-sk").className = "lang-btn" + (l === "sk" ? " active" : "");
+  document.getElementById("btn-hu").className = "lang-btn" + (l === "hu" ? " active" : "");
+  updateUI();
+}
+
+function updateUI() {
+  var d = DATA[lang];
+  document.getElementById("main-title").textContent = d.mainTitle;
+  document.getElementById("main-sub").textContent = d.mainSub;
+  document.getElementById("tracker-lbl").textContent = d.trackerLbl;
+  document.getElementById("modal-hdr").textContent = d.modalHdr;
+  document.getElementById("btn-cancel").textContent = d.btnCancel;
+  document.getElementById("btn-ok").textContent = d.btnOk;
+  document.getElementById("btn-fact-close").textContent = d.btnClose;
+  document.getElementById("vic-title").textContent = d.vicTitle;
+  document.getElementById("vic-desc").textContent = d.vicDesc;
+  document.getElementById("vic-btn").textContent = d.vicBtn;
+
+  for (var i = 0; i < 6; i++) {
+    var stNum = i + 1;
+    var isDone = unlocked.indexOf(stNum) !== -1;
+    var slotEl = document.getElementById("s" + i);
+    if (isDone) {
+      slotEl.textContent = d.letters[i];
+      slotEl.className = "slot done";
+    } else {
+      slotEl.textContent = "?";
+      slotEl.className = "slot";
     }
 
-    /* KARTY */
-    .grid {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--card-border);
-      border-radius: 18px;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .card.fire { border-left: 5px solid var(--fire-red); }
-    .card.med { border-left: 5px solid var(--med-green); }
-    .card.pol { border-left: 5px solid var(--pol-blue); }
+    document.getElementById("st-lbl-" + stNum).textContent = d.stWord + " #" + stNum;
+    document.getElementById("hero-" + stNum).textContent = d.heroes[i];
+    document.getElementById("title-" + stNum).textContent = d.titles[i];
+    document.getElementById("hint-" + stNum).textContent = d.hints[i];
 
-    .card.unlocked-card {
-      background: rgba(16, 185, 129, 0.15);
-      border-color: rgba(16, 185, 129, 0.5);
-    }
+    var cardEl = document.getElementById("card-" + stNum);
+    var roleCls = (i < 2) ? "fire" : (i < 4 ? "med" : "pol");
+    cardEl.className = "card " + roleCls + (isDone ? " done-card" : "");
 
-    .card-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    var actEl = document.getElementById("actions-" + stNum);
+    if (isDone) {
+      actEl.innerHTML = '<span class="unlocked-label">' + d.unlockedTxt + ' ' + d.letters[i] + '</span>' +
+                        '<button type="button" class="btn-fact" onclick="showFact(' + stNum + ')">' + d.btnFact + '</button>';
+    } else {
+      actEl.innerHTML = '<button type="button" class="btn-unlock" onclick="askCode(' + stNum + ')">' + d.btnUnlock + '</button>';
     }
-    .station-number {
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 4px 8px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-muted);
-    }
-    .hero-tag {
-      font-size: 0.75rem;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-    .hero-tag.fire { color: #f87171; }
-    .hero-tag.med { color: #34d399; }
-    .hero-tag.pol { color: #60a5fa; }
+  }
 
-    .card-title { font-size: 1.05rem; font-weight: 800; }
-    .card-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; }
+  document.getElementById("victory-box").style.display = (unlocked.length >= 6) ? "block" : "none";
+}
 
-    .hero-img-box {
-      width: 100%;
-      height: 180px;
-      background: rgba(15, 23, 42, 0.5);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-      margin: 4px 0;
-    }
-    .hero-img-box img {
-      max-width: 100%;
-      max-height: 100%;
-      object-fit: contain;
-    }
+function askCode(n) {
+  currentSt = n;
+  document.getElementById("code-field").value = "";
+  document.getElementById("code-modal").className = "overlay show";
+  document.getElementById("code-field").focus();
+}
 
-    .card-bottom {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      margin-top: 4px;
-    }
+function closeCodeModal() {
+  document.getElementById("code-modal").className = "overlay";
+}
 
-    .unlock-btn {
-      background: #3b82f6;
-      color: white;
-      border: none;
-      padding: 10px 14px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: bold;
-      cursor: pointer;
+function checkCode() {
+  var val = document.getElementById("code-field").value.replace(/\s+/g, "").toUpperCase();
+  var allowed = VALID_KEYS[currentSt - 1];
+  if (allowed.indexOf(val) !== -1) {
+    if (unlocked.indexOf(currentSt) === -1) {
+      unlocked.push(currentSt);
+      try { localStorage.setItem("unlocked_stations", JSON.stringify(unlocked)); } catch (e) {}
     }
-    .unlock-btn:hover { background: #2563eb; }
+    closeCodeModal();
+    updateUI();
+    showFact(currentSt);
+  } else {
+    alert(DATA[lang].wrongMsg);
+  }
+}
 
-    .fact-btn {
-      background: rgba(245, 158, 11, 0.2);
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 8px 12px;
-      border-radius: 10px;
-      font-size: 0.8rem;
-      font-weight: bold;
-      cursor: pointer;
+function showFact(n) {
+  var d = DATA[lang];
+  var idx = n - 1;
+  var ico = (idx < 2) ? "🔥" : (idx < 4 ? "🚑" : "🚓");
+  document.getElementById("fact-ico").textContent = ico;
+  document.getElementById("fact-hdr").textContent = d.factTitles[idx];
+  document.getElementById("fact-body").textContent = d.factBodies[idx];
+  document.getElementById("fact-modal").className = "overlay show";
+}
+
+function closeFactModal() {
+  document.getElementById("fact-modal").className = "overlay";
+}
+
+function openDiploma() {
+  var d = DATA[lang];
+  var nameVal = document.getElementById("kid-name").value.replace(/^\s+|\s+$/g, "");
+  document.getElementById("d-hdr").textContent = d.dHdr;
+  document.getElementById("d-sub").textContent = d.dSub;
+  document.getElementById("d-text").textContent = d.dText;
+  document.getElementById("d-secret").textContent = d.dSecret;
+  document.getElementById("d-kid").textContent = nameVal || (lang === "hu" ? "Ifjú Hős" : "Mladý Hrdina");
+  document.getElementById("dip-modal").className = "overlay show";
+}
+
+function closeDiploma() {
+  document.getElementById("dip-modal").className = "overlay";
+}
+
+function resetProgress() {
+  if (confirm(lang === "hu" ? "Biztosan törölni szeretnéd az eddigi haladást?" : "Naozaj chceš vymazať doterajší postup a začať odznova?")) {
+    unlocked = [];
+    try { localStorage.removeItem("unlocked_stations"); } catch (e) {}
+    updateUI();
+  }
+}
+
+function checkQR() {
+  var q = window.location.search.substring(1);
+  if (!q) return;
+  var parts = q.split("&");
+  for (var i = 0; i < parts.length; i++) {
+    var kv = parts[i].split("=");
+    if (kv[0] === "stamp") {
+      var num = parseInt(kv[1], 10);
+      if (num >= 1 && num <= 6) {
+        if (unlocked.indexOf(num) === -1) {
+          unlocked.push(num);
+          try { localStorage.setItem("unlocked_stations", JSON.stringify(unlocked)); } catch (e) {}
+        }
+        updateUI();
+        showFact(num);
+      }
     }
+  }
+}
 
-    .unlocked-tag {
-      color: #34d399;
-      font
+switchLang(lang);
+checkQR();
+</script>
+</body>
+</html>
