@@ -183,6 +183,92 @@
     text-align: center;
     margin-bottom: 20px;
   }
+
+  /* PEXESO SEKCIA */
+  .pexeso-section {
+    background: #152244;
+    border: 2px solid #f59e0b;
+    border-radius: 16px;
+    padding: 16px;
+    margin-top: 28px;
+    text-align: center;
+  }
+  .pexeso-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f59e0b;
+    margin-bottom: 4px;
+  }
+  .pexeso-sub {
+    font-size: 13px;
+    color: #cbd5e1;
+    margin-bottom: 12px;
+  }
+  .pexeso-stats {
+    display: flex;
+    justify-content: space-around;
+    background: #0b1329;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+    font-size: 13px;
+    font-weight: bold;
+    border: 1px solid #263868;
+  }
+  .pexeso-stats span {
+    color: #f59e0b;
+  }
+  .pexeso-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .p-card {
+    aspect-ratio: 1 / 1;
+    background: #1e3a8a;
+    border: 2px solid #3b82f6;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 28px;
+    user-select: none;
+    overflow: hidden;
+    padding: 6px;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .p-card:active {
+    transform: scale(0.95);
+  }
+  .p-card.flipped {
+    background: #0b1329;
+    border-color: #f59e0b;
+  }
+  .p-card.matched {
+    background: #064e3b;
+    border-color: #10b981;
+    cursor: default;
+  }
+  .p-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .pexeso-win-msg {
+    display: none;
+    background: #064e3b;
+    border: 1px solid #10b981;
+    color: #a7f3d0;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
   .overlay {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
@@ -351,6 +437,20 @@
     </div>
   </div>
 
+  <!-- MINIHRA: PEXESO -->
+  <div class="pexeso-section">
+    <div class="pexeso-title" id="px-title">🎮 ZÁCHRANÁRSKE PEXESO</div>
+    <div class="pexeso-sub" id="px-sub">Nájdi všetky dvojice hrdinov v čo najlepšom čase!</div>
+    <div class="pexeso-stats">
+      <div>⏱️ <span id="px-lbl-time">Čas</span>: <span id="px-time">0</span>s</div>
+      <div>🔄 <span id="px-lbl-moves">Ťahy</span>: <span id="px-moves">0</span></div>
+      <div>🏆 <span id="px-lbl-best">Rekord</span>: <span id="px-best">--</span></div>
+    </div>
+    <div class="pexeso-win-msg" id="px-win"></div>
+    <div class="pexeso-grid" id="px-grid"></div>
+    <button type="button" class="btn-fact" onclick="initPexeso()" id="px-btn-restart">🔄 Nová hra</button>
+  </div>
+
   <div class="reset-wrap">
     <button type="button" class="reset-btn" onclick="resetProgress()" id="btn-reset">Resetovať pas / Újrakezdés</button>
   </div>
@@ -423,6 +523,13 @@ var DATA = {
     dSub: "Týmto sa udeľuje titul MLADÝ ZÁCHRANÁR",
     dText: "za úspešné zvládnutie celej záchranárskej trasy a vylúštenie tajničky:",
     dSecret: "H · R · D · I · N · A",
+    pxTitle: "🎮 ZÁCHRANÁRSKE PEXESO",
+    pxSub: "Nájdi všetky dvojice hrdinov v čo najlepšom čase!",
+    pxTime: "Čas",
+    pxMoves: "Ťahy",
+    pxBest: "Rekord",
+    pxRestart: "🔄 Nová hra",
+    pxWin: "🎉 Výborne! Našiel si všetky dvojice za ",
     letters: ["H", "R", "D", "I", "N", "A"],
     heroes: ["Hasič Redi", "Hasič Redi", "Záchranárka Eli", "Záchranárka Eli", "Policajt Rocky", "Policajt Rocky"],
     titles: [
@@ -478,6 +585,13 @@ var DATA = {
     dSub: "Ezennel ünnepélyesen IFJÚ MEGMENTŐVÉ avatjuk",
     dText: "aki sikeresen teljesítette a községi nyomozós mentőútvonalat, és kirakta a rejtvényt:",
     dSecret: "B · Á · T · O · R · !",
+    pxTitle: "🎮 MEGMENTŐ MEMÓRIAJÁTÉK",
+    pxSub: "Találd meg az összes párt a legjobb idő alatt!",
+    pxTime: "Idő",
+    pxMoves: "Lépés",
+    pxBest: "Rekord",
+    pxRestart: "🔄 Új játék",
+    pxWin: "🎉 Nagyszerű! Megtaláltad az összes párt, időd: ",
     letters: ["B", "Á", "T", "O", "R", "!"],
     heroes: ["Redi, a tűzoltó", "Redi, a tűzoltó", "Eli, a mentős", "Eli, a mentős", "Rocky, a rendőr", "Rocky, a rendőr"],
     titles: [
@@ -555,6 +669,14 @@ function updateUI() {
   document.getElementById("vic-title").textContent = d.vicTitle;
   document.getElementById("vic-desc").textContent = d.vicDesc;
   document.getElementById("vic-btn").textContent = d.vicBtn;
+
+  // Pexeso preklady
+  document.getElementById("px-title").textContent = d.pxTitle;
+  document.getElementById("px-sub").textContent = d.pxSub;
+  document.getElementById("px-lbl-time").textContent = d.pxTime;
+  document.getElementById("px-lbl-moves").textContent = d.pxMoves;
+  document.getElementById("px-lbl-best").textContent = d.pxBest;
+  document.getElementById("px-btn-restart").textContent = d.pxRestart;
 
   for (var i = 0; i < 6; i++) {
     var stNum = i + 1;
@@ -673,8 +795,138 @@ function checkQR() {
   }
 }
 
+/* LOGIKA PEXESA */
+var PX_ITEMS = [
+  { id: "redi", html: '<img src="Redi.png" alt="Redi">' },
+  { id: "eli",  html: '<img src="ELI.png" alt="Eli">' },
+  { id: "rocky",html: '<img src="Rocky.png" alt="Rocky">' },
+  { id: "dhz",  html: '<img src="DHZ.png" alt="DHZ">' },
+  { id: "fire", html: '🚒' },
+  { id: "med",  html: '🚑' }
+];
+
+var pxDeck = [];
+var pxFirst = null;
+var pxSecond = null;
+var pxLock = false;
+var pxMatches = 0;
+var pxMoves = 0;
+var pxSeconds = 0;
+var pxTimer = null;
+var pxStarted = false;
+
+function updateBestDisplay() {
+  try {
+    var b = localStorage.getItem("px_best_time");
+    document.getElementById("px-best").textContent = b ? (b + "s") : "--";
+  } catch (e) {}
+}
+
+function initPexeso() {
+  if (pxTimer) clearInterval(pxTimer);
+  pxTimer = null;
+  pxStarted = false;
+  pxSeconds = 0;
+  pxMoves = 0;
+  pxMatches = 0;
+  pxFirst = null;
+  pxSecond = null;
+  pxLock = false;
+
+  document.getElementById("px-time").textContent = "0";
+  document.getElementById("px-moves").textContent = "0";
+  document.getElementById("px-win").style.display = "none";
+  updateBestDisplay();
+
+  pxDeck = [];
+  for (var i = 0; i < PX_ITEMS.length; i++) {
+    pxDeck.push(PX_ITEMS[i]);
+    pxDeck.push(PX_ITEMS[i]);
+  }
+
+  // Zamiešanie kariet
+  for (var j = pxDeck.length - 1; j > 0; j--) {
+    var r = Math.floor(Math.random() * (j + 1));
+    var tmp = pxDeck[j];
+    pxDeck[j] = pxDeck[r];
+    pxDeck[r] = tmp;
+  }
+
+  var grid = document.getElementById("px-grid");
+  grid.innerHTML = "";
+  for (var k = 0; k < pxDeck.length; k++) {
+    var cell = document.createElement("div");
+    cell.className = "p-card";
+    cell.setAttribute("data-idx", k);
+    cell.innerHTML = "❓";
+    cell.onclick = function() { flipCard(this); };
+    grid.appendChild(cell);
+  }
+}
+
+function flipCard(el) {
+  if (pxLock) return;
+  if (el.className.indexOf("flipped") !== -1 || el.className.indexOf("matched") !== -1) return;
+
+  if (!pxStarted) {
+    pxStarted = true;
+    pxTimer = setInterval(function() {
+      pxSeconds++;
+      document.getElementById("px-time").textContent = pxSeconds;
+    }, 1000);
+  }
+
+  var idx = parseInt(el.getAttribute("data-idx"), 10);
+  var item = pxDeck[idx];
+  el.className = "p-card flipped";
+  el.innerHTML = item.html;
+
+  if (!pxFirst) {
+    pxFirst = { el: el, id: item.id };
+    return;
+  }
+
+  pxSecond = { el: el, id: item.id };
+  pxMoves++;
+  document.getElementById("px-moves").textContent = pxMoves;
+
+  if (pxFirst.id === pxSecond.id) {
+    pxFirst.el.className = "p-card matched";
+    pxSecond.el.className = "p-card matched";
+    pxFirst = null;
+    pxSecond = null;
+    pxMatches++;
+
+    if (pxMatches === PX_ITEMS.length) {
+      clearInterval(pxTimer);
+      var winEl = document.getElementById("px-win");
+      winEl.textContent = DATA[lang].pxWin + pxSeconds + " s!";
+      winEl.style.display = "block";
+      try {
+        var prev = localStorage.getItem("px_best_time");
+        if (!prev || pxSeconds < parseInt(prev, 10)) {
+          localStorage.setItem("px_best_time", pxSeconds);
+          updateBestDisplay();
+        }
+      } catch (e) {}
+    }
+  } else {
+    pxLock = true;
+    setTimeout(function() {
+      pxFirst.el.className = "p-card";
+      pxFirst.el.innerHTML = "❓";
+      pxSecond.el.className = "p-card";
+      pxSecond.el.innerHTML = "❓";
+      pxFirst = null;
+      pxSecond = null;
+      pxLock = false;
+    }, 750);
+  }
+}
+
 switchLang(lang);
 checkQR();
+initPexeso();
 </script>
 </body>
 </html>
