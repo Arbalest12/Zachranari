@@ -14,7 +14,7 @@
   }
   header {
     background-color: #111c38;
-    padding: 16px;
+    padding: 16px 16px 12px 16px;
     text-align: center;
     border-bottom: 1px solid #263868;
     position: sticky;
@@ -27,7 +27,7 @@
     padding: 4px;
     border-radius: 20px;
     border: 1px solid #334e85;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
   .lang-btn {
     background: transparent;
@@ -45,14 +45,44 @@
   }
   h1 {
     margin: 4px 0;
-    font-size: 22px;
+    font-size: 21px;
   }
   .sub {
     color: #f59e0b;
     font-size: 12px;
     font-weight: bold;
     text-transform: uppercase;
+    margin-bottom: 12px;
   }
+
+  /* PREPÍNAČ KARIET (PAS vs PEXESO) */
+  .nav-tabs {
+    display: flex;
+    max-width: 400px;
+    margin: 0 auto;
+    background: #0b1329;
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid #2e4782;
+    gap: 6px;
+  }
+  .tab-btn {
+    flex: 1;
+    background: transparent;
+    color: #cbd5e1;
+    border: none;
+    padding: 10px 8px;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: #3b82f6;
+    color: #ffffff;
+  }
+
   .container {
     max-width: 540px;
     margin: 0 auto;
@@ -184,34 +214,33 @@
     margin-bottom: 20px;
   }
 
-  /* PEXESO SEKCIA */
+  /* PEXESO KARTA */
   .pexeso-section {
     background: #152244;
     border: 2px solid #f59e0b;
     border-radius: 16px;
     padding: 16px;
-    margin-top: 28px;
     text-align: center;
   }
   .pexeso-title {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
     color: #f59e0b;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
   }
   .pexeso-sub {
-    font-size: 13px;
+    font-size: 14px;
     color: #cbd5e1;
-    margin-bottom: 12px;
+    margin-bottom: 14px;
   }
   .pexeso-stats {
     display: flex;
     justify-content: space-around;
     background: #0b1329;
-    padding: 10px;
+    padding: 12px;
     border-radius: 12px;
-    margin-bottom: 14px;
-    font-size: 13px;
+    margin-bottom: 16px;
+    font-size: 14px;
     font-weight: bold;
     border: 1px solid #263868;
   }
@@ -221,8 +250,8 @@
   .pexeso-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 16px;
   }
   .p-card {
     aspect-ratio: 1 / 1;
@@ -233,7 +262,7 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 28px;
+    font-size: 30px;
     user-select: none;
     overflow: hidden;
     padding: 6px;
@@ -262,10 +291,10 @@
     background: #064e3b;
     border: 1px solid #10b981;
     color: #a7f3d0;
-    padding: 10px;
+    padding: 12px;
     border-radius: 10px;
-    margin-bottom: 12px;
-    font-size: 14px;
+    margin-bottom: 14px;
+    font-size: 15px;
     font-weight: bold;
   }
 
@@ -344,115 +373,126 @@
   </div>
   <h1 id="main-title">PAS MLADÉHO ZÁCHRANÁRA</h1>
   <div class="sub" id="main-sub">Pátracia akcia v obci</div>
+
+  <!-- HORNÉ ZÁLOŽKY (KARTY) -->
+  <div class="nav-tabs">
+    <button type="button" class="tab-btn active" id="tab-btn-pass" onclick="switchTab('pass')">🗺️ Pátrací pas</button>
+    <button type="button" class="tab-btn" id="tab-btn-game" onclick="switchTab('game')">🎮 Hra Pexeso</button>
+  </div>
 </header>
 
 <div class="container">
 
-  <div class="tracker">
-    <div class="tracker-title" id="tracker-lbl">Získaj tajničku: H - R - D - I - N - A</div>
-    <div class="slots">
-      <div class="slot" id="s0">?</div>
-      <div class="slot" id="s1">?</div>
-      <div class="slot" id="s2">?</div>
-      <div class="slot" id="s3">?</div>
-      <div class="slot" id="s4">?</div>
-      <div class="slot" id="s5">?</div>
+  <!-- KARTA 1: PÁTRACÍ PAS -->
+  <div id="view-pass">
+    <div class="tracker">
+      <div class="tracker-title" id="tracker-lbl">Získaj tajničku: H - R - D - I - N - A</div>
+      <div class="slots">
+        <div class="slot" id="s0">?</div>
+        <div class="slot" id="s1">?</div>
+        <div class="slot" id="s2">?</div>
+        <div class="slot" id="s3">?</div>
+        <div class="slot" id="s4">?</div>
+        <div class="slot" id="s5">?</div>
+      </div>
+    </div>
+
+    <div class="victory-box" id="victory-box">
+      <div style="font-size: 40px;">🎖️</div>
+      <h2 style="color: #f59e0b; margin: 8px 0;" id="vic-title">VŠETKY KÓDY NÁJDENÉ!</h2>
+      <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 12px;" id="vic-desc">Úspešne si zvládol celú záchranársku trasu!</p>
+      <input type="text" id="kid-name" placeholder="Zadaj svoje meno" style="padding: 10px; width: 80%; border-radius: 8px; border: 1px solid #475569; margin-bottom: 12px; text-align: center; font-size: 16px;">
+      <br>
+      <button type="button" class="btn-fact" onclick="openDiploma()" id="vic-btn">🎖️ Zobraziť diplom</button>
+    </div>
+
+    <div id="cards-container">
+      <!-- Stanovište 1 -->
+      <div class="card fire" id="card-1">
+        <div class="card-top"><span id="st-lbl-1">Stanovište #1</span><span style="color:#f87171" id="hero-1">Hasič Redi</span></div>
+        <div class="card-title" id="title-1">Hasičské stanovište #1</div>
+        <div class="card-hint" id="hint-1">Hľadaj pri hasičskej zbrojnici alebo v parku.</div>
+        <div class="img-wrap"><img src="Redi.png" alt="Redi"></div>
+        <div class="btn-row" id="actions-1">
+          <button type="button" class="btn-unlock" onclick="askCode(1)">Zadať kód z krabičky</button>
+        </div>
+      </div>
+
+      <!-- Stanovište 2 -->
+      <div class="card fire" id="card-2">
+        <div class="card-top"><span id="st-lbl-2">Stanovište #2</span><span style="color:#f87171" id="hero-2">Hasič Redi</span></div>
+        <div class="card-title" id="title-2">Hasičské stanovište #2</div>
+        <div class="card-hint" id="hint-2">Hľadaj na tichom mieste kalvárie, kde oddychujú pútnici.</div>
+        <div class="img-wrap"><img src="Redi.png" alt="Redi"></div>
+        <div class="btn-row" id="actions-2">
+          <button type="button" class="btn-unlock" onclick="askCode(2)">Zadať kód z krabičky</button>
+        </div>
+      </div>
+
+      <!-- Stanovište 3 -->
+      <div class="card med" id="card-3">
+        <div class="card-top"><span id="st-lbl-3">Stanovište #3</span><span style="color:#34d399" id="hero-3">Záchranárka Eli</span></div>
+        <div class="card-title" id="title-3">Záchranárske stanovište #1</div>
+        <div class="card-hint" id="hint-3">Hľadaj pri zdravotnom stredisku alebo lekárni.</div>
+        <div class="img-wrap"><img src="ELI.png" alt="Eli"></div>
+        <div class="btn-row" id="actions-3">
+          <button type="button" class="btn-unlock" onclick="askCode(3)">Zadať kód z krabičky</button>
+        </div>
+      </div>
+
+      <!-- Stanovište 4 -->
+      <div class="card med" id="card-4">
+        <div class="card-top"><span id="st-lbl-4">Stanovište #4</span><span style="color:#34d399" id="hero-4">Záchranárka Eli</span></div>
+        <div class="card-title" id="title-4">Záchranárske stanovište #2</div>
+        <div class="card-hint" id="hint-4">Hľadaj pri športovom areáli alebo detskom ihrisku.</div>
+        <div class="img-wrap"><img src="ELI.png" alt="Eli"></div>
+        <div class="btn-row" id="actions-4">
+          <button type="button" class="btn-unlock" onclick="askCode(4)">Zadať kód z krabičky</button>
+        </div>
+      </div>
+
+      <!-- Stanovište 5 -->
+      <div class="card pol" id="card-5">
+        <div class="card-top"><span id="st-lbl-5">Stanovište #5</span><span style="color:#60a5fa" id="hero-5">Policajt Rocky</span></div>
+        <div class="card-title" id="title-5">Policajné stanovište #1</div>
+        <div class="card-hint" id="hint-5">Hľadaj pri bezpečnom priechode pre chodcov.</div>
+        <div class="img-wrap"><img src="Rocky.png" alt="Rocky"></div>
+        <div class="btn-row" id="actions-5">
+          <button type="button" class="btn-unlock" onclick="askCode(5)">Zadať kód z krabičky</button>
+        </div>
+      </div>
+
+      <!-- Stanovište 6 -->
+      <div class="card pol" id="card-6">
+        <div class="card-top"><span id="st-lbl-6">Stanovište #6</span><span style="color:#60a5fa" id="hero-6">Policajt Rocky</span></div>
+        <div class="card-title" id="title-6">Policajné stanovište #2</div>
+        <div class="card-hint" id="hint-6">Hľadaj pri obecnom úrade alebo kultúrnom dome.</div>
+        <div class="img-wrap"><img src="Rocky.png" alt="Rocky"></div>
+        <div class="btn-row" id="actions-6">
+          <button type="button" class="btn-unlock" onclick="askCode(6)">Zadať kód z krabičky</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="reset-wrap">
+      <button type="button" class="reset-btn" onclick="resetProgress()" id="btn-reset">Resetovať pas / Újrakezdés</button>
     </div>
   </div>
 
-  <div class="victory-box" id="victory-box">
-    <div style="font-size: 40px;">🎖️</div>
-    <h2 style="color: #f59e0b; margin: 8px 0;" id="vic-title">VŠETKY KÓDY NÁJDENÉ!</h2>
-    <p style="font-size: 14px; color: #cbd5e1; margin-bottom: 12px;" id="vic-desc">Úspešne si zvládol celú záchranársku trasu!</p>
-    <input type="text" id="kid-name" placeholder="Zadaj svoje meno" style="padding: 10px; width: 80%; border-radius: 8px; border: 1px solid #475569; margin-bottom: 12px; text-align: center; font-size: 16px;">
-    <br>
-    <button type="button" class="btn-fact" onclick="openDiploma()" id="vic-btn">🎖️ Zobraziť diplom</button>
-  </div>
-
-  <div id="cards-container">
-    <!-- Karta 1 -->
-    <div class="card fire" id="card-1">
-      <div class="card-top"><span id="st-lbl-1">Stanovište #1</span><span style="color:#f87171" id="hero-1">Hasič Redi</span></div>
-      <div class="card-title" id="title-1">Hasičské stanovište #1</div>
-      <div class="card-hint" id="hint-1">Hľadaj pri hasičskej zbrojnici alebo v parku.</div>
-      <div class="img-wrap"><img src="Redi.png" alt="Redi"></div>
-      <div class="btn-row" id="actions-1">
-        <button type="button" class="btn-unlock" onclick="askCode(1)">Zadať kód z krabičky</button>
+  <!-- KARTA 2: SAMOSTATNÁ KARTA PRE PEXESO -->
+  <div id="view-game" style="display: none;">
+    <div class="pexeso-section">
+      <div class="pexeso-title" id="px-title">🎮 ZÁCHRANÁRSKE PEXESO</div>
+      <div class="pexeso-sub" id="px-sub">Nájdi všetky dvojice hrdinov v čo najlepšom čase!</div>
+      <div class="pexeso-stats">
+        <div>⏱️ <span id="px-lbl-time">Čas</span>: <span id="px-time">0</span>s</div>
+        <div>🔄 <span id="px-lbl-moves">Ťahy</span>: <span id="px-moves">0</span></div>
+        <div>🏆 <span id="px-lbl-best">Rekord</span>: <span id="px-best">--</span></div>
       </div>
+      <div class="pexeso-win-msg" id="px-win"></div>
+      <div class="pexeso-grid" id="px-grid"></div>
+      <button type="button" class="btn-fact" style="padding: 10px 20px; font-size: 14px;" onclick="initPexeso()" id="px-btn-restart">🔄 Nová hra</button>
     </div>
-
-    <!-- Karta 2 -->
-    <div class="card fire" id="card-2">
-      <div class="card-top"><span id="st-lbl-2">Stanovište #2</span><span style="color:#f87171" id="hero-2">Hasič Redi</span></div>
-      <div class="card-title" id="title-2">Hasičské stanovište #2</div>
-      <div class="card-hint" id="hint-2">Hľadaj na tichom mieste kalvárie, kde oddychujú pútnici.</div>
-      <div class="img-wrap"><img src="Redi.png" alt="Redi"></div>
-      <div class="btn-row" id="actions-2">
-        <button type="button" class="btn-unlock" onclick="askCode(2)">Zadať kód z krabičky</button>
-      </div>
-    </div>
-
-    <!-- Karta 3 -->
-    <div class="card med" id="card-3">
-      <div class="card-top"><span id="st-lbl-3">Stanovište #3</span><span style="color:#34d399" id="hero-3">Záchranárka Eli</span></div>
-      <div class="card-title" id="title-3">Záchranárske stanovište #1</div>
-      <div class="card-hint" id="hint-3">Hľadaj pri zdravotnom stredisku alebo lekárni.</div>
-      <div class="img-wrap"><img src="ELI.png" alt="Eli"></div>
-      <div class="btn-row" id="actions-3">
-        <button type="button" class="btn-unlock" onclick="askCode(3)">Zadať kód z krabičky</button>
-      </div>
-    </div>
-
-    <!-- Karta 4 -->
-    <div class="card med" id="card-4">
-      <div class="card-top"><span id="st-lbl-4">Stanovište #4</span><span style="color:#34d399" id="hero-4">Záchranárka Eli</span></div>
-      <div class="card-title" id="title-4">Záchranárske stanovište #2</div>
-      <div class="card-hint" id="hint-4">Hľadaj pri športovom areáli alebo detskom ihrisku.</div>
-      <div class="img-wrap"><img src="ELI.png" alt="Eli"></div>
-      <div class="btn-row" id="actions-4">
-        <button type="button" class="btn-unlock" onclick="askCode(4)">Zadať kód z krabičky</button>
-      </div>
-    </div>
-
-    <!-- Karta 5 -->
-    <div class="card pol" id="card-5">
-      <div class="card-top"><span id="st-lbl-5">Stanovište #5</span><span style="color:#60a5fa" id="hero-5">Policajt Rocky</span></div>
-      <div class="card-title" id="title-5">Policajné stanovište #1</div>
-      <div class="card-hint" id="hint-5">Hľadaj pri bezpečnom priechode pre chodcov.</div>
-      <div class="img-wrap"><img src="Rocky.png" alt="Rocky"></div>
-      <div class="btn-row" id="actions-5">
-        <button type="button" class="btn-unlock" onclick="askCode(5)">Zadať kód z krabičky</button>
-      </div>
-    </div>
-
-    <!-- Karta 6 -->
-    <div class="card pol" id="card-6">
-      <div class="card-top"><span id="st-lbl-6">Stanovište #6</span><span style="color:#60a5fa" id="hero-6">Policajt Rocky</span></div>
-      <div class="card-title" id="title-6">Policajné stanovište #2</div>
-      <div class="card-hint" id="hint-6">Hľadaj pri obecnom úrade alebo kultúrnom dome.</div>
-      <div class="img-wrap"><img src="Rocky.png" alt="Rocky"></div>
-      <div class="btn-row" id="actions-6">
-        <button type="button" class="btn-unlock" onclick="askCode(6)">Zadať kód z krabičky</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MINIHRA: PEXESO -->
-  <div class="pexeso-section">
-    <div class="pexeso-title" id="px-title">🎮 ZÁCHRANÁRSKE PEXESO</div>
-    <div class="pexeso-sub" id="px-sub">Nájdi všetky dvojice hrdinov v čo najlepšom čase!</div>
-    <div class="pexeso-stats">
-      <div>⏱️ <span id="px-lbl-time">Čas</span>: <span id="px-time">0</span>s</div>
-      <div>🔄 <span id="px-lbl-moves">Ťahy</span>: <span id="px-moves">0</span></div>
-      <div>🏆 <span id="px-lbl-best">Rekord</span>: <span id="px-best">--</span></div>
-    </div>
-    <div class="pexeso-win-msg" id="px-win"></div>
-    <div class="pexeso-grid" id="px-grid"></div>
-    <button type="button" class="btn-fact" onclick="initPexeso()" id="px-btn-restart">🔄 Nová hra</button>
-  </div>
-
-  <div class="reset-wrap">
-    <button type="button" class="reset-btn" onclick="resetProgress()" id="btn-reset">Resetovať pas / Újrakezdés</button>
   </div>
 
 </div>
@@ -506,6 +546,8 @@ var DATA = {
   sk: {
     mainTitle: "PAS MLADÉHO ZÁCHRANÁRA",
     mainSub: "Pátracia akcia v obci",
+    tabPass: "🗺️ Pátrací pas",
+    tabGame: "🎮 Hra Pexeso",
     trackerLbl: "Získaj tajničku: H - R - D - I - N - A",
     stWord: "Stanovište",
     btnUnlock: "Zadať kód z krabičky",
@@ -568,6 +610,8 @@ var DATA = {
   hu: {
     mainTitle: "IFJÚ MEGMENTŐ ÚTLEVÉL",
     mainSub: "Községi nyomozós kaland",
+    tabPass: "🗺️ Útlevél",
+    tabGame: "🎮 Memóriajáték",
     trackerLbl: "Gyűjtsd össze a szót: B - Á - T - O - R - !",
     stWord: "Állomás",
     btnUnlock: "Kód megadása a dobozról",
@@ -649,6 +693,25 @@ try {
   if (su) unlocked = JSON.parse(su);
 } catch (e) {}
 
+function switchTab(tabName) {
+  var passView = document.getElementById("view-pass");
+  var gameView = document.getElementById("view-game");
+  var passBtn  = document.getElementById("tab-btn-pass");
+  var gameBtn  = document.getElementById("tab-btn-game");
+
+  if (tabName === "game") {
+    passView.style.display = "none";
+    gameView.style.display = "block";
+    passBtn.className = "tab-btn";
+    gameBtn.className = "tab-btn active";
+  } else {
+    passView.style.display = "block";
+    gameView.style.display = "none";
+    passBtn.className = "tab-btn active";
+    gameBtn.className = "tab-btn";
+  }
+}
+
 function switchLang(l) {
   lang = l;
   try { localStorage.setItem("pas_lang", l); } catch (e) {}
@@ -661,6 +724,8 @@ function updateUI() {
   var d = DATA[lang];
   document.getElementById("main-title").textContent = d.mainTitle;
   document.getElementById("main-sub").textContent = d.mainSub;
+  document.getElementById("tab-btn-pass").textContent = d.tabPass;
+  document.getElementById("tab-btn-game").textContent = d.tabGame;
   document.getElementById("tracker-lbl").textContent = d.trackerLbl;
   document.getElementById("modal-hdr").textContent = d.modalHdr;
   document.getElementById("btn-cancel").textContent = d.btnCancel;
@@ -788,6 +853,7 @@ function checkQR() {
           unlocked.push(num);
           try { localStorage.setItem("unlocked_stations", JSON.stringify(unlocked)); } catch (e) {}
         }
+        switchTab("pass");
         updateUI();
         showFact(num);
       }
@@ -844,7 +910,6 @@ function initPexeso() {
     pxDeck.push(PX_ITEMS[i]);
   }
 
-  // Zamiešanie kariet
   for (var j = pxDeck.length - 1; j > 0; j--) {
     var r = Math.floor(Math.random() * (j + 1));
     var tmp = pxDeck[j];
