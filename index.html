@@ -55,7 +55,7 @@
     margin-bottom: 12px;
   }
 
-  /* HLAVNÉ ZÁLOŽKY (PAS vs HRY) */
+  /* HLAVNÉ ZÁLOŽKY */
   .nav-tabs {
     display: flex;
     max-width: 400px;
@@ -260,7 +260,6 @@
     line-height: 1.4;
   }
 
-  /* SPOLOČNÉ ŠTÝLY PRE HRY */
   .game-container {
     background: #152244;
     border: 2px solid #f59e0b;
@@ -334,7 +333,7 @@
   .p-card.matched { background: #064e3b; border-color: #10b981; cursor: default; }
   .p-card img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
 
-  /* Kvíz / Voľba čísel štýly */
+  /* Kvíz štýly */
   .quiz-box {
     background: #0b1329;
     border: 1px solid #263868;
@@ -457,7 +456,6 @@
   <h1 id="main-title">PAS MLADÉHO ZÁCHRANÁRA</h1>
   <div class="sub" id="main-sub">Pátracia akcia v obci</div>
 
-  <!-- HLAVNÉ ZÁLOŽKY -->
   <div class="nav-tabs">
     <button type="button" class="tab-btn active" id="tab-btn-pass" onclick="switchMainTab('pass')">🗺️ Pátrací pas</button>
     <button type="button" class="tab-btn" id="tab-btn-games" onclick="switchMainTab('games')">🎮 Záchranárske hry</button>
@@ -562,10 +560,10 @@
     </div>
   </div>
 
-  <!-- KARTA 2: ZÁCHRANÁRSKE HRY (ROZCESTNÍK + 4 HRY) -->
+  <!-- KARTA 2: ZÁCHRANÁRSKE HRY (ROZCESTNÍK) -->
   <div id="view-games" style="display: none;">
     
-    <!-- 1. ROZCESTNÍK (MENU) -->
+    <!-- MENU HIER -->
     <div id="games-menu" class="games-menu">
       <div class="game-card-menu" onclick="openGame('pexeso')">
         <div class="game-icon">🃏</div>
@@ -578,14 +576,14 @@
         <div class="game-icon">📞</div>
         <div class="game-info">
           <h3 id="m-call-title">Kto príde na pomoc?</h3>
-          <p id="m-call-desc">Otestuj sa, či správne poznáš tiesňové čísla 150, 155, 158.</p>
+          <p id="m-call-desc">Otestuj sa v 10 otázkach z tiesňových volaní (150, 155, 158).</p>
         </div>
       </div>
       <div class="game-card-menu" onclick="openGame('gear')">
-        <div class="game-icon">🎒</div>
+        <div class="game-icon">🚒</div>
         <div class="game-info">
-          <h3 id="m-gear-title">Zbaľ výbavu záchranárovo</h3>
-          <p id="m-gear-desc">Vyber do batohu len to, čo skutočný záchranár potrebuje.</p>
+          <h3 id="m-gear-title">Zbaľ vozidlo záchranárov</h3>
+          <p id="m-gear-desc">Prever 5 úrovní: nalož správnu výbavu do auta pre hasičov, sanitku a políciu.</p>
         </div>
       </div>
       <div class="game-card-menu" onclick="openGame('fire')">
@@ -597,7 +595,7 @@
       </div>
     </div>
 
-    <!-- 2. HRA: PEXESO -->
+    <!-- HRA 1: PEXESO -->
     <div id="game-pexeso" class="game-container">
       <div class="game-header-row">
         <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-1">⬅️ Späť na hry</button>
@@ -613,31 +611,31 @@
       <button type="button" class="btn-fact" onclick="initPexeso()" id="px-restart">🔄 Nová hra</button>
     </div>
 
-    <!-- 3. HRA: KTO PRÍDE NA POMOC -->
+    <!-- HRA 2: KTO PRÍDE NA POMOC (KVÍZ 10 OTÁZOK) -->
     <div id="game-call" class="game-container">
       <div class="game-header-row">
         <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-2">⬅️ Späť na hry</button>
         <div class="game-title" id="gc-title">📞 Kto príde na pomoc?</div>
       </div>
-      <div class="game-sub" id="gc-score">Skóre: 0 / 5</div>
+      <div class="game-sub" id="gc-score">Skóre: 0 / 10</div>
       <div class="quiz-box" id="call-situation">Načítava sa situácia...</div>
       <div class="quiz-btns" id="call-options"></div>
     </div>
 
-    <!-- 4. HRA: ZBAĽ VÝBAVU -->
+    <!-- HRA 3: ZBAĽ VOZIDLO (5 ÚROVNÍ) -->
     <div id="game-gear" class="game-container">
       <div class="game-header-row">
         <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-3">⬅️ Späť na hry</button>
-        <div class="game-title" id="gg-title">🎒 Zbaľ výbavu záchranára</div>
+        <div class="game-title" id="gg-title">🚒 Zbaľ vozidlo záchranárov</div>
       </div>
-      <div class="game-sub" id="gear-instruction">Ťukni na všetky predmety, ktoré patrí do hasičskej výbavy!</div>
-      <div class="quiz-box" id="gear-target-hero" style="color: #f59e0b;">Hasič Redi</div>
+      <div class="game-sub" id="gear-level-info">Úroveň 1 / 5</div>
+      <div class="quiz-box" id="gear-target-vehicle" style="color: #f59e0b; font-size:18px;">Hasičské auto 🚒</div>
       <div class="pexeso-grid" id="gear-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 14px;"></div>
       <div class="pexeso-win-msg" id="gear-win" style="display:none;"></div>
-      <button type="button" class="btn-fact" onclick="initGearGame()" id="gear-restart" style="display:none;">🔄 Ďalšia výzva</button>
+      <button type="button" class="btn-fact" onclick="nextGearLevel()" id="gear-next-btn" style="display:none; padding: 10px 20px;">➡️ Ďalšia úroveň</button>
     </div>
 
-    <!-- 5. HRA: UHAS POŽIAR -->
+    <!-- HRA 4: UHAS POŽIAR -->
     <div id="game-fire" class="game-container">
       <div class="game-header-row">
         <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-4">⬅️ Späť na hry</button>
@@ -724,13 +722,12 @@ var DATA = {
     dText: "za úspešné zvládnutie celej záchranárskej trasy a vylúštenie tajničky:",
     dSecret: "H · R · D · I · N · A",
     
-    // Názvy hier v menu
     mPxTitle: "Záchranárske Pexeso",
     mPxDesc: "Nájdi všetky páry hrdinov a symbolov na čas.",
     mCallTitle: "Kto príde na pomoc?",
-    mCallDesc: "Otestuj sa, či správne poznáš tiesňové čísla 150, 155, 158.",
-    mGearTitle: "Zbaľ výbavu záchranárovo",
-    mGearDesc: "Vyber do batofu len to, čo skutočný záchranár potrebuje.",
+    mCallDesc: "Otestuj sa v 10 otázkach z tiesňových volaní (150, 155, 158).",
+    mGearTitle: "Zbaľ vozidlo záchranárov",
+    mGearDesc: "Prever 5 úrovní: nalož správnu výbavu do auta pre hasičov, sanitku a políciu.",
     mFireTitle: "Uhas požiar!",
     mFireDesc: "Rýchlo uhas všetky plamienky predtým, než vyprší čas.",
     backMenu: "⬅️ Späť na hry",
@@ -742,9 +739,8 @@ var DATA = {
 
     gcTitle: "📞 Kto príde na pomoc?",
     gcScore: "Skóre: ",
-    gearTitle: "🎒 Zbaľ výbavu záchranára",
-    gearInstr: "Ťukni na všetky predmety, ktoré patrí k tejto výbave:",
-    gearRestart: "🔄 Ďalšia výzva",
+    ggTitle: "🚒 Zbaľ vozidlo záchranárov",
+    gearRestart: "🔄 Ďalšia úroveň",
     gfTitle: "🔥 Uhas požiar!",
     fireStart: "▶️ Spustiť hru",
 
@@ -795,9 +791,9 @@ var DATA = {
     mPxTitle: "Mentő Pexeso",
     mPxDesc: "Találd meg az összes hős párt a legjobb idő alatt.",
     mCallTitle: "Ki jön a segítségre?",
-    mCallDesc: "Teszteld, hogy ismered-e a 150, 155, 158 segélyhívókat.",
-    mGearTitle: "Ments felszerelést",
-    mGearDesc: "Válaszd ki a zöld hátizsákba illő felszereléseket.",
+    mCallDesc: "Teszteld tudásodat 10 vészhelyzeti kérdésen (150, 155, 158).",
+    mGearTitle: "Ments mentőjárművet",
+    mGearDesc: "Teljesíts 5 szintet: rakodj be helyes felszerelést a tűzoltó, mentő és rendőrautóba.",
     mFireTitle: "Oltsd el a tüzet!",
     mFireDesc: "Gyorsan oltsd el az összes lángot, mielőtt lejár az idő.",
     backMenu: "⬅️ Vissza a játékokhoz",
@@ -809,9 +805,8 @@ var DATA = {
 
     gcTitle: "📞 Ki jön a segítségre?",
     gcScore: "Pontszám: ",
-    gearTitle: "🎒 Ments felszerelést",
-    gearInstr: "Kattints azokra a tárgyakra, amelyek ehhez a hősffhöz tartoznak:",
-    gearRestart: "🔄 Következő feladat",
+    ggTitle: "🚒 Ments mentőjárművet",
+    gearRestart: "🔄 Következő szint",
     gfTitle: "🔥 Oltsd el a tüzet!",
     fireStart: "▶️ Játék indítása",
 
@@ -861,7 +856,7 @@ function switchMainTab(tabName) {
     gamesView.style.display = "block";
     passBtn.className = "tab-btn";
     gamesBtn.className = "tab-btn active";
-    closeGame(); // Vždy otvorí menu hier
+    closeGame();
   } else {
     passView.style.display = "block";
     gamesView.style.display = "none";
@@ -893,7 +888,6 @@ function updateUI() {
   document.getElementById("vic-desc").textContent = d.vicDesc;
   document.getElementById("vic-btn").textContent = d.vicBtn;
 
-  // Preklady menu hier
   document.getElementById("m-px-title").textContent = d.mPxTitle;
   document.getElementById("m-px-desc").textContent = d.mPxDesc;
   document.getElementById("m-call-title").textContent = d.mCallTitle;
@@ -911,9 +905,8 @@ function updateUI() {
   document.getElementById("gp-title").textContent = d.pxTitle;
   document.getElementById("px-restart").textContent = d.pxRestart;
   document.getElementById("gc-title").textContent = d.gcTitle;
-  document.getElementById("gg-title").textContent = d.gearTitle;
-  document.getElementById("gear-instruction").textContent = d.gearInstr;
-  document.getElementById("gear-restart").textContent = d.gearRestart;
+  document.getElementById("gg-title").textContent = d.ggTitle;
+  document.getElementById("gear-next-btn").textContent = d.gearRestart;
   document.getElementById("gf-title").textContent = d.gfTitle;
   document.getElementById("fire-start-btn").textContent = d.fireStart;
 
@@ -1048,7 +1041,6 @@ function openGame(gameName) {
     initGearGame();
   } else if (gameName === "fire") {
     document.getElementById("game-fire").style.display = "block";
-    // Čaká na kliknutí Start
   }
 }
 
@@ -1061,7 +1053,7 @@ function closeGame() {
   document.getElementById("game-fire").style.display = "none";
 }
 
-/* 1. LOGIKA PEXESO */
+/* 1. PEXESO */
 var PX_ITEMS = [
   { id: "redi", html: '<img src="Redi.png" alt="Redi">' },
   { id: "eli",  html: '<img src="ELI.png" alt="Eli">' },
@@ -1070,245 +1062,4 @@ var PX_ITEMS = [
   { id: "fire", html: '🚒' },
   { id: "med",  html: '🚑' }
 ];
-var pxDeck = [], pxFirst = null, pxSecond = null, pxLock = false, pxMatches = 0, pxMoves = 0, pxSeconds = 0, pxTimer = null, pxStarted = false;
-
-function updateBestDisplay() {
-  try {
-    var b = localStorage.getItem("px_best_time");
-    document.getElementById("px-best").textContent = b ? (b + "s") : "--";
-  } catch (e) {}
-}
-
-function initPexeso() {
-  if (pxTimer) clearInterval(pxTimer);
-  pxTimer = null; pxStarted = false; pxSeconds = 0; pxMoves = 0; pxMatches = 0; pxFirst = null; pxSecond = null; pxLock = false;
-  document.getElementById("px-time").textContent = "0";
-  document.getElementById("px-moves").textContent = "0";
-  document.getElementById("px-win").style.display = "none";
-  updateBestDisplay();
-
-  pxDeck = [];
-  for (var i = 0; i < PX_ITEMS.length; i++) { pxDeck.push(PX_ITEMS[i]); pxDeck.push(PX_ITEMS[i]); }
-  for (var j = pxDeck.length - 1; j > 0; j--) {
-    var r = Math.floor(Math.random() * (j + 1));
-    var tmp = pxDeck[j]; pxDeck[j] = pxDeck[r]; pxDeck[r] = tmp;
-  }
-
-  var grid = document.getElementById("px-grid");
-  grid.innerHTML = "";
-  for (var k = 0; k < pxDeck.length; k++) {
-    var cell = document.createElement("div");
-    cell.className = "p-card";
-    cell.setAttribute("data-idx", k);
-    cell.innerHTML = "❓";
-    cell.onclick = function() { flipCard(this); };
-    grid.appendChild(cell);
-  }
-}
-
-function flipCard(el) {
-  if (pxLock || el.className.indexOf("flipped") !== -1 || el.className.indexOf("matched") !== -1) return;
-  if (!pxStarted) {
-    pxStarted = true;
-    pxTimer = setInterval(function() { pxSeconds++; document.getElementById("px-time").textContent = pxSeconds; }, 1000);
-  }
-  var idx = parseInt(el.getAttribute("data-idx"), 10);
-  var item = pxDeck[idx];
-  el.className = "p-card flipped";
-  el.innerHTML = item.html;
-
-  if (!pxFirst) { pxFirst = { el: el, id: item.id }; return; }
-  pxSecond = { el: el, id: item.id };
-  pxMoves++;
-  document.getElementById("px-moves").textContent = pxMoves;
-
-  if (pxFirst.id === pxSecond.id) {
-    pxFirst.el.className = "p-card matched"; pxSecond.el.className = "p-card matched";
-    pxFirst = null; pxSecond = null; pxMatches++;
-    if (pxMatches === PX_ITEMS.length) {
-      clearInterval(pxTimer);
-      var winEl = document.getElementById("px-win");
-      winEl.textContent = DATA[lang].pxWin + pxSeconds + " s!";
-      winEl.style.display = "block";
-      try {
-        var prev = localStorage.getItem("px_best_time");
-        if (!prev || pxSeconds < parseInt(prev, 10)) { localStorage.setItem("px_best_time", pxSeconds); updateBestDisplay(); }
-      } catch (e) {}
-    }
-  } else {
-    pxLock = true;
-    setTimeout(function() {
-      pxFirst.el.className = "p-card"; pxFirst.el.innerHTML = "❓";
-      pxSecond.el.className = "p-card"; pxSecond.el.innerHTML = "❓";
-      pxFirst = null; pxSecond = null; pxLock = false;
-    }, 750);
-  }
-}
-
-/* 2. LOGIKA: KTO PRÍDE NA POMOC (KVÍZ) */
-var CALL_DATA_SK = [
-  { q: "🔥 Hori lístie a suchá tráva v parku!", ans: [ {t: "150 - Hasiči", correct: true}, {t: "155 - Záchranári", correct: false}, {t: "158 - Policia", correct: false} ] },
-  { q: "🚑 Kamarát spadol z bicykla a krváca mu koleno!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: true}, {t: "158 - Policia", correct: false} ] },
-  { q: "🚨 Niekto sa ti snaží ukradnúť bicykel pred obchodom!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: false}, {t: "158 - Polícia", correct: true} ] },
-  { q: "🏠 Z komína domu sa valí čierny dym a plamene!", ans: [ {t: "150 - Hasiči", correct: true}, {t: "155 - Záchranári", correct: false}, {t: "158 - Policia", correct: false} ] },
-  { q: "🏥 Pani na ulici omdlela a nedýcha!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: true}, {t: "158 - Policia", correct: false} ] }
-];
-var CALL_DATA_HU = [
-  { q: "🔥 Tűz van a parkban, ég a száraz fű!", ans: [ {t: "150 - Tűzoltók", correct: true}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: false} ] },
-  { q: "🚑 A barátod leesett a bicikliről és erősen vérzik a térde!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: true}, {t: "158 - Rendőrség", correct: false} ] },
-  { q: "🚨 Valaki el akarja lopni a kerékpárodat a bolt elől!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: true} ] },
-  { q: "🏠 Fekete füst és lángok csapnak ki a ház tetejéből!", ans: [ {t: "150 - Tűzoltók", correct: true}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: false} ] },
-  { q: "🏥 Egy néni rosszul lett az utcán és eszméletét vesztette!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: true}, {t: "158 - Rendőrség", correct: false} ] }
-];
-
-var callIdx = 0, callScore = 0;
-function initCallGame() {
-  callIdx = 0; callScore = 0;
-  loadCallQuestion();
-}
-function loadCallQuestion() {
-  var dataset = (lang === "hu") ? CALL_DATA_HU : CALL_DATA_SK;
-  document.getElementById("gc-score").textContent = DATA[lang].gcScore + callScore + " / " + dataset.length;
-  if (callIdx >= dataset.length) {
-    document.getElementById("call-situation").textContent = (lang === "hu" ? "🎉 Szép munka! Minden helyzetet megoldottál!" : "🎉 Výborne! Zvládol si všetky núdzové situácie!");
-    document.getElementById("call-options").innerHTML = '<button type="button" class="btn-fact" onclick="initCallGame()">🔄 Hrať znova</button>';
-    return;
-  }
-  var qObj = dataset[callIdx];
-  document.getElementById("call-situation").textContent = qObj.q;
-  var optDiv = document.getElementById("call-options");
-  optDiv.innerHTML = "";
-  for (var i = 0; i < qObj.ans.length; i++) {
-    var ans = qObj.ans[i];
-    var btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "quiz-opt-btn";
-    btn.textContent = ans.t;
-    btn.onclick = (function(correct) {
-      return function() {
-        if (correct) { callScore++; alert(lang === "hu" ? "✅ Helyes!" : "✅ Správne!"); }
-        else { alert(lang === "hu" ? "❌ Nem jó választás!" : "❌ Nesprávne!"); }
-        callIdx++;
-        loadCallQuestion();
-      };
-    })(ans.correct);
-    optDiv.appendChild(btn);
-  }
-}
-
-/* 3. LOGIKA: ZBAĽ VÝBAVU */
-var GEAR_ITEMS = [
-  { name: "🧯 Hasiaci prístroj", fire: true, med: false, pol: false },
-  { name: "🪖 Prilba", fire: true, med: true, pol: true },
-  { name: "🩹 Náplasť", fire: false, med: true, pol: false },
-  { name: "🩺 Fonendoskop", fire: false, med: true, pol: false },
-  { name: "🔗 Putá", fire: false, med: false, pol: true },
-  { name: "🚨 Slučka/Značka", fire: false, med: false, pol: true },
-  { name: "🍦 Zmrzlina", fire: false, med: false, pol: false },
-  { name: "⚽ Futbalová lopta", fire: false, med: false, pol: false }
-];
-function initGearGame() {
-  var grid = document.getElementById("gear-grid");
-  grid.innerHTML = "";
-  document.getElementById("gear-win").style.display = "none";
-  document.getElementById("gear-restart").style.display = "none";
-
-  // Vyberie náhodné 6 položiek
-  var shuffled = GEAR_ITEMS.slice().sort(function() { return 0.5 - Math.random(); }).slice(0, 6);
-  var neededCount = 0;
-  for (var i = 0; i < shuffled.length; i++) {
-    if (shuffled[i].fire) neededCount++;
-  }
-  document.getElementById("gear-target-hero").textContent = (lang === "hu" ? "Hős: Redi (Tűzoltó felszerelés)" : "Hľadaj výbavu pre: Hasič Redi");
-
-  var found = 0;
-  for (var j = 0; j < shuffled.length; j++) {
-    var item = shuffled[j];
-    var cell = document.createElement("div");
-    cell.className = "p-card";
-    cell.style.fontSize = "14px";
-    cell.style.background = "#0b1329";
-    cell.innerHTML = item.name;
-    cell.onclick = (function(isFire, el) {
-      return function() {
-        if (el.style.opacity === "0.4") return;
-        if (isFire) {
-          el.style.background = "#064e3b";
-          el.style.borderColor = "#10b981";
-          found++;
-          if (found === neededCount) {
-            var w = document.getElementById("gear-win");
-            w.textContent = (lang === "hu" ? "🎉 Siker! Minden felszerelés a helyén!" : "🎉 Úspech! Všetka výbava je v batohu!");
-            w.style.display = "block";
-            document.getElementById("gear-restart").style.display = "inline-block";
-          }
-        } else {
-          el.style.background = "#7f1d1d";
-          el.style.borderColor = "#ef4444";
-          alert(lang === "hu" ? "❌ Ez nem kell a tűzoltónak!" : "❌ Toto hasič nepotrebuje do výbavy!");
-        }
-      };
-    })(item.fire, cell);
-    grid.appendChild(cell);
-  }
-}
-
-/* 4. LOGIKA: UHAS POŽIAR */
-var fireTimer = null, fireSeconds = 15, fireScoreCount = 0;
-function initFireGame() {
-  if (fireTimer) clearInterval(fireTimer);
-  fireSeconds = 15; fireScoreCount = 0;
-  document.getElementById("fire-time").textContent = fireSeconds;
-  document.getElementById("fire-score").textContent = fireScoreCount;
-  document.getElementById("fire-start-btn").style.display = "none";
-
-  renderFireGrid();
-  fireTimer = setInterval(function() {
-    fireSeconds--;
-    document.getElementById("fire-time").textContent = fireSeconds;
-    if (fireSeconds <= 0) {
-      clearInterval(fireTimer);
-      alert((lang === "hu" ? "⏰ Idő lejárt! Uhásolt lángok száma: " : "⏰ Čas vypršal! Počet uhasených plamienkov: ") + fireScoreCount);
-      document.getElementById("fire-start-btn").style.display = "inline-block";
-    }
-  }, 1000);
-}
-
-function renderFireGrid() {
-  var grid = document.getElementById("fire-grid");
-  grid.innerHTML = "";
-  // 9 buniek, náhodne 3 plamene
-  var fireIndices = [];
-  while(fireIndices.length < 3) {
-    var r = Math.floor(Math.random() * 9);
-    if (fireIndices.indexOf(r) === -1) fireIndices.push(r);
-  }
-
-  for (var i = 0; i < 9; i++) {
-    var cell = document.createElement("div");
-    cell.className = "fire-cell";
-    if (fireIndices.indexOf(i) !== -1) {
-      cell.innerHTML = "🔥";
-      cell.onclick = (function(c) {
-        return function() {
-          if (fireSeconds > 0 && c.innerHTML === "🔥") {
-            c.innerHTML = "💧";
-            fireScoreCount++;
-            document.getElementById("fire-score").textContent = fireScoreCount;
-            setTimeout(function() { renderFireGrid(); }, 300);
-          }
-        };
-      })(cell);
-    } else {
-      cell.innerHTML = "🧯";
-    }
-    grid.appendChild(cell);
-  }
-}
-
-switchLang(lang);
-checkQR();
-initPexeso();
-</script>
-</body>
-</html>
+var pxDeck = [], pxFirst = null, pxSecond = null
