@@ -55,7 +55,7 @@
     margin-bottom: 12px;
   }
 
-  /* PREPÍNAČ KARIET (PAS vs PEXESO) */
+  /* HLAVNÉ ZÁLOŽKY (PAS vs HRY) */
   .nav-tabs {
     display: flex;
     max-width: 400px;
@@ -214,44 +214,107 @@
     margin-bottom: 20px;
   }
 
-  /* PEXESO KARTA */
-  .pexeso-section {
+  /* ROZCESTNÍK HIER */
+  .games-menu {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .game-card-menu {
+    background: #152244;
+    border: 2px solid #2e4782;
+    border-radius: 16px;
+    padding: 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.2s;
+    text-align: left;
+  }
+  .game-card-menu:hover {
+    transform: translateY(-2px);
+    border-color: #f59e0b;
+  }
+  .game-icon {
+    font-size: 38px;
+    background: #0b1329;
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid #334e85;
+  }
+  .game-info h3 {
+    margin: 0 0 4px 0;
+    font-size: 17px;
+    color: #f59e0b;
+  }
+  .game-info p {
+    margin: 0;
+    font-size: 13px;
+    color: #cbd5e1;
+    line-height: 1.4;
+  }
+
+  /* SPOLOČNÉ ŠTÝLY PRE HRY */
+  .game-container {
     background: #152244;
     border: 2px solid #f59e0b;
     border-radius: 16px;
-    padding: 16px;
+    padding: 18px;
     text-align: center;
+    display: none;
   }
-  .pexeso-title {
-    font-size: 20px;
+  .game-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+  }
+  .back-menu-btn {
+    background: #334155;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  .game-title {
+    font-size: 18px;
     font-weight: bold;
     color: #f59e0b;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
   }
-  .pexeso-sub {
-    font-size: 14px;
+  .game-sub {
+    font-size: 13px;
     color: #cbd5e1;
     margin-bottom: 14px;
   }
+
+  /* Pexeso štýly */
   .pexeso-stats {
     display: flex;
     justify-content: space-around;
     background: #0b1329;
-    padding: 12px;
+    padding: 10px;
     border-radius: 12px;
-    margin-bottom: 16px;
-    font-size: 14px;
+    margin-bottom: 14px;
+    font-size: 13px;
     font-weight: bold;
     border: 1px solid #263868;
   }
-  .pexeso-stats span {
-    color: #f59e0b;
-  }
+  .pexeso-stats span { color: #f59e0b; }
   .pexeso-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 16px;
+    gap: 8px;
+    margin-bottom: 14px;
   }
   .p-card {
     aspect-ratio: 1 / 1;
@@ -262,40 +325,62 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    font-size: 30px;
+    font-size: 26px;
     user-select: none;
     overflow: hidden;
-    padding: 6px;
-    transition: background 0.2s, transform 0.15s;
+    padding: 4px;
   }
-  .p-card:active {
-    transform: scale(0.95);
-  }
-  .p-card.flipped {
+  .p-card.flipped { background: #0b1329; border-color: #f59e0b; }
+  .p-card.matched { background: #064e3b; border-color: #10b981; cursor: default; }
+  .p-card img { width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+
+  /* Kvíz / Voľba čísel štýly */
+  .quiz-box {
     background: #0b1329;
-    border-color: #f59e0b;
+    border: 1px solid #263868;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 1.5;
   }
-  .p-card.matched {
-    background: #064e3b;
-    border-color: #10b981;
-    cursor: default;
+  .quiz-btns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
-  .p-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    pointer-events: none;
-  }
-  .pexeso-win-msg {
-    display: none;
-    background: #064e3b;
-    border: 1px solid #10b981;
-    color: #a7f3d0;
+  .quiz-opt-btn {
+    background: #1e293b;
+    border: 2px solid #3b82f6;
+    color: white;
     padding: 12px;
     border-radius: 10px;
-    margin-bottom: 14px;
     font-size: 15px;
     font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .quiz-opt-btn:hover { background: #2563eb; }
+
+  /* Hasiaca hra štýly */
+  .fire-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .fire-cell {
+    aspect-ratio: 1 / 1;
+    background: #0b1329;
+    border: 2px solid #2e4782;
+    border-radius: 12px;
+    font-size: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
   }
 
   .overlay {
@@ -308,9 +393,7 @@
     z-index: 100;
     padding: 16px;
   }
-  .overlay.show {
-    display: flex;
-  }
+  .overlay.show { display: flex; }
   .popup {
     background: #152244;
     border: 2px solid #3b82f6;
@@ -374,10 +457,10 @@
   <h1 id="main-title">PAS MLADÉHO ZÁCHRANÁRA</h1>
   <div class="sub" id="main-sub">Pátracia akcia v obci</div>
 
-  <!-- HORNÉ ZÁLOŽKY (KARTY) -->
+  <!-- HLAVNÉ ZÁLOŽKY -->
   <div class="nav-tabs">
-    <button type="button" class="tab-btn active" id="tab-btn-pass" onclick="switchTab('pass')">🗺️ Pátrací pas</button>
-    <button type="button" class="tab-btn" id="tab-btn-game" onclick="switchTab('game')">🎮 Hra Pexeso</button>
+    <button type="button" class="tab-btn active" id="tab-btn-pass" onclick="switchMainTab('pass')">🗺️ Pátrací pas</button>
+    <button type="button" class="tab-btn" id="tab-btn-games" onclick="switchMainTab('games')">🎮 Záchranárske hry</button>
   </div>
 </header>
 
@@ -479,20 +562,95 @@
     </div>
   </div>
 
-  <!-- KARTA 2: SAMOSTATNÁ KARTA PRE PEXESO -->
-  <div id="view-game" style="display: none;">
-    <div class="pexeso-section">
-      <div class="pexeso-title" id="px-title">🎮 ZÁCHRANÁRSKE PEXESO</div>
-      <div class="pexeso-sub" id="px-sub">Nájdi všetky dvojice hrdinov v čo najlepšom čase!</div>
+  <!-- KARTA 2: ZÁCHRANÁRSKE HRY (ROZCESTNÍK + 4 HRY) -->
+  <div id="view-games" style="display: none;">
+    
+    <!-- 1. ROZCESTNÍK (MENU) -->
+    <div id="games-menu" class="games-menu">
+      <div class="game-card-menu" onclick="openGame('pexeso')">
+        <div class="game-icon">🃏</div>
+        <div class="game-info">
+          <h3 id="m-px-title">Záchranárske Pexeso</h3>
+          <p id="m-px-desc">Nájdi všetky páry hrdinov a symbolov na čas.</p>
+        </div>
+      </div>
+      <div class="game-card-menu" onclick="openGame('call')">
+        <div class="game-icon">📞</div>
+        <div class="game-info">
+          <h3 id="m-call-title">Kto príde na pomoc?</h3>
+          <p id="m-call-desc">Otestuj sa, či správne poznáš tiesňové čísla 150, 155, 158.</p>
+        </div>
+      </div>
+      <div class="game-card-menu" onclick="openGame('gear')">
+        <div class="game-icon">🎒</div>
+        <div class="game-info">
+          <h3 id="m-gear-title">Zbaľ výbavu záchranárovo</h3>
+          <p id="m-gear-desc">Vyber do batohu len to, čo skutočný záchranár potrebuje.</p>
+        </div>
+      </div>
+      <div class="game-card-menu" onclick="openGame('fire')">
+        <div class="game-icon">🔥</div>
+        <div class="game-info">
+          <h3 id="m-fire-title">Uhas požiar!</h3>
+          <p id="m-fire-desc">Rýchlo uhas všetky plamienky predtým, než vyprší čas.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. HRA: PEXESO -->
+    <div id="game-pexeso" class="game-container">
+      <div class="game-header-row">
+        <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-1">⬅️ Späť na hry</button>
+        <div class="game-title" id="gp-title">🎮 Záchranárske Pexeso</div>
+      </div>
       <div class="pexeso-stats">
-        <div>⏱️ <span id="px-lbl-time">Čas</span>: <span id="px-time">0</span>s</div>
-        <div>🔄 <span id="px-lbl-moves">Ťahy</span>: <span id="px-moves">0</span></div>
-        <div>🏆 <span id="px-lbl-best">Rekord</span>: <span id="px-best">--</span></div>
+        <div>⏱️ <span id="px-time">0</span>s</div>
+        <div>🔄 <span id="px-moves">0</span> ťahov</div>
+        <div>🏆 <span id="px-best">--</span></div>
       </div>
       <div class="pexeso-win-msg" id="px-win"></div>
       <div class="pexeso-grid" id="px-grid"></div>
-      <button type="button" class="btn-fact" style="padding: 10px 20px; font-size: 14px;" onclick="initPexeso()" id="px-btn-restart">🔄 Nová hra</button>
+      <button type="button" class="btn-fact" onclick="initPexeso()" id="px-restart">🔄 Nová hra</button>
     </div>
+
+    <!-- 3. HRA: KTO PRÍDE NA POMOC -->
+    <div id="game-call" class="game-container">
+      <div class="game-header-row">
+        <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-2">⬅️ Späť na hry</button>
+        <div class="game-title" id="gc-title">📞 Kto príde na pomoc?</div>
+      </div>
+      <div class="game-sub" id="gc-score">Skóre: 0 / 5</div>
+      <div class="quiz-box" id="call-situation">Načítava sa situácia...</div>
+      <div class="quiz-btns" id="call-options"></div>
+    </div>
+
+    <!-- 4. HRA: ZBAĽ VÝBAVU -->
+    <div id="game-gear" class="game-container">
+      <div class="game-header-row">
+        <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-3">⬅️ Späť na hry</button>
+        <div class="game-title" id="gg-title">🎒 Zbaľ výbavu záchranára</div>
+      </div>
+      <div class="game-sub" id="gear-instruction">Ťukni na všetky predmety, ktoré patrí do hasičskej výbavy!</div>
+      <div class="quiz-box" id="gear-target-hero" style="color: #f59e0b;">Hasič Redi</div>
+      <div class="pexeso-grid" id="gear-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom: 14px;"></div>
+      <div class="pexeso-win-msg" id="gear-win" style="display:none;"></div>
+      <button type="button" class="btn-fact" onclick="initGearGame()" id="gear-restart" style="display:none;">🔄 Ďalšia výzva</button>
+    </div>
+
+    <!-- 5. HRA: UHAS POŽIAR -->
+    <div id="game-fire" class="game-container">
+      <div class="game-header-row">
+        <button type="button" class="back-menu-btn" onclick="closeGame()" id="b-menu-4">⬅️ Späť na hry</button>
+        <div class="game-title" id="gf-title">🔥 Uhas požiar!</div>
+      </div>
+      <div class="pexeso-stats">
+        <div>⏱️ <span id="fire-time">15</span>s</div>
+        <div>🧯 Uhasené: <span id="fire-score">0</span></div>
+      </div>
+      <div class="fire-grid" id="fire-grid"></div>
+      <button type="button" class="btn-fact" onclick="initFireGame()" id="fire-start-btn">▶️ Spustiť hru</button>
+    </div>
+
   </div>
 
 </div>
@@ -547,7 +705,7 @@ var DATA = {
     mainTitle: "PAS MLADÉHO ZÁCHRANÁRA",
     mainSub: "Pátracia akcia v obci",
     tabPass: "🗺️ Pátrací pas",
-    tabGame: "🎮 Hra Pexeso",
+    tabGames: "🎮 Záchranárske hry",
     trackerLbl: "Získaj tajničku: H - R - D - I - N - A",
     stWord: "Stanovište",
     btnUnlock: "Zadať kód z krabičky",
@@ -565,23 +723,34 @@ var DATA = {
     dSub: "Týmto sa udeľuje titul MLADÝ ZÁCHRANÁR",
     dText: "za úspešné zvládnutie celej záchranárskej trasy a vylúštenie tajničky:",
     dSecret: "H · R · D · I · N · A",
-    pxTitle: "🎮 ZÁCHRANÁRSKE PEXESO",
+    
+    // Názvy hier v menu
+    mPxTitle: "Záchranárske Pexeso",
+    mPxDesc: "Nájdi všetky páry hrdinov a symbolov na čas.",
+    mCallTitle: "Kto príde na pomoc?",
+    mCallDesc: "Otestuj sa, či správne poznáš tiesňové čísla 150, 155, 158.",
+    mGearTitle: "Zbaľ výbavu záchranárovo",
+    mGearDesc: "Vyber do batofu len to, čo skutočný záchranár potrebuje.",
+    mFireTitle: "Uhas požiar!",
+    mFireDesc: "Rýchlo uhas všetky plamienky predtým, než vyprší čas.",
+    backMenu: "⬅️ Späť na hry",
+
+    pxTitle: "🎮 Záchranárske Pexeso",
     pxSub: "Nájdi všetky dvojice hrdinov v čo najlepšom čase!",
-    pxTime: "Čas",
-    pxMoves: "Ťahy",
-    pxBest: "Rekord",
-    pxRestart: "🔄 Nová hra",
+    pxTime: "Čas", pxMoves: "ťahov", pxBest: "Rekord", pxRestart: "🔄 Nová hra",
     pxWin: "🎉 Výborne! Našiel si všetky dvojice za ",
+
+    gcTitle: "📞 Kto príde na pomoc?",
+    gcScore: "Skóre: ",
+    gearTitle: "🎒 Zbaľ výbavu záchranára",
+    gearInstr: "Ťukni na všetky predmety, ktoré patrí k tejto výbave:",
+    gearRestart: "🔄 Ďalšia výzva",
+    gfTitle: "🔥 Uhas požiar!",
+    fireStart: "▶️ Spustiť hru",
+
     letters: ["H", "R", "D", "I", "N", "A"],
     heroes: ["Hasič Redi", "Hasič Redi", "Záchranárka Eli", "Záchranárka Eli", "Policajt Rocky", "Policajt Rocky"],
-    titles: [
-      "Hasičské stanovište #1",
-      "Hasičské stanovište #2",
-      "Záchranárske stanovište #1",
-      "Záchranárske stanovište #2",
-      "Policajné stanovište #1",
-      "Policajné stanovište #2"
-    ],
+    titles: ["Hasičské stanovište #1", "Hasičské stanovište #2", "Záchranárske stanovište #1", "Záchranárske stanovište #2", "Policajné stanovište #1", "Policajné stanovište #2"],
     hints: [
       "Hľadaj pri hasičskej zbrojnici alebo v parku.",
       "Hľadaj na tichom mieste kalvárie, kde oddychujú pútnici.",
@@ -590,14 +759,7 @@ var DATA = {
       "Hľadaj pri bezpečnom priechode pre chodcov.",
       "Hľadaj pri obecnom úrade alebo kultúrnom dome."
     ],
-    factTitles: [
-      "Redi radí: Číslo 150 a oheň",
-      "Redi radí: Svätý Florián – patrón hasičov",
-      "Eli radí: Číslo 155 a prvá pomoc",
-      "Eli radí: Bezpečnosť pri športe",
-      "Rocky radí: Vidieť a byť videný",
-      "Rocky radí: Číslo 158 a linka 112"
-    ],
+    factTitles: ["Redi radí: Číslo 150 a oheň", "Redi radí: Svätý Florián – patrón hasičov", "Eli radí: Číslo 155 a prvá pomoc", "Eli radí: Bezpečnosť pri športe", "Rocky radí: Vidieť a byť videný", "Rocky radí: Číslo 158 a linka 112"],
     factBodies: [
       "Vedel si, že hasičské auto vezie tisíce litrov vody? Číslo 150 si zapamätáš ľahko – nula na konci pripomína stočenú hadicu!",
       "Vieš, kto je ochrancom všetkých hasičov? Je to svätý Florián! Často ho zobrazujú ako rímskeho vojaka s prilbou a zástavou, ktorý leje vodu z vedra na horiaci dom. Práve on chráni obce a ľudí pred ničivým ohňom.",
@@ -611,7 +773,7 @@ var DATA = {
     mainTitle: "IFJÚ MEGMENTŐ ÚTLEVÉL",
     mainSub: "Községi nyomozós kaland",
     tabPass: "🗺️ Útlevél",
-    tabGame: "🎮 Memóriajáték",
+    tabGames: "🎮 Záchranárske hry",
     trackerLbl: "Gyűjtsd össze a szót: B - Á - T - O - R - !",
     stWord: "Állomás",
     btnUnlock: "Kód megadása a dobozról",
@@ -629,23 +791,33 @@ var DATA = {
     dSub: "Ezennel ünnepélyesen IFJÚ MEGMENTŐVÉ avatjuk",
     dText: "aki sikeresen teljesítette a községi nyomozós mentőútvonalat, és kirakta a rejtvényt:",
     dSecret: "B · Á · T · O · R · !",
-    pxTitle: "🎮 MEGMENTŐ MEMÓRIAJÁTÉK",
-    pxSub: "Találd meg az összes párt a legjobb idő alatt!",
-    pxTime: "Idő",
-    pxMoves: "Lépés",
-    pxBest: "Rekord",
-    pxRestart: "🔄 Új játék",
+
+    mPxTitle: "Mentő Pexeso",
+    mPxDesc: "Találd meg az összes hős párt a legjobb idő alatt.",
+    mCallTitle: "Ki jön a segítségre?",
+    mCallDesc: "Teszteld, hogy ismered-e a 150, 155, 158 segélyhívókat.",
+    mGearTitle: "Ments felszerelést",
+    mGearDesc: "Válaszd ki a zöld hátizsákba illő felszereléseket.",
+    mFireTitle: "Oltsd el a tüzet!",
+    mFireDesc: "Gyorsan oltsd el az összes lángot, mielőtt lejár az idő.",
+    backMenu: "⬅️ Vissza a játékokhoz",
+
+    pxTitle: "🎮 Mentő Pexeso",
+    pxSub: "Találd meg az összes hős párt a legjobb idő alatt!",
+    pxTime: "Idő", pxMoves: "lépés", pxBest: "Rekord", pxRestart: "🔄 Új játék",
     pxWin: "🎉 Nagyszerű! Megtaláltad az összes párt, időd: ",
+
+    gcTitle: "📞 Ki jön a segítségre?",
+    gcScore: "Pontszám: ",
+    gearTitle: "🎒 Ments felszerelést",
+    gearInstr: "Kattints azokra a tárgyakra, amelyek ehhez a hősffhöz tartoznak:",
+    gearRestart: "🔄 Következő feladat",
+    gfTitle: "🔥 Oltsd el a tüzet!",
+    fireStart: "▶️ Játék indítása",
+
     letters: ["B", "Á", "T", "O", "R", "!"],
     heroes: ["Redi, a tűzoltó", "Redi, a tűzoltó", "Eli, a mentős", "Eli, a mentős", "Rocky, a rendőr", "Rocky, a rendőr"],
-    titles: [
-      "Tűzoltó állomás #1",
-      "Tűzoltó állomás #2",
-      "Mentős állomás #1",
-      "Mentős állomás #2",
-      "Rendőrségi állomás #1",
-      "Rendőrségi állomás #2"
-    ],
+    titles: ["Tűzoltó állomás #1", "Tűzoltó állomás #2", "Mentős állomás #1", "Mentős állomás #2", "Rendőrségi állomás #1", "Rendőrségi állomás #2"],
     hints: [
       "Keresd a tűzoltószertárnál vagy a parkban.",
       "Keresd a Kálvária csendes, békés részén.",
@@ -654,14 +826,7 @@ var DATA = {
       "Keresd a biztonságos gyalogátkelőnél.",
       "Keresd a községi hivatalnál vagy a kultúrháznál."
     ],
-    factTitles: [
-      "Redi tanácsa: A 150-es szám és a tűz",
-      "Redi tanácsa: Szent Flórián, a tűzoltók védőszentje",
-      "Eli tanácsa: A 155-ös szám",
-      "Eli tanácsa: Bukósisak és víz",
-      "Rocky tanácsa: Látni és látszani",
-      "Rocky tanácsa: A 158-as és a 112-es szám"
-    ],
+    factTitles: ["Redi tanácsa: A 150-es szám és a tűz", "Redi tanácsa: Szent Flórián, a tűzoltók védőszentje", "Eli tanácsa: A 155-ös szám", "Eli tanácsa: Bukósisak és víz", "Rocky tanácsa: Látni és látszani", "Rocky tanácsa: A 158-as és a 112-es szám"],
     factBodies: [
       "Tudtad, hogy a tűzoltóautó több ezer liter vizet szállít magával? A 150-es szám végén lévő nulla egy feltekert tömlőre emlékeztet!",
       "Tudod, ki vigyáz a tűzoltókra és véd a tűzvésztől? Szent Flórián! Leggyakrabban római katonaként ábrázolják sisakban és zászlóval, amint egy dézsa vízzel épp tüzet olt.",
@@ -673,15 +838,7 @@ var DATA = {
   }
 };
 
-var VALID_KEYS = [
-  ["H", "B"],
-  ["R", "Á", "A"],
-  ["D", "T"],
-  ["I", "O", "Ó"],
-  ["N", "R"],
-  ["A", "!"]
-];
-
+var VALID_KEYS = [["H", "B"], ["R", "Á", "A"], ["D", "T"], ["I", "O", "Ó"], ["N", "R"], ["A", "!"]];
 var lang = "sk";
 var unlocked = [];
 var currentSt = 1;
@@ -693,22 +850,23 @@ try {
   if (su) unlocked = JSON.parse(su);
 } catch (e) {}
 
-function switchTab(tabName) {
+function switchMainTab(tabName) {
   var passView = document.getElementById("view-pass");
-  var gameView = document.getElementById("view-game");
-  var passBtn  = document.getElementById("tab-btn-pass");
-  var gameBtn  = document.getElementById("tab-btn-game");
+  var gamesView = document.getElementById("view-games");
+  var passBtn = document.getElementById("tab-btn-pass");
+  var gamesBtn = document.getElementById("tab-btn-games");
 
-  if (tabName === "game") {
+  if (tabName === "games") {
     passView.style.display = "none";
-    gameView.style.display = "block";
+    gamesView.style.display = "block";
     passBtn.className = "tab-btn";
-    gameBtn.className = "tab-btn active";
+    gamesBtn.className = "tab-btn active";
+    closeGame(); // Vždy otvorí menu hier
   } else {
     passView.style.display = "block";
-    gameView.style.display = "none";
+    gamesView.style.display = "none";
     passBtn.className = "tab-btn active";
-    gameBtn.className = "tab-btn";
+    gamesBtn.className = "tab-btn";
   }
 }
 
@@ -725,7 +883,7 @@ function updateUI() {
   document.getElementById("main-title").textContent = d.mainTitle;
   document.getElementById("main-sub").textContent = d.mainSub;
   document.getElementById("tab-btn-pass").textContent = d.tabPass;
-  document.getElementById("tab-btn-game").textContent = d.tabGame;
+  document.getElementById("tab-btn-games").textContent = d.tabGames;
   document.getElementById("tracker-lbl").textContent = d.trackerLbl;
   document.getElementById("modal-hdr").textContent = d.modalHdr;
   document.getElementById("btn-cancel").textContent = d.btnCancel;
@@ -735,13 +893,29 @@ function updateUI() {
   document.getElementById("vic-desc").textContent = d.vicDesc;
   document.getElementById("vic-btn").textContent = d.vicBtn;
 
-  // Pexeso preklady
-  document.getElementById("px-title").textContent = d.pxTitle;
-  document.getElementById("px-sub").textContent = d.pxSub;
-  document.getElementById("px-lbl-time").textContent = d.pxTime;
-  document.getElementById("px-lbl-moves").textContent = d.pxMoves;
-  document.getElementById("px-lbl-best").textContent = d.pxBest;
-  document.getElementById("px-btn-restart").textContent = d.pxRestart;
+  // Preklady menu hier
+  document.getElementById("m-px-title").textContent = d.mPxTitle;
+  document.getElementById("m-px-desc").textContent = d.mPxDesc;
+  document.getElementById("m-call-title").textContent = d.mCallTitle;
+  document.getElementById("m-call-desc").textContent = d.mCallDesc;
+  document.getElementById("m-gear-title").textContent = d.mGearTitle;
+  document.getElementById("m-gear-desc").textContent = d.mGearDesc;
+  document.getElementById("m-fire-title").textContent = d.mFireTitle;
+  document.getElementById("m-fire-desc").textContent = d.mFireDesc;
+
+  document.getElementById("b-menu-1").textContent = d.backMenu;
+  document.getElementById("b-menu-2").textContent = d.backMenu;
+  document.getElementById("b-menu-3").textContent = d.backMenu;
+  document.getElementById("b-menu-4").textContent = d.backMenu;
+
+  document.getElementById("gp-title").textContent = d.pxTitle;
+  document.getElementById("px-restart").textContent = d.pxRestart;
+  document.getElementById("gc-title").textContent = d.gcTitle;
+  document.getElementById("gg-title").textContent = d.gearTitle;
+  document.getElementById("gear-instruction").textContent = d.gearInstr;
+  document.getElementById("gear-restart").textContent = d.gearRestart;
+  document.getElementById("gf-title").textContent = d.gfTitle;
+  document.getElementById("fire-start-btn").textContent = d.fireStart;
 
   for (var i = 0; i < 6; i++) {
     var stNum = i + 1;
@@ -783,9 +957,7 @@ function askCode(n) {
   document.getElementById("code-field").focus();
 }
 
-function closeCodeModal() {
-  document.getElementById("code-modal").className = "overlay";
-}
+function closeCodeModal() { document.getElementById("code-modal").className = "overlay"; }
 
 function checkCode() {
   var val = document.getElementById("code-field").value.replace(/\s+/g, "").toUpperCase();
@@ -813,9 +985,7 @@ function showFact(n) {
   document.getElementById("fact-modal").className = "overlay show";
 }
 
-function closeFactModal() {
-  document.getElementById("fact-modal").className = "overlay";
-}
+function closeFactModal() { document.getElementById("fact-modal").className = "overlay"; }
 
 function openDiploma() {
   var d = DATA[lang];
@@ -828,9 +998,7 @@ function openDiploma() {
   document.getElementById("dip-modal").className = "overlay show";
 }
 
-function closeDiploma() {
-  document.getElementById("dip-modal").className = "overlay";
-}
+function closeDiploma() { document.getElementById("dip-modal").className = "overlay"; }
 
 function resetProgress() {
   if (confirm(lang === "hu" ? "Biztosan törölni szeretnéd az eddigi haladást?" : "Naozaj chceš vymazať doterajší postup a začať odznova?")) {
@@ -853,7 +1021,7 @@ function checkQR() {
           unlocked.push(num);
           try { localStorage.setItem("unlocked_stations", JSON.stringify(unlocked)); } catch (e) {}
         }
-        switchTab("pass");
+        switchMainTab("pass");
         updateUI();
         showFact(num);
       }
@@ -861,7 +1029,39 @@ function checkQR() {
   }
 }
 
-/* LOGIKA PEXESA */
+/* ROZCESTNÍK NAVIGÁCIA HIER */
+function openGame(gameName) {
+  document.getElementById("games-menu").style.display = "none";
+  document.getElementById("game-pexeso").style.display = "none";
+  document.getElementById("game-call").style.display = "none";
+  document.getElementById("game-gear").style.display = "none";
+  document.getElementById("game-fire").style.display = "none";
+
+  if (gameName === "pexeso") {
+    document.getElementById("game-pexeso").style.display = "block";
+    initPexeso();
+  } else if (gameName === "call") {
+    document.getElementById("game-call").style.display = "block";
+    initCallGame();
+  } else if (gameName === "gear") {
+    document.getElementById("game-gear").style.display = "block";
+    initGearGame();
+  } else if (gameName === "fire") {
+    document.getElementById("game-fire").style.display = "block";
+    // Čaká na kliknutí Start
+  }
+}
+
+function closeGame() {
+  if (fireTimer) clearInterval(fireTimer);
+  document.getElementById("games-menu").style.display = "grid";
+  document.getElementById("game-pexeso").style.display = "none";
+  document.getElementById("game-call").style.display = "none";
+  document.getElementById("game-gear").style.display = "none";
+  document.getElementById("game-fire").style.display = "none";
+}
+
+/* 1. LOGIKA PEXESO */
 var PX_ITEMS = [
   { id: "redi", html: '<img src="Redi.png" alt="Redi">' },
   { id: "eli",  html: '<img src="ELI.png" alt="Eli">' },
@@ -870,16 +1070,7 @@ var PX_ITEMS = [
   { id: "fire", html: '🚒' },
   { id: "med",  html: '🚑' }
 ];
-
-var pxDeck = [];
-var pxFirst = null;
-var pxSecond = null;
-var pxLock = false;
-var pxMatches = 0;
-var pxMoves = 0;
-var pxSeconds = 0;
-var pxTimer = null;
-var pxStarted = false;
+var pxDeck = [], pxFirst = null, pxSecond = null, pxLock = false, pxMatches = 0, pxMoves = 0, pxSeconds = 0, pxTimer = null, pxStarted = false;
 
 function updateBestDisplay() {
   try {
@@ -890,31 +1081,17 @@ function updateBestDisplay() {
 
 function initPexeso() {
   if (pxTimer) clearInterval(pxTimer);
-  pxTimer = null;
-  pxStarted = false;
-  pxSeconds = 0;
-  pxMoves = 0;
-  pxMatches = 0;
-  pxFirst = null;
-  pxSecond = null;
-  pxLock = false;
-
+  pxTimer = null; pxStarted = false; pxSeconds = 0; pxMoves = 0; pxMatches = 0; pxFirst = null; pxSecond = null; pxLock = false;
   document.getElementById("px-time").textContent = "0";
   document.getElementById("px-moves").textContent = "0";
   document.getElementById("px-win").style.display = "none";
   updateBestDisplay();
 
   pxDeck = [];
-  for (var i = 0; i < PX_ITEMS.length; i++) {
-    pxDeck.push(PX_ITEMS[i]);
-    pxDeck.push(PX_ITEMS[i]);
-  }
-
+  for (var i = 0; i < PX_ITEMS.length; i++) { pxDeck.push(PX_ITEMS[i]); pxDeck.push(PX_ITEMS[i]); }
   for (var j = pxDeck.length - 1; j > 0; j--) {
     var r = Math.floor(Math.random() * (j + 1));
-    var tmp = pxDeck[j];
-    pxDeck[j] = pxDeck[r];
-    pxDeck[r] = tmp;
+    var tmp = pxDeck[j]; pxDeck[j] = pxDeck[r]; pxDeck[r] = tmp;
   }
 
   var grid = document.getElementById("px-grid");
@@ -930,38 +1107,24 @@ function initPexeso() {
 }
 
 function flipCard(el) {
-  if (pxLock) return;
-  if (el.className.indexOf("flipped") !== -1 || el.className.indexOf("matched") !== -1) return;
-
+  if (pxLock || el.className.indexOf("flipped") !== -1 || el.className.indexOf("matched") !== -1) return;
   if (!pxStarted) {
     pxStarted = true;
-    pxTimer = setInterval(function() {
-      pxSeconds++;
-      document.getElementById("px-time").textContent = pxSeconds;
-    }, 1000);
+    pxTimer = setInterval(function() { pxSeconds++; document.getElementById("px-time").textContent = pxSeconds; }, 1000);
   }
-
   var idx = parseInt(el.getAttribute("data-idx"), 10);
   var item = pxDeck[idx];
   el.className = "p-card flipped";
   el.innerHTML = item.html;
 
-  if (!pxFirst) {
-    pxFirst = { el: el, id: item.id };
-    return;
-  }
-
+  if (!pxFirst) { pxFirst = { el: el, id: item.id }; return; }
   pxSecond = { el: el, id: item.id };
   pxMoves++;
   document.getElementById("px-moves").textContent = pxMoves;
 
   if (pxFirst.id === pxSecond.id) {
-    pxFirst.el.className = "p-card matched";
-    pxSecond.el.className = "p-card matched";
-    pxFirst = null;
-    pxSecond = null;
-    pxMatches++;
-
+    pxFirst.el.className = "p-card matched"; pxSecond.el.className = "p-card matched";
+    pxFirst = null; pxSecond = null; pxMatches++;
     if (pxMatches === PX_ITEMS.length) {
       clearInterval(pxTimer);
       var winEl = document.getElementById("px-win");
@@ -969,23 +1132,177 @@ function flipCard(el) {
       winEl.style.display = "block";
       try {
         var prev = localStorage.getItem("px_best_time");
-        if (!prev || pxSeconds < parseInt(prev, 10)) {
-          localStorage.setItem("px_best_time", pxSeconds);
-          updateBestDisplay();
-        }
+        if (!prev || pxSeconds < parseInt(prev, 10)) { localStorage.setItem("px_best_time", pxSeconds); updateBestDisplay(); }
       } catch (e) {}
     }
   } else {
     pxLock = true;
     setTimeout(function() {
-      pxFirst.el.className = "p-card";
-      pxFirst.el.innerHTML = "❓";
-      pxSecond.el.className = "p-card";
-      pxSecond.el.innerHTML = "❓";
-      pxFirst = null;
-      pxSecond = null;
-      pxLock = false;
+      pxFirst.el.className = "p-card"; pxFirst.el.innerHTML = "❓";
+      pxSecond.el.className = "p-card"; pxSecond.el.innerHTML = "❓";
+      pxFirst = null; pxSecond = null; pxLock = false;
     }, 750);
+  }
+}
+
+/* 2. LOGIKA: KTO PRÍDE NA POMOC (KVÍZ) */
+var CALL_DATA_SK = [
+  { q: "🔥 Hori lístie a suchá tráva v parku!", ans: [ {t: "150 - Hasiči", correct: true}, {t: "155 - Záchranári", correct: false}, {t: "158 - Policia", correct: false} ] },
+  { q: "🚑 Kamarát spadol z bicykla a krváca mu koleno!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: true}, {t: "158 - Policia", correct: false} ] },
+  { q: "🚨 Niekto sa ti snaží ukradnúť bicykel pred obchodom!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: false}, {t: "158 - Polícia", correct: true} ] },
+  { q: "🏠 Z komína domu sa valí čierny dym a plamene!", ans: [ {t: "150 - Hasiči", correct: true}, {t: "155 - Záchranári", correct: false}, {t: "158 - Policia", correct: false} ] },
+  { q: "🏥 Pani na ulici omdlela a nedýcha!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: true}, {t: "158 - Policia", correct: false} ] }
+];
+var CALL_DATA_HU = [
+  { q: "🔥 Tűz van a parkban, ég a száraz fű!", ans: [ {t: "150 - Tűzoltók", correct: true}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: false} ] },
+  { q: "🚑 A barátod leesett a bicikliről és erősen vérzik a térde!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: true}, {t: "158 - Rendőrség", correct: false} ] },
+  { q: "🚨 Valaki el akarja lopni a kerékpárodat a bolt elől!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: true} ] },
+  { q: "🏠 Fekete füst és lángok csapnak ki a ház tetejéből!", ans: [ {t: "150 - Tűzoltók", correct: true}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: false} ] },
+  { q: "🏥 Egy néni rosszul lett az utcán és eszméletét vesztette!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: true}, {t: "158 - Rendőrség", correct: false} ] }
+];
+
+var callIdx = 0, callScore = 0;
+function initCallGame() {
+  callIdx = 0; callScore = 0;
+  loadCallQuestion();
+}
+function loadCallQuestion() {
+  var dataset = (lang === "hu") ? CALL_DATA_HU : CALL_DATA_SK;
+  document.getElementById("gc-score").textContent = DATA[lang].gcScore + callScore + " / " + dataset.length;
+  if (callIdx >= dataset.length) {
+    document.getElementById("call-situation").textContent = (lang === "hu" ? "🎉 Szép munka! Minden helyzetet megoldottál!" : "🎉 Výborne! Zvládol si všetky núdzové situácie!");
+    document.getElementById("call-options").innerHTML = '<button type="button" class="btn-fact" onclick="initCallGame()">🔄 Hrať znova</button>';
+    return;
+  }
+  var qObj = dataset[callIdx];
+  document.getElementById("call-situation").textContent = qObj.q;
+  var optDiv = document.getElementById("call-options");
+  optDiv.innerHTML = "";
+  for (var i = 0; i < qObj.ans.length; i++) {
+    var ans = qObj.ans[i];
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "quiz-opt-btn";
+    btn.textContent = ans.t;
+    btn.onclick = (function(correct) {
+      return function() {
+        if (correct) { callScore++; alert(lang === "hu" ? "✅ Helyes!" : "✅ Správne!"); }
+        else { alert(lang === "hu" ? "❌ Nem jó választás!" : "❌ Nesprávne!"); }
+        callIdx++;
+        loadCallQuestion();
+      };
+    })(ans.correct);
+    optDiv.appendChild(btn);
+  }
+}
+
+/* 3. LOGIKA: ZBAĽ VÝBAVU */
+var GEAR_ITEMS = [
+  { name: "🧯 Hasiaci prístroj", fire: true, med: false, pol: false },
+  { name: "🪖 Prilba", fire: true, med: true, pol: true },
+  { name: "🩹 Náplasť", fire: false, med: true, pol: false },
+  { name: "🩺 Fonendoskop", fire: false, med: true, pol: false },
+  { name: "🔗 Putá", fire: false, med: false, pol: true },
+  { name: "🚨 Slučka/Značka", fire: false, med: false, pol: true },
+  { name: "🍦 Zmrzlina", fire: false, med: false, pol: false },
+  { name: "⚽ Futbalová lopta", fire: false, med: false, pol: false }
+];
+function initGearGame() {
+  var grid = document.getElementById("gear-grid");
+  grid.innerHTML = "";
+  document.getElementById("gear-win").style.display = "none";
+  document.getElementById("gear-restart").style.display = "none";
+
+  // Vyberie náhodné 6 položiek
+  var shuffled = GEAR_ITEMS.slice().sort(function() { return 0.5 - Math.random(); }).slice(0, 6);
+  var neededCount = 0;
+  for (var i = 0; i < shuffled.length; i++) {
+    if (shuffled[i].fire) neededCount++;
+  }
+  document.getElementById("gear-target-hero").textContent = (lang === "hu" ? "Hős: Redi (Tűzoltó felszerelés)" : "Hľadaj výbavu pre: Hasič Redi");
+
+  var found = 0;
+  for (var j = 0; j < shuffled.length; j++) {
+    var item = shuffled[j];
+    var cell = document.createElement("div");
+    cell.className = "p-card";
+    cell.style.fontSize = "14px";
+    cell.style.background = "#0b1329";
+    cell.innerHTML = item.name;
+    cell.onclick = (function(isFire, el) {
+      return function() {
+        if (el.style.opacity === "0.4") return;
+        if (isFire) {
+          el.style.background = "#064e3b";
+          el.style.borderColor = "#10b981";
+          found++;
+          if (found === neededCount) {
+            var w = document.getElementById("gear-win");
+            w.textContent = (lang === "hu" ? "🎉 Siker! Minden felszerelés a helyén!" : "🎉 Úspech! Všetka výbava je v batohu!");
+            w.style.display = "block";
+            document.getElementById("gear-restart").style.display = "inline-block";
+          }
+        } else {
+          el.style.background = "#7f1d1d";
+          el.style.borderColor = "#ef4444";
+          alert(lang === "hu" ? "❌ Ez nem kell a tűzoltónak!" : "❌ Toto hasič nepotrebuje do výbavy!");
+        }
+      };
+    })(item.fire, cell);
+    grid.appendChild(cell);
+  }
+}
+
+/* 4. LOGIKA: UHAS POŽIAR */
+var fireTimer = null, fireSeconds = 15, fireScoreCount = 0;
+function initFireGame() {
+  if (fireTimer) clearInterval(fireTimer);
+  fireSeconds = 15; fireScoreCount = 0;
+  document.getElementById("fire-time").textContent = fireSeconds;
+  document.getElementById("fire-score").textContent = fireScoreCount;
+  document.getElementById("fire-start-btn").style.display = "none";
+
+  renderFireGrid();
+  fireTimer = setInterval(function() {
+    fireSeconds--;
+    document.getElementById("fire-time").textContent = fireSeconds;
+    if (fireSeconds <= 0) {
+      clearInterval(fireTimer);
+      alert((lang === "hu" ? "⏰ Idő lejárt! Uhásolt lángok száma: " : "⏰ Čas vypršal! Počet uhasených plamienkov: ") + fireScoreCount);
+      document.getElementById("fire-start-btn").style.display = "inline-block";
+    }
+  }, 1000);
+}
+
+function renderFireGrid() {
+  var grid = document.getElementById("fire-grid");
+  grid.innerHTML = "";
+  // 9 buniek, náhodne 3 plamene
+  var fireIndices = [];
+  while(fireIndices.length < 3) {
+    var r = Math.floor(Math.random() * 9);
+    if (fireIndices.indexOf(r) === -1) fireIndices.push(r);
+  }
+
+  for (var i = 0; i < 9; i++) {
+    var cell = document.createElement("div");
+    cell.className = "fire-cell";
+    if (fireIndices.indexOf(i) !== -1) {
+      cell.innerHTML = "🔥";
+      cell.onclick = (function(c) {
+        return function() {
+          if (fireSeconds > 0 && c.innerHTML === "🔥") {
+            c.innerHTML = "💧";
+            fireScoreCount++;
+            document.getElementById("fire-score").textContent = fireScoreCount;
+            setTimeout(function() { renderFireGrid(); }, 300);
+          }
+        };
+      })(cell);
+    } else {
+      cell.innerHTML = "🧯";
+    }
+    grid.appendChild(cell);
   }
 }
 
