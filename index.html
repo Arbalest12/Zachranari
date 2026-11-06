@@ -758,7 +758,25 @@
 
 
 
-  /* BLUDISKO / NAVIGÁCIA AUTA */
+  /* BLUDISKO S POZADÍM SCÉNERIE */
+
+  .maze-scenery-wrap {
+
+    background: linear-gradient(rgba(11, 19, 41, 0.85), rgba(11, 19, 41, 0.85)), url('Redi.png');
+
+    background-size: cover;
+
+    background-position: center;
+
+    border: 2px solid #3b82f6;
+
+    border-radius: 14px;
+
+    padding: 14px;
+
+    margin-bottom: 14px;
+
+  }
 
   .maze-grid {
 
@@ -768,9 +786,9 @@
 
     gap: 6px;
 
-    max-width: 320px;
+    max-width: 300px;
 
-    margin: 0 auto 14px auto;
+    margin: 0 auto;
 
   }
 
@@ -778,7 +796,7 @@
 
     aspect-ratio: 1 / 1;
 
-    background: #1e293b;
+    background: rgba(15, 23, 42, 0.9);
 
     border: 1px solid #334155;
 
@@ -828,11 +846,9 @@
 
   }
 
-  .maze-btn:active { background: #1d4ed8; }
 
 
-
-  /* VLASTNÉ VYSKAKOVACIE OKNÁ (MODALS) */
+  /* MODALS */
 
   .overlay {
 
@@ -988,8 +1004,6 @@
 
 
 
-  <!-- HLAVNÉ ZÁLOŽKY -->
-
   <div class="nav-tabs">
 
     <button type="button" class="tab-btn active" id="tab-btn-pass" onclick="switchMainTab('pass')">🗺️ Pátrací pas</button>
@@ -1012,7 +1026,7 @@
 
     <div class="tracker">
 
-      <div class="tracker-title" id="tracker-lbl">Získaj tajničku: H - R - D - I - N - A</div>
+      <div class="tracker-title" id="tracker-lbl">Odomkni všetky stanovištia a získaj tajničku!</div>
 
       <div class="slots">
 
@@ -1058,8 +1072,6 @@
 
     <div id="cards-container">
 
-      <!-- Stanovište 1 -->
-
       <div class="card fire" id="card-1">
 
         <div class="card-top"><span id="st-lbl-1">Stanovište #1</span><span style="color:#f87171" id="hero-1">Hasič Redi</span></div>
@@ -1079,8 +1091,6 @@
       </div>
 
 
-
-      <!-- Stanovište 2 -->
 
       <div class="card fire" id="card-2">
 
@@ -1102,8 +1112,6 @@
 
 
 
-      <!-- Stanovište 3 -->
-
       <div class="card med" id="card-3">
 
         <div class="card-top"><span id="st-lbl-3">Stanovište #3</span><span style="color:#34d399" id="hero-3">Záchranárka Eli</span></div>
@@ -1123,8 +1131,6 @@
       </div>
 
 
-
-      <!-- Stanovište 4 -->
 
       <div class="card med" id="card-4">
 
@@ -1146,8 +1152,6 @@
 
 
 
-      <!-- Stanovište 5 -->
-
       <div class="card pol" id="card-5">
 
         <div class="card-top"><span id="st-lbl-5">Stanovište #5</span><span style="color:#60a5fa" id="hero-5">Policajt Rocky</span></div>
@@ -1167,8 +1171,6 @@
       </div>
 
 
-
-      <!-- Stanovište 6 -->
 
       <div class="card pol" id="card-6">
 
@@ -1206,10 +1208,6 @@
 
   <div id="view-games" style="display: none;">
 
-    
-
-    <!-- ROZCESTNÍK (5 HIER) -->
-
     <div id="games-menu" class="games-menu">
 
       <div class="game-card-menu" onclick="openGame('pexeso')">
@@ -1234,7 +1232,7 @@
 
           <h3 id="m-call-title">Kto príde na pomoc?</h3>
 
-          <p id="m-call-desc">Otestuj sa v 10 zaujímavých situáciách z praxe.</p>
+          <p id="m-call-desc">Otestuj sa v náhodných situáciách (výber z 25 otázok).</p>
 
         </div>
 
@@ -1318,7 +1316,7 @@
 
 
 
-    <!-- HRA 2: KVÍZ (10 OTÁZOK) -->
+    <!-- HRA 2: KVÍZ -->
 
     <div id="game-call" class="game-container">
 
@@ -1330,7 +1328,7 @@
 
       </div>
 
-      <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 10px;" id="gc-score">Otázka: 1 / 10</div>
+      <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 10px;" id="gc-score">Otázka: 1 / 5</div>
 
       <div class="quiz-box" id="call-situation">Načítava sa...</div>
 
@@ -1340,7 +1338,7 @@
 
 
 
-    <!-- HRA 3: ČO PATRÍ DO VOZIDLA (5 ÚROVNÍ) -->
+    <!-- HRA 3: ČO PATRÍ DO VOZIDLA -->
 
     <div id="game-gear" class="game-container">
 
@@ -1396,7 +1394,7 @@
 
 
 
-    <!-- HRA 5: NAVIGUJ ZÁSAH (BLUDISKO) -->
+    <!-- HRA 5: NAVIGUJ ZÁSAH (BLUDISKO S POZADÍM SCÉNERIE) -->
 
     <div id="game-maze" class="game-container">
 
@@ -1408,9 +1406,17 @@
 
       </div>
 
-      <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 8px;" id="maze-instruction">Dostaň hasičské auto (🚒) k domu s ohňom (🔥) cez cestu!</div>
+      <div style="font-size: 13px; color: #cbd5e1; margin-bottom: 10px;" id="maze-instruction">Dostaň hasičské auto (🚒) k domu s ohňom (🔥) cez cestu!</div>
 
-      <div class="maze-grid" id="maze-grid"></div>
+      
+
+      <div class="maze-scenery-wrap">
+
+        <div class="maze-grid" id="maze-grid"></div>
+
+      </div>
+
+
 
       <div class="maze-controls">
 
@@ -1442,7 +1448,7 @@
 
 
 
-<!-- VLASTNÉ GRAFICKÉ MODAL OKNO MIESTO ALERTU -->
+<!-- MODALS -->
 
 <div class="overlay" id="msg-modal">
 
@@ -1461,8 +1467,6 @@
 </div>
 
 
-
-<!-- POPUP: ZADANIE KÓDU -->
 
 <div class="overlay" id="code-modal">
 
@@ -1486,8 +1490,6 @@
 
 
 
-<!-- POPUP: ZAUJÍMAVOSŤ -->
-
 <div class="overlay" id="fact-modal">
 
   <div class="popup">
@@ -1505,8 +1507,6 @@
 </div>
 
 
-
-<!-- POPUP: DIPLOM -->
 
 <div class="overlay" id="dip-modal">
 
@@ -1551,8 +1551,6 @@
 
 
 <script>
-
-/* JEDNODUCHÝ ZVUKOVÝ GENERÁTOR (WEB AUDIO API) */
 
 var audioCtx = null;
 
@@ -1624,7 +1622,7 @@ var DATA = {
 
     tabGames: "🎮 Záchranárske hry",
 
-    trackerLbl: "Získaj tajničku: H - R - D - I - N - A",
+    trackerLbl: "Odomkni všetky stanovištia a získaj tajničku!",
 
     stWord: "Stanovište",
 
@@ -1666,7 +1664,7 @@ var DATA = {
 
     mCallTitle: "Kto príde na pomoc?",
 
-    mCallDesc: "Otestuj sa v 10 zaujímavých situáciách z praxe.",
+    mCallDesc: "Otestuj sa v náhodných situáciách (výber z balíka otázok).",
 
     mGearTitle: "Čo patrí do vozidla?",
 
@@ -1726,8 +1724,6 @@ var DATA = {
 
       "Hľadaj pri športovom areáli alebo detskom ihrisku.",
 
-      "Hľadaj pri bezpečnom priechode pre chodcov.",
-
       "Hľadaj pri obecnom úrade alebo kultúrnom dome."
 
     ],
@@ -1762,7 +1758,7 @@ var DATA = {
 
     tabGames: "🎮 Játékok",
 
-    trackerLbl: "Gyűjtsd össze a szót: B - Á - T - O - R - !",
+    trackerLbl: "Nyisd meg az összes állomást és gyűjtsd össze a szót!",
 
     stWord: "Állomás",
 
@@ -1784,7 +1780,7 @@ var DATA = {
 
     vicTitle: "MINDEN KÓD MEGTALÁLVA!",
 
-    vicDesc: "Sikeresen megfejtetted a BÁTOR! szót és teljesítetted az útvonalat!",
+    vicDesc: "Sikeresen megfejtetted a rejtvényt és teljesítetted az útvonalat!",
 
     vicBtn: "🎖️ Oklevél megnyitása",
 
@@ -1804,7 +1800,7 @@ var DATA = {
 
     mCallTitle: "Ki jön a segítségre?",
 
-    mCallDesc: "Teszteld tudásodat 10 valós helyzetben.",
+    mCallDesc: "Teszteld tudásodat véletlenszerű helyzetekben.",
 
     mGearTitle: "Mi tartozik a járműhöz?",
 
@@ -2129,8 +2125,6 @@ function updateUI() {
 }
 
 
-
-/* VLASTNÉ GRAFICKÉ MODAL OKNO */
 
 function showMsg(title, text, icon, theme) {
 
@@ -2568,138 +2562,6 @@ function flipCard(el) {
 
 
 
-/* 2. KVÍZ (10 OTÁZOK) */
-
-var CALL_DATA_SK = [
-
-  { q: "🔥 Horí lístie a suchá tráva v parku!", ans: [ {t: "150 - Hasiči", correct: true}, {t: "155 - Záchranári", correct: false}, {t: "158 - Polícia", correct: false} ] },
-
-  { q: "🚑 Kamarát spadol z bicykla a silno mu krváca koleno!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: true}, {t: "158 - Polícia", correct: false} ] },
-
-  { q: "🚨 Niekto ti chce ukradnúť bicykel pred obchodom!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: false}, {t: "158 - Polícia", correct: true} ] },
-
-  { q: "🏠 Z komína domu sa valí čierny dym a šľahajú plamene!", ans: [ {t: "150 - Hasiči", correct: true}, {t: "155 - Záchranári", correct: false}, {t: "158 - Polícia", correct: false} ] },
-
-  { q: "🏥 Staršia pani na ulici odpadla a nereaguje!", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: true}, {t: "158 - Polícia", correct: false} ] },
-
-  { q: "🚒 Ktoré telefónne číslo patrí hasičom?", ans: [ {t: "150", correct: true}, {t: "155", correct: false}, {t: "158", correct: false} ] },
-
-  { q: "⚡ Po búrke spadol elektrický stĺp a na ceste iskria káble:", ans: [ {t: "150 - Hasiči", correct: true}, {t: "155 - Záchranári", correct: false}, {t: "158 - Polícia", correct: false} ] },
-
-  { q: "🚗 Na križovatke niekto poškodil dopravnú značku a ušiel:", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: false}, {t: "158 - Polícia", correct: true} ] },
-
-  { q: "🐝 Dieťa uštipol sršeň a začína sa mu ťažko dýchať:", ans: [ {t: "150 - Hasiči", correct: false}, {t: "155 - Záchranári", correct: true}, {t: "158 - Polícia", correct: false} ] },
-
-  { q: "🌍 Univerzálne číslo pre všetky záchranné zložky v Európe je:", ans: [ {t: "112", correct: true}, {t: "150", correct: false}, {t: "155", correct: false} ] }
-
-];
-
-var CALL_DATA_HU = [
-
-  { q: "🔥 Tűz van a parkban, ég a száraz fű!", ans: [ {t: "150 - Tűzoltók", correct: true}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: false} ] },
-
-  { q: "🚑 A barátod leesett a bicikliről és erősen vérzik a térde!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: true}, {t: "158 - Rendőrség", correct: false} ] },
-
-  { q: "🚨 Valaki el akarja lopni a kerékpárodat a bolt elől!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: true} ] },
-
-  { q: "🏠 Fekete füst és lángok csapnak ki a ház tetejéből!", ans: [ {t: "150 - Tűzoltók", correct: true}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: false} ] },
-
-  { q: "🏥 Egy néni rosszul lett az utcán és eszméletét vesztette!", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: true}, {t: "158 - Rendőrség", correct: false} ] },
-
-  { q: "🚒 Melyik a tűzoltók segélyhívó száma?", ans: [ {t: "150", correct: true}, {t: "155", correct: false}, {t: "158", correct: false} ] },
-
-  { q: "⚡ Leszakadt egy villanyoszlop és szikráznak a vezetékek:", ans: [ {t: "150 - Tűzoltók", correct: true}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: false} ] },
-
-  { q: "🚗 Valaki megrongálta a közlekedési táblát és elhajtott:", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: false}, {t: "158 - Rendőrség", correct: true} ] },
-
-  { q: "🐝 Darázscsípés miatt fulladni kezdett egy gyermek:", ans: [ {t: "150 - Tűzoltók", correct: false}, {t: "155 - Mentők", correct: true}, {t: "158 - Rendőrség", correct: false} ] },
-
-  { q: "🌍 Az összes segélyszervezetet hívó közös európai szám:", ans: [ {t: "112", correct: true}, {t: "150", correct: false}, {t: "155", correct: false} ] }
-
-];
-
-
-
-var callIdx = 0, callScore = 0;
-
-function initCallGame() {
-
-  callIdx = 0; callScore = 0;
-
-  loadCallQuestion();
-
-}
-
-function loadCallQuestion() {
-
-  var dataset = (lang === "hu") ? CALL_DATA_HU : CALL_DATA_SK;
-
-  if (callIdx >= dataset.length) {
-
-    document.getElementById("gc-score").textContent = (lang === "hu" ? "Vége!" : "Koniec!");
-
-    document.getElementById("call-situation").textContent = (lang === "hu" ? "🎉 Szép munka! Elért pontszám: " + callScore + " / " + dataset.length : "🎉 Výborne! Tvoje skóre: " + callScore + " / " + dataset.length);
-
-    document.getElementById("call-options").innerHTML = '<button type="button" class="btn-fact" onclick="initCallGame()">🔄 Hrať znova</button>';
-
-    return;
-
-  }
-
-  document.getElementById("gc-score").textContent = (lang === "hu" ? "Kérdés: " : "Otázka: ") + (callIdx + 1) + " / " + dataset.length;
-
-  var qObj = dataset[callIdx];
-
-  document.getElementById("call-situation").textContent = qObj.q;
-
-  var optDiv = document.getElementById("call-options");
-
-  optDiv.innerHTML = "";
-
-  for (var i = 0; i < qObj.ans.length; i++) {
-
-    var ans = qObj.ans[i];
-
-    var btn = document.createElement("button");
-
-    btn.type = "button";
-
-    btn.className = "quiz-opt-btn";
-
-    btn.textContent = ans.t;
-
-    btn.onclick = (function(correct) {
-
-      return function() {
-
-        if (correct) {
-
-          callScore++;
-
-          showMsg(lang === "hu" ? "Helyes!" : "Správne!", lang === "hu" ? "Gratulálok, jó választás!" : "Skvelá práca, správna odpoveď!", "✅", "ok-theme");
-
-        } else {
-
-          showMsg(lang === "hu" ? "Nem jó!" : "Nesprávne!", lang === "hu" ? "Ez most nem talált." : "Toto nebola správna voľba.", "❌", "err-theme");
-
-        }
-
-        callIdx++;
-
-        loadCallQuestion();
-
-      };
-
-    })(ans.correct);
-
-    optDiv.appendChild(btn);
-
-  }
-
-}
-
-
-
 /* 3. ČO PATRÍ DO VOZIDLA (5 ÚROVNÍ) */
 
 var GEAR_LEVELS = [
@@ -2954,7 +2816,7 @@ function renderFireGrid() {
 
 
 
-/* 5. NAVIGUJ ZÁSAH (BLUDISKO) */
+/* 5. NAVIGUJ ZÁSAH (BLUDISKO S AUTOMATICKÝM RESETOM A NÁHODNÝM POŽIAROM) */
 
 var mazeCar = { x: 0, y: 0 };
 
@@ -2968,7 +2830,39 @@ function initMazeGame() {
 
   mazeCar = { x: 0, y: 0 };
 
+  randomizeMazeTarget();
+
   renderMaze();
+
+}
+
+
+
+function randomizeMazeTarget() {
+
+  var possibleTargets = [
+
+    {x: 4, y: 4}, {x: 4, y: 0}, {x: 0, y: 4}, {x: 4, y: 2}, {x: 2, y: 4}
+
+  ];
+
+  // Vyberie náhodný cieľ, ktorý nie je na pozícii auta a nie je v stene
+
+  var valid = false;
+
+  while (!valid) {
+
+    var rnd = possibleTargets[Math.floor(Math.random() * possibleTargets.length)];
+
+    if (!(rnd.x === mazeCar.x && rnd.y === mazeCar.y)) {
+
+      mazeTarget = rnd;
+
+      valid = true;
+
+    }
+
+  }
 
 }
 
@@ -2990,13 +2884,9 @@ function moveCar(dir) {
 
 
 
-  // Overenie hraníc (5x5)
-
   if (nx < 0 || nx > 4 || ny < 0 || ny > 4) return;
 
 
-
-  // Overenie stien
 
   for (var i = 0; i < mazeWalls.length; i++) {
 
@@ -3024,7 +2914,19 @@ function moveCar(dir) {
 
   if (mazeCar.x === mazeTarget.x && mazeCar.y === mazeTarget.y) {
 
-    showMsg(lang === "hu" ? "Siker!" : "Skvelá práca!", lang === "hu" ? "Sikeresen megérkeztél a tűzhöz!" : "Hasičské auto dorazilo k požiaru včas!", "🎉", "ok-theme");
+    showMsg(lang === "hu" ? "Siker!" : "Skvelá práca!", lang === "hu" ? "Sikeresen megérkeztél a tűzhöz! Új tűz keletkezett!" : "Hasičské auto dorazilo k požiaru! Nový požiar v obci!", "🎉", "ok-theme");
+
+    // Automatický reset a presun ohňa na nové miesto
+
+    setTimeout(function() {
+
+      mazeCar = { x: 0, y: 0 };
+
+      randomizeMazeTarget();
+
+      renderMaze();
+
+    }, 600);
 
   }
 
@@ -3097,9 +2999,3 @@ initPexeso();
 </body>
 
 </html>
-
-```
-
-
-
-Dodatok: Ak budete chcieť kód neskôr zálohovať, stačí si otvoriť Word súbor vygenerovaný v predchádzajúcom kroku, kde ho máte plne k dispozícii.
