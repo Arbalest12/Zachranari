@@ -30,7 +30,7 @@
     .chat-header {
       background: #2b2b2b;
       color: white;
-      padding: 12px 18px;
+      padding: 12px 15px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -39,11 +39,11 @@
     .header-left {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
     .chat-header img {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
       border-radius: 50%;
       border: 2px solid #fff;
       object-fit: cover;
@@ -51,16 +51,35 @@
     }
     .chat-header h2 {
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1.15rem;
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lang-toggle {
+      background: #444;
+      border: 1px solid #666;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .lang-toggle:hover {
+      background: #555;
     }
     .tts-toggle {
       background: #444;
       border: none;
       color: white;
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -161,13 +180,16 @@
   <div class="chat-header">
     <div class="header-left">
       <img src="Redi.png" alt="Redi">
-      <h2>Hasič Redi</h2>
+      <h2 id="headerTitle">Hasič Redi</h2>
     </div>
-    <button id="ttsToggle" class="tts-toggle active" title="Zapnúť/Vypnúť hlas Rediho">🔊</button>
+    <div class="header-controls">
+      <button id="langToggle" class="lang-toggle" title="Zmeniť jazyk / Nyelvváltás">🇭🇺 HU</button>
+      <button id="ttsToggle" class="tts-toggle active" title="Zapnúť/Vypnúť hlas">🔊</button>
+    </div>
   </div>
 
   <div class="chat-messages" id="chatMessages">
-    <div class="message bot-message">
+    <div class="message bot-message" id="welcomeMsg">
       Ahoj! Ja som Redi, tvoj hasičský kamarát. 🚒 Stlač zelený mikrofón a povedz mi, čo ťa zaujíma!
     </div>
   </div>
@@ -175,7 +197,7 @@
   <div class="typing-indicator" id="typingIndicator">Redi ti píše odpoveď...</div>
 
   <div class="chat-input-area">
-    <button class="btn mic-btn" id="micBtn" title="Povedz to Redimu">🎤</button>
+    <button class="btn mic-btn" id="micBtn" title="Mikrofón">🎤</button>
     <input type="text" id="userInput" placeholder="Napíš alebo povedz...">
     <button class="btn send-btn" id="sendBtn" title="Odoslať">➤</button>
   </div>
@@ -183,18 +205,70 @@
 
 <script>
   // SEM VLOŽTE VAŠU FUNKČNÚ URL ADRESU Z APPS SCRIPTU:
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwdDrxIGyQdTlGFB7XuAAN2lvHX5M8P6nYvbWU16NQ1MZyVMyotM277vhWoSTZpxo5u/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzR0jOoCVETDzJ29f9fK0VmQFHHG221TWxmh6jn8CLWeKnPRSEB3CP3yWC41kxg3_v8/exec";
 
   const chatMessages = document.getElementById('chatMessages');
   const userInput = document.getElementById('userInput');
   const sendBtn = document.getElementById('sendBtn');
   const micBtn = document.getElementById('micBtn');
   const ttsToggle = document.getElementById('ttsToggle');
+  const langToggle = document.getElementById('langToggle');
+  const headerTitle = document.getElementById('headerTitle');
+  const welcomeMsg = document.getElementById('welcomeMsg');
   const typingIndicator = document.getElementById('typingIndicator');
 
   let voiceEnabled = true;
 
-  // Prepínanie hlasového čítania (Reproduktor v hlavičke)
+  // Slovník pre oba jazyky
+  const translations = {
+    sk: {
+      title: "Hasič Redi",
+      welcome: "Ahoj! Ja som Redi, tvoj hasičský kamarát. 🚒 Stlač zelený mikrofón a povedz mi, čo ťa zaujíma!",
+      placeholder: "Napíš alebo povedz...",
+      listening: "Počúvam ťa, hovor...",
+      micRetry: "Skús stlačiť mikrofón znova...",
+      typing: "Redi ti píše odpoveď...",
+      errorSignal: "Moja vysielačka stratila signál, skús mi napísať znova! 📻",
+      speechLang: "sk-SK",
+      nextLangBtn: "🇭🇺 HU"
+    },
+    hu: {
+      title: "Redi tűzoltó",
+      welcome: "Szia! Redi vagyok, a tűzoltó barátod. 🚒 Nyomd meg a zöld mikrofont, és mondd el, mi érdekel!",
+      placeholder: "Írj vagy beszélj...",
+      listening: "Hallgatlak, beszélj...",
+      micRetry: "Próbáld meg újra megnyomni a mikrofont...",
+      typing: "Redi válaszol...",
+      errorSignal: "Elment a rádiójelem, próbálj meg újra írni! 📻",
+      speechLang: "hu-HU",
+      nextLangBtn: "🇸🇰 SK"
+    }
+  };
+
+  // Zistenie jazyka z URL (napr. chat.html?lang=hu) alebo predvolene 'sk'
+  const urlParams = new URLSearchParams(window.location.search);
+  let currentLang = urlParams.get('lang') === 'hu' ? 'hu' : 'sk';
+
+  function applyLanguage() {
+    const t = translations[currentLang];
+    headerTitle.textContent = t.title;
+    welcomeMsg.textContent = t.welcome;
+    userInput.placeholder = t.placeholder;
+    typingIndicator.textContent = t.typing;
+    langToggle.textContent = t.nextLangBtn;
+    if (recognition) {
+      recognition.lang = t.speechLang;
+    }
+  }
+
+  // Prepínanie jazyka tlačidlom v hlavičke
+  langToggle.addEventListener('click', () => {
+    if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+    currentLang = currentLang === 'sk' ? 'hu' : 'sk';
+    applyLanguage();
+  });
+
+  // Prepínanie hlasového čítania
   ttsToggle.addEventListener('click', () => {
     voiceEnabled = !voiceEnabled;
     ttsToggle.textContent = voiceEnabled ? '🔊' : '🔇';
@@ -204,18 +278,17 @@
     }
   });
 
-  // Funkcia na prečítanie odpovede nahlas (bez emotikonov)
+  // Hlasové čítanie odpovede v zvolenom jazyku
   function speakText(text) {
     if (!voiceEnabled || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
 
-    // Odstránenie emotikonov, aby ich hlas nečítal slovom
     const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'sk-SK';
+    utterance.lang = translations[currentLang].speechLang;
     utterance.rate = 1.0;
-    utterance.pitch = 1.1; // Trochu vyšší, priateľskejší tón pre deti
+    utterance.pitch = 1.1;
     window.speechSynthesis.speak(utterance);
   }
 
@@ -233,7 +306,7 @@
 
     addMessage(text, 'user');
     userInput.value = '';
-    userInput.placeholder = 'Napíš alebo povedz...';
+    userInput.placeholder = translations[currentLang].placeholder;
     typingIndicator.style.display = 'block';
     chatMessages.scrollTop = chatMessages.scrollHeight;
 
@@ -241,17 +314,17 @@
       const response = await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ message: text })
+        body: JSON.stringify({ message: text, lang: currentLang })
       });
       const data = await response.json();
       typingIndicator.style.display = 'none';
       
-      const reply = data.reply || "Prepáč, nerozumel som.";
+      const reply = data.reply || "...";
       addMessage(reply, 'bot');
-      speakText(reply); // Redi prečíta odpoveď nahlas
+      speakText(reply);
     } catch (error) {
       typingIndicator.style.display = 'none';
-      addMessage("Moja vysielačka stratila signál, skús mi napísať znova! 📻", 'bot');
+      addMessage(translations[currentLang].errorSignal, 'bot');
     }
   }
 
@@ -260,11 +333,13 @@
     if (e.key === 'Enter') sendMessage();
   });
 
-  // Nastavenie mikrofónu (Rozpoznávanie reči v slovenčine)
+  // Nastavenie mikrofónu
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+
   if (SpeechRecognition) {
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'sk-SK';
+    recognition = new SpeechRecognition();
+    recognition.lang = translations[currentLang].speechLang;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
@@ -274,8 +349,8 @@
       if (isListening) {
         recognition.stop();
       } else {
-        // Pri nahrávaní stíšime Rediho, ak práve rozpráva
         if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        recognition.lang = translations[currentLang].speechLang;
         recognition.start();
       }
     });
@@ -283,31 +358,33 @@
     recognition.onstart = () => {
       isListening = true;
       micBtn.classList.add('listening');
-      userInput.placeholder = "Počúvam ťa, hovor...";
+      userInput.placeholder = translations[currentLang].listening;
     };
 
     recognition.onresult = (event) => {
       const transcript = event.results[0][0].transcript;
       userInput.value = transcript;
-      sendMessage(); // Automaticky odošle to, čo dieťa povedalo
+      sendMessage();
     };
 
     recognition.onerror = (event) => {
       console.error("Chyba mikrofónu:", event.error);
-      userInput.placeholder = "Skús stlačiť mikrofón znova...";
+      userInput.placeholder = translations[currentLang].micRetry;
     };
 
     recognition.onend = () => {
       isListening = false;
       micBtn.classList.remove('listening');
-      if (userInput.placeholder === "Počúvam ťa, hovor...") {
-        userInput.placeholder = "Napíš alebo povedz...";
+      if (userInput.placeholder === translations[currentLang].listening) {
+        userInput.placeholder = translations[currentLang].placeholder;
       }
     };
   } else {
-    // Ak prehliadač nepodporuje mikrofón, tlačidlo sa skryje
     micBtn.style.display = 'none';
   }
+
+  // Inicializácia jazyka pri načítaní
+  applyLanguage();
 </script>
 
 </body>
