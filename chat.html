@@ -2,14 +2,17 @@
 <html lang="sk">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Hasič Redi - Chat</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #f4f6f9;
       margin: 0;
-      padding: 15px;
+      padding: 10px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -24,13 +27,13 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      height: 85vh;
+      height: 88vh;
       max-height: 680px;
     }
     .chat-header {
       background: #2b2b2b;
       color: white;
-      padding: 12px 15px;
+      padding: 10px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -40,23 +43,29 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      min-width: 0;
     }
     .chat-header img {
-      width: 46px;
-      height: 46px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       border: 2px solid #fff;
       object-fit: cover;
       background: #fff;
+      flex-shrink: 0;
     }
     .chat-header h2 {
       margin: 0;
       font-size: 1.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .header-controls {
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-shrink: 0;
     }
     .lang-toggle {
       background: #444;
@@ -68,9 +77,6 @@
       font-weight: bold;
       cursor: pointer;
       transition: background 0.2s;
-    }
-    .lang-toggle:hover {
-      background: #555;
     }
     .tts-toggle {
       background: #444;
@@ -85,23 +91,24 @@
       align-items: center;
       justify-content: center;
       transition: background 0.2s;
+      flex-shrink: 0;
     }
     .tts-toggle.active {
       background: #2a9d8f;
     }
     .chat-messages {
       flex: 1;
-      padding: 15px;
+      padding: 14px;
       overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
     .message {
-      max-width: 82%;
-      padding: 12px 16px;
+      max-width: 84%;
+      padding: 12px 15px;
       border-radius: 18px;
-      font-size: 1rem;
+      font-size: 0.98rem;
       line-height: 1.45;
       word-wrap: break-word;
     }
@@ -122,31 +129,33 @@
       font-style: italic;
       color: #777;
       font-size: 0.9rem;
-      padding: 0 18px 8px;
+      padding: 0 16px 8px;
       display: none;
     }
     .chat-input-area {
-      padding: 10px 12px;
+      padding: 8px 10px;
       background: #eee;
       display: flex;
       gap: 8px;
       align-items: center;
+      width: 100%;
     }
     .chat-input-area input {
       flex: 1;
-      padding: 12px 15px;
+      min-width: 0; /* Zabraňuje vytlačeniu pravého tlačidla mimo obrazovku */
+      padding: 11px 14px;
       border: 1px solid #ccc;
       border-radius: 25px;
-      font-size: 1rem;
+      font-size: 0.95rem;
       outline: none;
     }
     .btn {
-      width: 46px;
-      height: 46px;
+      width: 42px;
+      height: 42px;
       border-radius: 50%;
       border: none;
       color: white;
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       cursor: pointer;
       display: flex;
       justify-content: center;
@@ -169,7 +178,7 @@
     }
     @keyframes pulse {
       0% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.7); }
-      70% { box-shadow: 0 0 0 12px rgba(230, 57, 70, 0); }
+      70% { box-shadow: 0 0 0 10px rgba(230, 57, 70, 0); }
       100% { box-shadow: 0 0 0 0 rgba(230, 57, 70, 0); }
     }
   </style>
@@ -205,7 +214,7 @@
 
 <script>
   // SEM VLOŽTE VAŠU FUNKČNÚ URL ADRESU Z APPS SCRIPTU:
-  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzR0jOoCVETDzJ29f9fK0VmQFHHG221TWxmh6jn8CLWeKnPRSEB3CP3yWC41kxg3_v8/exec";
+  const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwDwHYVf4t6_bV_N57LqTx3H9H4AAXrYtkVO0XSfOpmA-ZMtjHPRpHMM-uId6ZaYEL8/exec";
 
   const chatMessages = document.getElementById('chatMessages');
   const userInput = document.getElementById('userInput');
@@ -219,7 +228,6 @@
 
   let voiceEnabled = true;
 
-  // Slovník pre oba jazyky
   const translations = {
     sk: {
       title: "Hasič Redi",
@@ -245,7 +253,6 @@
     }
   };
 
-  // Zistenie jazyka z URL (napr. chat.html?lang=hu) alebo predvolene 'sk'
   const urlParams = new URLSearchParams(window.location.search);
   let currentLang = urlParams.get('lang') === 'hu' ? 'hu' : 'sk';
 
@@ -261,14 +268,12 @@
     }
   }
 
-  // Prepínanie jazyka tlačidlom v hlavičke
   langToggle.addEventListener('click', () => {
     if ('speechSynthesis' in window) window.speechSynthesis.cancel();
     currentLang = currentLang === 'sk' ? 'hu' : 'sk';
     applyLanguage();
   });
 
-  // Prepínanie hlasového čítania
   ttsToggle.addEventListener('click', () => {
     voiceEnabled = !voiceEnabled;
     ttsToggle.textContent = voiceEnabled ? '🔊' : '🔇';
@@ -278,7 +283,6 @@
     }
   });
 
-  // Hlasové čítanie odpovede v zvolenom jazyku
   function speakText(text) {
     if (!voiceEnabled || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
@@ -333,7 +337,6 @@
     if (e.key === 'Enter') sendMessage();
   });
 
-  // Nastavenie mikrofónu
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   let recognition = null;
 
@@ -383,7 +386,6 @@
     micBtn.style.display = 'none';
   }
 
-  // Inicializácia jazyka pri načítaní
   applyLanguage();
 </script>
 
