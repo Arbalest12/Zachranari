@@ -283,17 +283,44 @@
     }
   });
 
-  function speakText(text) {
+ function speakText(text) {
     if (!voiceEnabled || !('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
 
     const cleanText = text.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '');
 
     const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = translations[currentLang].speechLang;
-    utterance.rate = 1.0;
-    utterance.pitch = 1.1;
+    const targetLang = translations[currentLang].speechLang;
+    utterance.lang = targetLang;
+
+    // Pokus o nájdenie mužského/chlapčenského hlasu v zariadení
+    const voices = window.speechSynthesis.getVoices();
+    const langVoices = voices.filter(v => v.lang.replace('_', '-').toLowerCase().startsWith(currentLang));
+    
+    const maleVoice = langVoices.find(v => 
+      /male|filip|lukas|tamas|istvan|jakub|david/i.test(v.name)
+    );
+
+    if (maleVoice) {
+      utterance.voice = maleVoice;
+      utterance.pitch = 1.25; // Z mužského hlasu spraví mladší, chlapčenský
+      utterance.rate = 1.05;
+    } else if (langVoices.length > 0) {
+      utterance.voice = langVoices[0];
+      // Ak je v mobile len ženský hlas, vyšší tón (1.35) a rýchlosť z neho spravia veselého maskota/chlapčeka
+      utterance.pitch = 1.35; 
+      utterance.rate = 1.08;
+    } else {
+      utterance.pitch = 1.35;
+      utterance.rate = 1.08;
+    }
+
     window.speechSynthesis.speak(utterance);
+  }
+
+  // Načítanie hlasov hneď pri štarte (dôležité pre Chrome na mobile)
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
   }
 
   function addMessage(text, sender) {
