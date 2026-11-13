@@ -2996,9 +2996,53 @@ initPexeso();
 
 </script>
 
-</body>
-  <a href="chat.html" target="_blank" style="display: block; width: 250px; margin: 20px auto; padding: 15px; background-color: #e63946; color: white; text-align: center; text-decoration: none; border-radius: 15px; font-weight: bold; font-size: 18px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+<a id="rediChatBtn" href="chat.html" target="_blank" style="display: block; width: 250px; margin: 20px auto; padding: 15px; background-color: #e63946; color: white; text-align: center; text-decoration: none; border-radius: 15px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
   💬 Porozprávaj sa s Redim
 </a>
 
+<script>
+  function updateRediBtnLang() {
+    const btn = document.getElementById('rediChatBtn');
+    if (!btn) return;
+    
+    // Skontroluje, či je stránka prepnutá do maďarčiny (podľa premennej currentLang alebo jazyka dokumentu)
+    const isHu = (typeof currentLang !== 'undefined' && currentLang === 'hu') || 
+                 (typeof lang !== 'undefined' && lang === 'hu') || 
+                 document.documentElement.lang === 'hu';
+
+    if (isHu) {
+      btn.innerHTML = '💬 Beszélgess Redivel';
+      btn.href = 'chat.html?lang=hu';
+    } else {
+      btn.innerHTML = '💬 Porozprávaj sa s Redim';
+      btn.href = 'chat.html?lang=sk';
+    }
+  }
+
+  // Zareaguje aj vtedy, keď niekto klikne na vlajočku SK / HU na stránke
+  document.addEventListener('click', (e) => {
+    const clickedText = (e.target.textContent || '').toUpperCase();
+    if (clickedText.includes('HU') || clickedText.includes('MAGYAR') || clickedText.includes('🇭🇺')) {
+      setTimeout(() => {
+        const btn = document.getElementById('rediChatBtn');
+        if (btn) {
+          btn.innerHTML = '💬 Beszélgess Redivel';
+          btn.href = 'chat.html?lang=hu';
+        }
+      }, 50);
+    } else if (clickedText.includes('SK') || clickedText.includes('SLOVEN') || clickedText.includes('🇸🇰')) {
+      setTimeout(() => {
+        const btn = document.getElementById('rediChatBtn');
+        if (btn) {
+          btn.innerHTML = '💬 Porozprávaj sa s Redim';
+          btn.href = 'chat.html?lang=sk';
+        }
+      }, 50);
+    }
+  });
+
+  updateRediBtnLang();
+</script>
+
+</body>
 </html>
